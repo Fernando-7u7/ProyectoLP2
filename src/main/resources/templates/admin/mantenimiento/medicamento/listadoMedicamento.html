@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+
+<section th:fragment="contenido">
+	<div class="d-flex justify-content-between align-items-center mb-2">
+		<h1 class="mb-0">
+			<i class="fa-solid fa-pills text-primary me-2"></i> Listado de
+			Medicamentos
+		</h1>
+		<a th:href="@{/admin/mantenimiento/medicamento/nuevo}"
+			class="btn btn-success d-flex align-items-center"> <i
+			class="fa-solid fa-plus me-2"></i> Nuevo Medicamento
+		</a>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-md-12">
+			<table id="tblMedicamento"
+				class="table table-hover table-bordered table-striped align-middle">
+				<thead class="table-dark text-center">
+					<tr>
+						<th><i class="fa-solid fa-hashtag"></i> ID</th>
+						<th><i class="fa-solid fa-image"></i> Imagen</th>
+						<th><i class="fa-solid fa-capsules"></i> Nombre</th>
+						<th><i class="fa-solid fa-tag"></i> Precio</th>
+						<th><i class="fa-solid fa-boxes-stacked"></i> Stock</th>
+						<th><i class="fa-regular fa-calendar-days"></i> Vencimiento</th>
+						<th><i class="fa-solid fa-circle-info"></i> Estado</th>
+						<th><i class="fa-solid fa-gear"></i> Acciones</th>
+					</tr>
+				</thead>
+				<tbody class="table-secondary text-center">
+					<tr th:each="m : ${lstMedicamento}">
+						<td th:text="${m.idMedicamento}"></td>
+						<td><img
+							th:src="${m.base64Img != null} ?
+             'data:image/jpeg;base64,' + ${m.base64Img} :
+             '/img/medicamento/' + ${m.idMedicamento} + '.jpg'"
+							th:alt="${m.nombre}" class="img-list"
+							onerror="this.onerror=null; this.src='/img/no-image.jpg';" /></td>
+						<td th:text="${m.nombre}"></td>
+						<td
+							th:text="|S/. ${#numbers.formatDecimal(m.precio,1,2,'POINT')}|"
+							class="text-end"></td>
+						<td th:text="${m.stockActual}" class="text-end"></td>
+						<td th:text="${m.fechaVencimiento}" class="text-end"></td>
+						<td th:text="${m.estado.descripcion}"></td>
+						<td>
+							<!-- Ver --> <a
+							th:href="@{'/admin/mantenimiento/medicamento/ver/' + ${m.idMedicamento}}"
+							class="btn btn-sm btn-info" title="Ver"> <i
+								class="fa-solid fa-eye text-white"></i>
+						</a> <!-- Editar --> <a
+							th:href="@{'/admin/mantenimiento/medicamento/editar/' + ${m.idMedicamento}}"
+							class="btn btn-sm btn-warning" title="Editar"> <i
+								class="fa-solid fa-pen-to-square text-white"></i>
+						</a> <!-- Switcher para activar/desactivar -->
+							<form th:action="@{/admin/mantenimiento/medicamento/eliminar}" method="post"
+								style="display: inline;">
+								<input type="hidden" name="idMedicamento"
+									th:value="${m.idMedicamento}" />
+								<button type="submit" class="btn btn-sm"
+									th:classappend="${m.estado.idEstado == 1} ? 'btn-success' : 'btn-danger'"
+									th:title="${m.estado.idEstado == 1} ? 'Activo - Click para desactivar' : 'Inactivo - Click para activar'">
+									<i class="fa-solid"
+										th:classappend="${m.estado.idEstado == 1} ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+								</button>
+							</form>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<th:block th:utext="${alert}"></th:block>
+</section>
+</html>
+<script>
+		$(document).ready(function () {
+			$('#tblMedicamento').DataTable({
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+					search: "Filtrar:"
+				},
+    order: []
+			});
+		});
+</script>

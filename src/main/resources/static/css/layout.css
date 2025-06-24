@@ -1,0 +1,108 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+#wrapper {
+	min-height: 100%;
+	display: flex;
+}
+
+#content {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+#main-content {
+	flex-grow: 1;
+}
+
+/*Diseño del sandwitchito del navegador*/
+#sidebar {
+	position: fixed;
+	top: 0;
+	left: -250px;
+	width: 250px;
+	font-weight: bold;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: #3f8af9;
+	color: white;
+	transition: left 0.3s ease;
+	z-index: 1050;
+	padding-top: 1rem;
+}
+
+#sidebar.active {
+	left: 0;
+}
+
+#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+	z-index: 1049;
+}
+
+#overlay.active {
+	display: block;
+}
+
+@media ( min-width : 992px) {
+	#sidebar {
+		left: 0;
+		height: auto;
+		position: relative;
+		z-index: auto;
+	}
+	#overlay {
+		display: none !important;
+	}
+}
+
+#content {
+	transition: margin-left 0.3s ease;
+}
+
+.sidebar-header {
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 1rem 0;
+	border-bottom: 1px solid white;
+}
+
+.button-cerrar {
+	color: blue;
+	z-index: 20;
+	right: 9px;
+	top: 10px;
+	padding: 5px;
+	position: absolute;
+	background: #ffffff;
+	border: none;
+	border-radius: 50%;
+}
+
+.eye-image {
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.img-list {
+	width: 180px;
+	height: 125px;
+}
+
+.image-prev-crud {
+	height: 300px;
+	cursor: pointer;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
