@@ -1,10 +1,12 @@
 package com.Farmacia.ProyectoLP2.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Farmacia.ProyectoLP2.dto.MedicamentoFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.repositories.IMedicamentoRepository;
@@ -18,6 +20,15 @@ public class MedicamentoService {
 
 	public List<Medicamento> getAll() {
 		return medicRepository.findAllByOrderByIdMedicamentoDesc();
+	}
+	
+	public List<Medicamento> search(MedicamentoFilter filter){
+		return medicRepository.findAllWithFilters(filter.getIdCategoria(),filter.getIdProveedor());
+	}
+	
+	public List<Medicamento> expiredMedicamento(){
+		LocalDate fechaLimite = LocalDate.now().plusDays(30);
+		return medicRepository.findExpiredMedications(fechaLimite);
 	}
 	
 	@Transactional

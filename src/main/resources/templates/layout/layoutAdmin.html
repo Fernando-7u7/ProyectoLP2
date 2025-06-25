@@ -3,12 +3,14 @@
 	th:fragment="layoutBase(contenido)">
 <head>
 <meta charset="UTF-8" />
-<title>Farmacia Admin - Panel</title>
+<title>FarmaciaJAR - [[${pageTitle}]]</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 	integrity="..." crossorigin="anonymous" />
+<link rel="icon" type="image/png" th:href="@{/img/logo.png}" />
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -21,23 +23,30 @@
 <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 <script
 	src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 
 	<div id="overlay"></div>
-
 	<div class="d-flex" id="wrapper">
 		<nav id="sidebar" class="text-white">
 			<div class="text-end d-lg-none px-3 py-2">
 				<button class="button-cerrar" id="sidebar-close">✖</button>
 			</div>
-			<div class="sidebar-header">Farmacia Admin</div>
+			<div class=" d-flex justify-content-start align-items-center py-3"
+				style="margin-left: -10px; border-bottom: 2px solid var(--colorWhite);">
+				<img th:src="@{/img/logo.png}" alt="Logo" class="logo">
+				<h4>FarmaciaJAR</h4>
+			</div>
 			<div class="d-flex flex-column h-100 px-2">
 				<ul class="list-unstyled flex-grow-1">
 					<li><a th:href="@{/admin/dashboard}"
-						class="text-white nav-link px-3 py-2">Dashboard</a></li>
-					<li><a th:href="@{/admin/medicamentos}"
-						class="text-white nav-link px-3 py-2">Medicamentos</a></li>
+						th:classappend="${requestURI == '/admin/dashboard'} ? ' active' : ''"
+						class="text-white nav-link px-3 py-2"> Dashboard </a></li>
+					<li><a th:href="@{/admin/mantenimiento/medicamento/listado}"
+						class="text-white nav-link px-3 py-2"
+						th:classappend="${requestURI.startsWith('/admin/mantenimiento/medicamento')}  ? ' active' : ''">Medicamentos</a></li>
 					<li><a th:href="@{/admin/proveedores}"
 						class="text-white nav-link px-3 py-2">Proveedores</a></li>
 					<li><a th:href="@{/admin/usuarios}"
@@ -57,7 +66,7 @@
 			<nav
 				class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
 				<div class="container-fluid">
-					<button class="btn btn-outline-primary d-lg-none" id="menu-toggle">☰</button>
+					<button class="btn btn-outline-quartary d-lg-none" id="menu-toggle">☰</button>
 					<span class="ms-auto navbar-text"> <i
 						class="bi bi-person-circle"></i> <span th:text="${username}">Admin</span>
 					</span>

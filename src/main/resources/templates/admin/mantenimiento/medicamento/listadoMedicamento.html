@@ -3,16 +3,48 @@
 	th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
 
 <section th:fragment="contenido">
-	<div class="d-flex justify-content-between align-items-center mb-2">
+	<div class="d-flex justify-content-between align-items-center mb-4">
 		<h1 class="mb-0">
 			<i class="fa-solid fa-pills text-primary me-2"></i> Listado de
 			Medicamentos
 		</h1>
 		<a th:href="@{/admin/mantenimiento/medicamento/nuevo}"
-			class="btn btn-success d-flex align-items-center"> <i
-			class="fa-solid fa-plus me-2"></i> Nuevo Medicamento
+			class="btn btn-success"> <i class="fa-solid fa-plus me-2"></i>
+			Nuevo Medicamento
 		</a>
 	</div>
+
+	<form method="get"
+		th:action="@{/admin/mantenimiento/medicamento/listado}"
+		th:object="${filter}" class="card p-3 mb-4 shadow-sm">
+		<div class="row align-items-end">
+			<div class="col-md-4 mb-3">
+				<label class="form-label" for="categoria">Categoría</label> <select
+					class="form-select" th:field="*{idCategoria}"
+					onchange="this.form.submit()">
+					<option value="">-- Todos --</option>
+					<option th:each="item : ${lstCategoria}"
+						th:value="${item.idCategoria}" th:text="${item.descripcion}"></option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-3">
+				<label class="form-label" for="proveedor">Proveedor</label> <select
+					class="form-select" th:field="*{idProveedor}"
+					onchange="this.form.submit()">
+					<option value="">-- Todos --</option>
+					<option th:each="item : ${lstProveedor}"
+						th:value="${item.idProveedor}" th:text="${item.razonSocial}"></option>
+				</select>
+			</div>
+			<div
+				class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
+				<a th:href="@{/admin/mantenimiento/medicamento/listado}"
+					class="btn btn-outline-secondary w-100"> <i
+					class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+				</a>
+			</div>
+		</div>
+	</form>
 
 	<div class="row mb-3">
 		<div class="col-md-12">
@@ -56,8 +88,8 @@
 							class="btn btn-sm btn-warning" title="Editar"> <i
 								class="fa-solid fa-pen-to-square text-white"></i>
 						</a> <!-- Switcher para activar/desactivar -->
-							<form th:action="@{/admin/mantenimiento/medicamento/eliminar}" method="post"
-								style="display: inline;">
+							<form th:action="@{/admin/mantenimiento/medicamento/eliminar}"
+								method="post" style="display: inline;">
 								<input type="hidden" name="idMedicamento"
 									th:value="${m.idMedicamento}" />
 								<button type="submit" class="btn btn-sm"
@@ -82,9 +114,12 @@
 			$('#tblMedicamento').DataTable({
 				language: {
 					url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+					searchPlaceholder: "Buscar medicamento...",
 					search: "Filtrar:"
 				},
-    order: []
+    order: [],dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>' + // l = length, f = filter
+				 '<"row"<"col-12"tr>>' + // t = table, r = processing
+				 '<"row mt-3"<"col-md-6"i><"col-md-6"p>>', 
 			});
 		});
 </script>

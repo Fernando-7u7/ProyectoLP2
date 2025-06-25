@@ -1,0 +1,35 @@
+package com.Farmacia.ProyectoLP2.controller;
+
+import java.util.Base64;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.Farmacia.ProyectoLP2.model.Medicamento;
+import com.Farmacia.ProyectoLP2.services.MedicamentoService;
+
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+	@Autowired
+	private MedicamentoService medicService;
+	
+	@GetMapping("/dashboard")
+	public String dashboardIndex(Model model) {
+		List<Medicamento> lstMedicamento = medicService.expiredMedicamento();
+		lstMedicamento.forEach(m -> {
+	        if (m.getImagenBytes() != null) {
+	            String base64 = Base64.getEncoder().encodeToString(m.getImagenBytes());
+	            m.setBase64Img(base64);
+	        }
+	    });
+		model.addAttribute("pageTitle", "Dashboard");
+		model.addAttribute("lstMedicamento", lstMedicamento);
+		return "admin/dashboard";
+	}
+}

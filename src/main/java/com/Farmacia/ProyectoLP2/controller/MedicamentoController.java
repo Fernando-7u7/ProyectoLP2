@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Farmacia.ProyectoLP2.dto.MedicamentoFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.Categoria;
 import com.Farmacia.ProyectoLP2.model.Estado;
@@ -45,22 +46,26 @@ public class MedicamentoController {
 	private EstadoService estadoService;
 
 	@GetMapping("/listado")
-	public String listMedicine(Model model) {
-		List<Medicamento> lstMedicamento = medicamentoService.getAll();
-		lstMedicamento.forEach(m -> {
+	public String listMedicine(@ModelAttribute MedicamentoFilter filter, Model model) {
+	    List<Medicamento> lstMedicamento = medicamentoService.search(filter); 
+	    lstMedicamento.forEach(m -> {
 	        if (m.getImagenBytes() != null) {
 	            String base64 = Base64.getEncoder().encodeToString(m.getImagenBytes());
 	            m.setBase64Img(base64);
 	        }
 	    });
-		model.addAttribute("lstMedicamento", lstMedicamento);
-		return "admin/mantenimiento/medicamento/listadoMedicamento";
+		model.addAttribute("pageTitle", "Medicamento");
+	    model.addAttribute("lstMedicamento", lstMedicamento);
+	    model.addAttribute("filter", filter); 
+	    loadLists(model);
+	    return "admin/mantenimiento/medicamento/listadoMedicamento";
 	}
 
 	@GetMapping("/nuevo")
 	public String create(Model model) {
 		loadLists(model);
 		model.addAttribute("medicamento", new Medicamento());
+		model.addAttribute("pageTitle", "Crear Medicamento");
 		return "admin/mantenimiento/medicamento/nuevoMedicamento";
 	}
 
@@ -95,6 +100,7 @@ public class MedicamentoController {
 	        m.setBase64Img(base64Img);
 	    }
 		model.addAttribute("medicamento", m);
+		model.addAttribute("pageTitle", "Editar Medicamento");
 		return "admin/mantenimiento/medicamento/editarMedicamento";
 	}
 
@@ -125,10 +131,9 @@ public class MedicamentoController {
 	    ResultadoResponse response = medicamentoService.delete(idMedicamento);
 	    String alert = Alert.sweetAlertSuccess(response.mensaje);
 	    flash.addFlashAttribute("alert", alert);
-	    return "redirect:admin/mantenimiento/medicamento/listado";
+	    return "redirect:/admin/mantenimiento/medicamento/listado";
 	}
 
-	
 
 	private void loadLists(Model model) {
 		List<Proveedor> lstProveedor = proveedorService.getAll();
