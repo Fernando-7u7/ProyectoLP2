@@ -11,9 +11,9 @@ import com.Farmacia.ProyectoLP2.repositories.IEstadoRepository;
 @Service
 public class EstadoService {
 	@Autowired
-	private IEstadoRepository _EstadoRepository;
+	private IEstadoRepository estadoRepo;
 	
 	public List<Estado> getAll(){
-		return _EstadoRepository.findAll();
+		return estadoRepo.findAll();
 	}
 }
