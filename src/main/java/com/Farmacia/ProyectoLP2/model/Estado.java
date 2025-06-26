@@ -1,4 +1,4 @@
-package com.Farmacia.ProyectoLP2.models;
+package com.Farmacia.ProyectoLP2.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

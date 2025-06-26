@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Farmacia.ProyectoLP2.dtos.FarmaceuticoFilter;
-import com.Farmacia.ProyectoLP2.dtos.ResultadoResponse;
-import com.Farmacia.ProyectoLP2.models.Farmaceutico;
+import com.Farmacia.ProyectoLP2.dto.FarmaceuticoFilter;
+import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
+import com.Farmacia.ProyectoLP2.model.Farmaceutico;
 import com.Farmacia.ProyectoLP2.repositories.IFarmaceuticoRepository;
 
 @Service

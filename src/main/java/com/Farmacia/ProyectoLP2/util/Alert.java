@@ -1,4 +1,4 @@
-package com.Farmacia.ProyectoLP2.utils;
+package com.Farmacia.ProyectoLP2.util;
 
 public class Alert {
 

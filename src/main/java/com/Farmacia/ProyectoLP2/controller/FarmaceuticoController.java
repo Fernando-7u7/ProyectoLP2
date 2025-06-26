@@ -1,4 +1,4 @@
-package com.Farmacia.ProyectoLP2.controllers;
+package com.Farmacia.ProyectoLP2.controller;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.Farmacia.ProyectoLP2.dtos.FarmaceuticoFilter;
-import com.Farmacia.ProyectoLP2.dtos.ResultadoResponse;
-import com.Farmacia.ProyectoLP2.models.Farmaceutico;
+import com.Farmacia.ProyectoLP2.dto.FarmaceuticoFilter;
+import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
+import com.Farmacia.ProyectoLP2.model.Farmaceutico;
 import com.Farmacia.ProyectoLP2.services.EstadoService;
 import com.Farmacia.ProyectoLP2.services.FarmaceuticoService;
-import com.Farmacia.ProyectoLP2.utils.Alert;
+import com.Farmacia.ProyectoLP2.util.Alert;
 
 import jakarta.validation.Valid;
 

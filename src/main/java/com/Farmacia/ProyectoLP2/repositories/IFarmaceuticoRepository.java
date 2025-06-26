@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.Farmacia.ProyectoLP2.models.Farmaceutico;
+import com.Farmacia.ProyectoLP2.model.Farmaceutico;
 
 
 public interface IFarmaceuticoRepository extends JpaRepository<Farmaceutico, Integer> {

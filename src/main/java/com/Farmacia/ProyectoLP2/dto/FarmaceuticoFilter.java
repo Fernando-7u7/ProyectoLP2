@@ -1,4 +1,4 @@
-package com.Farmacia.ProyectoLP2.dtos;
+package com.Farmacia.ProyectoLP2.dto;
 
 import lombok.Getter;
 import lombok.Setter;
