@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+<section th:fragment="contenido">
+	<div class="container-fluid px-4">
+		<h1 class=" fw-bold">Dashboard</h1>
+		<hr>
+
+		<div class="row g-3 mb-4">
+			<div class="col-12 col-md-6 col-lg-3">
+				<div class="card shadow-sm border-start-primary border-4 h-100">
+					<div class="card-body">
+						<h5 class="card-title text-muted">Medicamentos</h5>
+						<h3 class="text-primary" th:text="${totalMedicamentos}">0</h3>
+					</div>
+					<div class="card-footer text-end bg-transparent border-0">
+						<i class="fa-solid fa-pills fa-2x text-primary"></i>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 col-lg-3">
+				<div class="card shadow-sm border-start-warning border-4 h-100">
+					<div class="card-body">
+						<h5 class="card-title text-muted">Stock Bajo</h5>
+						<h3 class="text-warning" th:text="${medicamentosStockBajo}">0</h3>
+					</div>
+					<div class="card-footer text-end bg-transparent border-0">
+						<i class="fa-solid fa-triangle-exclamation fa-2x text-warning"></i>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 col-lg-3">
+				<div class="card shadow-sm border-start-success border-4 h-100">
+					<div class="card-body">
+						<h5 class="card-title text-muted">Proveedores</h5>
+						<h3 class="text-success" th:text="${totalProveedores}">0</h3>
+					</div>
+					<div class="card-footer text-end bg-transparent border-0">
+						<i class="fa-solid fa-truck fa-2x text-success"></i>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 col-lg-3">
+				<div class="card shadow-sm border-start-info border-4 h-100">
+					<div class="card-body">
+						<h5 class="card-title text-muted">Categorías</h5>
+						<h3 class="text-info" th:text="${totalCategorias}">0</h3>
+					</div>
+					<div class="card-footer text-end bg-transparent border-0">
+						<i class="fa-solid fa-list fa-2x text-info"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<!-- fase beta grafico de ventas del mes 
+// En tu controlador Java
+Map<String, Integer> ventasUltimos6Meses = ventaService.getVentasUltimos6Meses();
+// Ejemplo: {"Enero": 120, "Febrero": 80, ...}
+
+model.addAttribute("labels", ventasUltimos6Meses.keySet());
+model.addAttribute("data", ventasUltimos6Meses.values());
+
+-->
+		<div>
+			<h2>
+				<i class="fa-solid fa-chart-bar me-2"></i> Ventas últimos 6 meses
+			</h2>
+		</div>
+		<div class="card mb-4 shadow-sm">
+			<div class="card-header"></div>
+			<div class="card-body">
+				<canvas id="ventasChart" width="100%" height="35"></canvas>
+			</div>
+		</div>
+
+		<h2 class="mb-3 d-flex align-items-center">
+			<i class="fa-solid fa-cogs me-2"></i> Acciones rápidas
+		</h2>
+		<div class="row mb-4">
+			<div class="col-md-6">
+				<a th:href="@{/admin/mantenimiento/medicamento/nuevo}"
+					class="btn btn-primary btn-lg w-100 mb-2"> <i
+					class="fa-solid fa-plus me-2"></i> Agregar Medicamento
+				</a>
+			</div>
+			<div class="col-md-6">
+				<a th:href="@{/admin/mantenimiento/proveedor/listado}"
+					class="btn btn-secondary btn-lg w-100 mb-2"> <i
+					class="fa-solid fa-truck me-2"></i> Ver Proveedores
+				</a>
+			</div>
+		</div>
+		<hr>
+		<h2 class="mb-4 d-flex align-items-center">
+			<i class="fa-solid fa-clock me-2"></i> Medicamentos que expiran en
+			menos de 30 días
+		</h2>
+
+
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<div class="table-responsive shadow-sm rounded">
+					<table id="tblMedicamento"
+						class="table table-hover align-middle mb-0"
+						style="min-width: 700px;">
+						<thead class="text-center text-white table-warning">
+							<tr>
+								<th scope="col"><i class="fa-solid fa-hashtag"></i> ID</th>
+								<th scope="col"><i class="fa-solid fa-image"></i> Imagen</th>
+								<th scope="col" class="text-start"><i
+									class="fa-solid fa-capsules"></i> Nombre</th>
+								<th scope="col" class="text-end"><i class="fa-solid fa-tag"></i>
+									Precio</th>
+								<th scope="col" class="text-end"><i
+									class="fa-solid fa-boxes-stacked"></i> Stock</th>
+								<th scope="col" class="text-end"><i
+									class="fa-regular fa-calendar-days"></i> Vencimiento</th>
+								<th scope="col" class="text-center"><i
+									class="fa-solid fa-circle-info"></i> Estado</th>
+							</tr>
+						</thead>
+						<tbody class="table-light text-center">
+							<tr th:each="m : ${lstMedicamento}" class="align-middle">
+								<td th:text="${m.idMedicamento}" class="fw-semibold"></td>
+								<td class="p-2"><img
+									th:src="${m.base64Img != null} ? 'data:image/jpeg;base64,' + ${m.base64Img} : '/img/medicamento/' + ${m.idMedicamento} + '.jpg'"
+									th:alt="${m.nombre}" style="width: 120px; height: 100px;"
+									onerror="this.onerror=null; this.src='/img/no-image.jpg';" />
+								</td>
+								<td class="text-start" th:text="${m.nombre}"></td>
+								<td class="text-end"
+									th:text="|S/. ${#numbers.formatDecimal(m.precio,1,2,'POINT')}|"></td>
+								<td class="text-end" th:text="${m.stockActual}"></td>
+								<td class="text-end"
+									th:text="${#temporals.format(m.fechaVencimiento, 'dd/MM/yyyy')}"></td>
+								<td class="text-center" th:text="${m.estado.descripcion}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+</html>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById('ventasChart').getContext('2d');
+    
+    // Datos pasados desde el backend Thymeleaf
+    const labels = /*[[${labels}]]*/ ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+    const data = /*[[${data}]]*/ [120, 80, 150, 200, 170, 190];
+    
+    const ventasChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Ventas',
+          data: data,
+          backgroundColor: '#00ae8b', // azul bootstrap
+          borderColor: '#00ae8b',
+          borderWidth: 1,
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 20
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    });
+  });
+</script>
