@@ -3,10 +3,7 @@ package com.Farmacia.ProyectoLP2.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD
 import org.springframework.data.jpa.repository.Modifying;
-=======
->>>>>>> origin/desarrolloJacnab
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
