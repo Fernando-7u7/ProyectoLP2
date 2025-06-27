@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.Farmacia.ProyectoLP2.model.Categoria;
 import com.Farmacia.ProyectoLP2.repositories.ICategoriaRepository;
 
-
-
 @Service
 public class CategoriaService {
 	@Autowired
@@ -22,4 +20,5 @@ public class CategoriaService {
 	public long countCategories() {
 		return categoriaRepo.count();
 	}
+
 }

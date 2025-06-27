@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Farmacia.ProyectoLP2.dto.FarmaceuticoFilter;
@@ -58,7 +59,6 @@ public class FarmaceuticoController {
 		model.addAttribute("estado", estadoService.getAll());
 		model.addAttribute("farmaceutico", new Farmaceutico());
 		return "admin/mantenimiento/farmaceuticos/nuevo";
-
 	}
 
 	@PostMapping("/registrar")
@@ -80,9 +80,7 @@ public class FarmaceuticoController {
 
 		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " registrado");		
 		flash.addFlashAttribute("alert", mensaje);
-		
 		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
-
 	}
 
 	@GetMapping("/edicion/{id}")
@@ -114,7 +112,6 @@ public class FarmaceuticoController {
 
 		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " actualizado");		
 		flash.addFlashAttribute("alert",mensaje);
-		
 		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
 	

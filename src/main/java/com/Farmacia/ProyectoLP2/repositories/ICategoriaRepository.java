@@ -7,4 +7,5 @@ import com.Farmacia.ProyectoLP2.model.Categoria;
 
 public interface ICategoriaRepository extends JpaRepository<Categoria, Integer>{
 	long count();
+
 }

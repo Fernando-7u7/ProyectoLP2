@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
-
 <section th:fragment="contenido">
 	<div class="container mt-5">
 		<div class="card shadow-sm border-0 rounded-4">
@@ -141,6 +140,5 @@
 	<th:block th:utext="${alert}"></th:block>
 
 	<script th:src="@{/js/crud.js}"></script>
-
 </section>
 </html>

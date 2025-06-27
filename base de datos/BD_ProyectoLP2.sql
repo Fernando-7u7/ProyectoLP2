@@ -171,8 +171,6 @@ VALUES
 ('M0049', NULL, 'Propranolol 20mg',       16.50,   60,  '2027-09-09', 1, 'Betabloqueante no selectivo',      5, 'CRM',9),
 ('M0050', NULL, 'Bromuro de ipratropio 2ml',19.00,  45,  '2026-12-12', 1, 'Broncodilatador anticolinérgico', 4, 'SRM',4);
 
-
-
 CREATE TABLE TB_ORDENES_COMPRA (
     ID_ORDEN INT PRIMARY KEY,
     ID_USUARIO INT NOT NULL,
