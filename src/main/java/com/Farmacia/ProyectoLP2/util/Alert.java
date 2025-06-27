@@ -70,6 +70,4 @@ public class Alert {
 		return String.format(scriptText, title, text, imageUrl);
 	}
 
-
 }
-
