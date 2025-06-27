@@ -25,13 +25,13 @@
 			</div>
 
 			<div class="col-md-2">
-				<a th:href="@{/farmaceuticos/nuevo}" class="btn btn-success w-100">
+				<a th:href="@{/admin/mantenimiento/farmaceuticos/nuevo}" class="btn btn-success w-100">
 					<i class="fa-solid fa-plus"></i>
 					Nuevo
 				</a>
 			</div>
 		</div>
-		<form method="get" th:action="@{/farmaceuticos/filtrado}" th:object="${filter}">
+		<form method="get" th:action="@{/admin/mantenimiento/farmaceuticos/filtrado}" th:object="${filter}">
 			<div class="row mb-3">
 				<div class="row">
 					<div class="mb-3 col-md-4">
@@ -82,10 +82,20 @@
 							<td th:text="${item.estado.descripcion}" class="text-center"></td>
 							</td>
 							<td class="d-flex justify-content-around">
-								<a th:href="@{/farmaceuticos/edicion/{id}(id=${item.idFarmaceutico})}"
+								<a th:href="@{/admin/mantenimiento/farmaceuticos/edicion/{id}(id=${item.idFarmaceutico})}"
 									class="btn btn-outline-secondary" title="Editar" role="button">
 									<i class="fa-regular fa-pen-to-square"></i>
 								</a>
+								<form th:action="@{/admin/mantenimiento/farmaceuticos/eliminar}" method="post"
+									style="display: inline;">
+									<input type="hidden" name="idFarmaceutico" th:value="${item.idFarmaceutico}" />
+									<button type="submit" class="btn btn-sm"
+										th:classappend="${item.estado.idEstado == 1} ? 'btn-success' : 'btn-danger'"
+										th:title="${item.estado.idEstado == 1} ? 'Activo - Click para desactivar' : 'Inactivo - Click para activar'">
+										<i class="fa-solid"
+											th:classappend="${item.estado.idEstado == 1} ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+									</button>
+								</form>
 							</td>
 						</tr>
 					</tbody>
@@ -93,12 +103,13 @@
 			</div>
 		</div>
 	</div>
-	<th:block th:utext="${toast}"></th:block>
+	<th:block th:utext="${alert}"></th:block>
 	<script>
 		$(document).ready(function () {
 			$('#tblFarmaceuticos').DataTable({
 				language: {
 					url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+					searchPlaceholder: "Buscar farmaceutico...",
 					search: "Filtrar:"
 				}
 			});
