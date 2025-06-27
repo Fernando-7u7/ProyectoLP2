@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+
+<head>
+    <title>Mantenimiento Farmacéuticos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- para el datatable -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>
+</head>
+
+<section th:fragment="contenido">
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+        <h1 class="mb-0">
+            <i class="fa-solid fa-user-doctor text-primary me-2"></i> Listado de Farmacéuticos
+        </h1>
+        <a th:href="@{/admin/mantenimiento/farmaceuticos/nuevo}" class="btn btn-success">
+            <i class="fa-solid fa-plus me-2"></i>
+            Nuevo Farmacéutico
+        </a>
+    </div>
+
+	<form method="get" th:action="@{/admin/mantenimiento/farmaceuticos/listado}" th:object="${filter}"
+	      class="card p-3 mb-4 shadow-sm">
+	    <div class="row align-items-end">
+	        <!-- Columna izquierda: Selector de tipo de documento -->
+	        <div class="col-md-4 mb-3">
+	            <label for="tipoDoc" class="form-label">Tipo de Documento:</label>
+	            <select class="form-select" th:field="*{tipoDoc}" onchange="this.form.submit()">
+	                <option value="">-- Todos --</option>
+	                <option value="DNI" th:text="'DNI'">DNI</option>
+	                <option value="CE" th:text="'CE'">CE</option>
+	                <option value="PAS" th:text="'PAS'">PAS</option>
+	            </select>
+	        </div>
+
+	        <!-- Columna vacía central -->
+	        <div class="col-md-4 mb-3"></div>
+
+	        <!-- Columna derecha: Botón de limpiar -->
+	        <div class="col-md-4 mb-3">
+	            <a th:href="@{/admin/mantenimiento/farmaceuticos/listado}" class="btn btn-outline-secondary w-100">
+	                <i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+	            </a>
+	        </div>
+	    </div>
+	</form>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <table id="tblFarmaceuticos" class="table table-hover table-bordered table-striped align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th><i class="fa-solid fa-hashtag"></i> Número</th>
+                        <th><i class="fa-solid fa-user"></i> Nombres</th>
+                        <th><i class="fa-solid fa-user"></i> Apellidos</th>
+                        <th><i class="fa-solid fa-id-card"></i> Documento</th>
+                        <th><i class="fa-solid fa-phone"></i> Teléfono</th>
+                        <th><i class="fa-solid fa-envelope"></i> Correo</th>
+                        <th><i class="fa-solid fa-map-marker-alt"></i> Dirección</th>
+                        <th><i class="fa-solid fa-circle-info"></i> Estado</th>
+                        <th><i class="fa-solid fa-gear"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-secondary text-center">
+                    <tr th:each="item : ${lstFarmaceuticos}">
+                        <td th:text="${item.idFarmaceutico}"></td>
+                        <td th:text="${item.nombre}"></td>
+                        <td th:text="${item.apellidos}"></td>
+                        <td th:text="|${item.tipoDoc} - ${item.documento}|"></td>
+                        <td th:text="${item.fono}"></td>
+                        <td th:text="${item.correo}"></td>
+                        <td th:text="${item.direccion}"></td>
+                        <td th:text="${item.estado.descripcion}"></td>
+                        <td>
+                            <a th:href="@{/admin/mantenimiento/farmaceuticos/edicion/{id}(id=${item.idFarmaceutico})}"
+                                class="btn btn-sm btn-warning" title="Editar">
+                                <i class="fa-regular fa-pen-to-square text-white"></i>
+                            </a>
+                            <form th:action="@{/admin/mantenimiento/farmaceuticos/eliminar}" method="post"
+                                style="display: inline;">
+                                <input type="hidden" name="idFarmaceutico" th:value="${item.idFarmaceutico}" />
+                                <button type="submit" class="btn btn-sm"
+                                    th:classappend="${item.estado.idEstado == 1} ? 'btn-success' : 'btn-danger'"
+                                    th:title="${item.estado.idEstado == 1} ? 'Activo - Click para desactivar' : 'Inactivo - Click para activar'">
+                                    <i class="fa-solid"
+                                        th:classappend="${item.estado.idEstado == 1} ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <th:block th:utext="${alert}"></th:block>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblFarmaceuticos').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+                    searchPlaceholder: "Buscar farmacéutico...",
+                    search: "Filtrar:"
+                },
+                order: [],
+                dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>' +
+                    '<"row"<"col-12"tr>>' +
+                    '<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+            });
+        });
+    </script>
+</section>
+
+</html>

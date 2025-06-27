@@ -70,6 +70,14 @@ CREATE TABLE TB_FARMACEUTICOS (
     FOREIGN KEY (ESTADO) REFERENCES TB_ESTADO(ID_ESTADO)
 );
 
+INSERT INTO TB_FARMACEUTICOS (NOMBRES, APELLIDOS, TIPO_DOCUMENTO, DOCUMENTO, TELEFONO, CORREO, DIRECCION, ESTADO)
+VALUES
+('María', 'González Pérez', 'DNI', '71234567', '987654321', 'maria.gonzalez@farmacia.com', 'Av. Los Jardines 123', 1),
+('Carlos', 'Martínez Rojas', 'DNI', '87654321', '912345678', 'carlos.martinez@farmacia.com', 'Calle Las Flores 456', 1),
+('Ana', 'López Sánchez', 'CE', 'X12345678', '923456789', 'ana.lopez@farmacia.com', 'Jr. Libertad 789', 1),
+('Pedro', 'Ramírez Vargas', 'DNI', '65432198', '934567890', 'pedro.ramirez@farmacia.com', 'Av. Primavera 101', 1),
+('Lucía', 'Torres Medina', 'PAS', 'PA8765432', '945678901', 'lucia.torres@farmacia.com', 'Calle Los Pinos 202', 1);
+
 CREATE TABLE TB_PROVEEDORES (
     ID_PROVEEDOR INT PRIMARY KEY AUTO_INCREMENT,
     RUC CHAR(11) NOT NULL CHECK (RUC REGEXP '^20[0-9]{9}$'),
@@ -160,6 +168,8 @@ VALUES
 ('M0048', NULL, 'Levamisol 150mg',        14.80,     70, '2026-10-10', 1, 'Antihelmíntico',                   2, 'CRM',2),
 ('M0049', NULL, 'Propranolol 20mg',       16.50,   60,  '2027-09-09', 1, 'Betabloqueante no selectivo',      5, 'CRM',9),
 ('M0050', NULL, 'Bromuro de ipratropio 2ml',19.00,  45,  '2026-12-12', 1, 'Broncodilatador anticolinérgico', 4, 'SRM',4);
+
+
 
 CREATE TABLE TB_ORDENES_COMPRA (
     ID_ORDEN INT PRIMARY KEY,

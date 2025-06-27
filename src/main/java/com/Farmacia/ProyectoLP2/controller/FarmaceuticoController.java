@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Farmacia.ProyectoLP2.dto.FarmaceuticoFilter;
@@ -23,7 +24,7 @@ import com.Farmacia.ProyectoLP2.util.Alert;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/farmaceuticos")
+@RequestMapping("/admin/mantenimiento/farmaceuticos")
 public class FarmaceuticoController {
 
 	@Autowired
@@ -49,14 +50,15 @@ public class FarmaceuticoController {
 
 		model.addAttribute("lstFarmaceuticos", lstFarmaceuticos);
 		model.addAttribute("filter", filter);
-		return "farmaceuticos/listado";
+	    return "admin/mantenimiento/farmaceuticos/listado";
 	}
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
 		model.addAttribute("estado", estadoService.getAll());
 		model.addAttribute("farmaceutico", new Farmaceutico());
-		return "farmaceuticos/nuevo";
+		return "admin/mantenimiento/farmaceuticos/nuevo";
+
 	}
 
 	@PostMapping("/registrar")
@@ -65,7 +67,7 @@ public class FarmaceuticoController {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-			return "farmaceuticos/nuevo";
+			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
 		ResultadoResponse response = farmaceuticoService.create(farmaceutico);
@@ -73,13 +75,14 @@ public class FarmaceuticoController {
 		if (!response.success) {
 			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-			return "farmaceuticos/nuevo";
+			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
 		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " registrado");		
 		flash.addFlashAttribute("alert", mensaje);
 		
-		return "redirect:/farmaceuticos/listado";
+		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
+
 	}
 
 	@GetMapping("/edicion/{id}")
@@ -87,7 +90,8 @@ public class FarmaceuticoController {
 		model.addAttribute("estado", estadoService.getAll());
 		Farmaceutico farmaceutico = farmaceuticoService.getOne(id);
 		model.addAttribute("farmaceutico", farmaceutico);
-		return "farmaceuticos/edicion";
+		return "admin/mantenimiento/farmaceuticos/edicion";
+
 	}
 
 	@PostMapping("/guardar")
@@ -97,7 +101,7 @@ public class FarmaceuticoController {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-			return "farmaceuticos/edicion";
+			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
 		ResultadoResponse response = farmaceuticoService.update(farmaceutico);
@@ -105,13 +109,21 @@ public class FarmaceuticoController {
 		if (!response.success) {
 			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-			return "farmaceuticos/edicion";
+			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
 		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " actualizado");		
 		flash.addFlashAttribute("alert",mensaje);
 		
-		return "redirect:/farmaceuticos/listado";
+		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
+	}
+	
+	@PostMapping("/eliminar")
+	public String toggleEstado(@RequestParam("idFarmaceutico") Integer idFarmaceutico, RedirectAttributes flash) {
+	    ResultadoResponse response = farmaceuticoService.delete(idFarmaceutico);
+	    String alert = Alert.sweetAlertSuccess(response.mensaje);
+	    flash.addFlashAttribute("alert", alert);
+	    return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
 
 }
