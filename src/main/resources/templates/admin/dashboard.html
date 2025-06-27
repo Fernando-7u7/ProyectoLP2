@@ -11,7 +11,7 @@
 				<div class="card shadow-sm border-start-primary border-4 h-100">
 					<div class="card-body">
 						<h5 class="card-title text-muted">Medicamentos</h5>
-						<h3 class="text-primary" th:text="${totalMedicamentos}">0</h3>
+						<h3 class="text-primary" th:text="${totalMedicamento}"></h3>
 					</div>
 					<div class="card-footer text-end bg-transparent border-0">
 						<i class="fa-solid fa-pills fa-2x text-primary"></i>
@@ -23,7 +23,7 @@
 				<div class="card shadow-sm border-start-warning border-4 h-100">
 					<div class="card-body">
 						<h5 class="card-title text-muted">Stock Bajo</h5>
-						<h3 class="text-warning" th:text="${medicamentosStockBajo}">0</h3>
+						<h3 class="text-warning" th:text="${stockBajo}">0</h3>
 					</div>
 					<div class="card-footer text-end bg-transparent border-0">
 						<i class="fa-solid fa-triangle-exclamation fa-2x text-warning"></i>
@@ -47,7 +47,7 @@
 				<div class="card shadow-sm border-start-info border-4 h-100">
 					<div class="card-body">
 						<h5 class="card-title text-muted">Categorías</h5>
-						<h3 class="text-info" th:text="${totalCategorias}">0</h3>
+						<h3 class="text-info" th:text="${totalCategoria}"></h3>
 					</div>
 					<div class="card-footer text-end bg-transparent border-0">
 						<i class="fa-solid fa-list fa-2x text-info"></i>
@@ -56,26 +56,15 @@
 			</div>
 		</div>
 		<hr>
-		<!-- fase beta grafico de ventas del mes 
-// En tu controlador Java
-Map<String, Integer> ventasUltimos6Meses = ventaService.getVentasUltimos6Meses();
-// Ejemplo: {"Enero": 120, "Febrero": 80, ...}
-
-model.addAttribute("labels", ventasUltimos6Meses.keySet());
-model.addAttribute("data", ventasUltimos6Meses.values());
-
--->
-		<div>
-			<h2>
-				<i class="fa-solid fa-chart-bar me-2"></i> Ventas últimos 6 meses
-			</h2>
-		</div>
+    <h2 class="mb-4 d-flex align-items-center"><i class="fa-solid fa-chart-simple fs-3 me-3"></i>
+    Ventas últimos 6 meses</h2>
 		<div class="card mb-4 shadow-sm">
-			<div class="card-header"></div>
-			<div class="card-body">
-				<canvas id="ventasChart" width="100%" height="35"></canvas>
-			</div>
-		</div>
+ 
+  <div class="card-body">
+    <canvas id="ventasChart" width="100%" height="35"></canvas>
+  </div>
+</div>
+
 
 		<h2 class="mb-3 d-flex align-items-center">
 			<i class="fa-solid fa-cogs me-2"></i> Acciones rápidas
@@ -146,48 +135,17 @@ model.addAttribute("data", ventasUltimos6Meses.values());
 		</div>
 
 	</div>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  window.ventasUltimos6Meses = /*[[${ventasUltimos6Meses}]]*/ [];
+  /*]]>*/
+</script>
+
+	<script th:src="@{/js/dashboard.js}"></script>
+
+
+
+	
 </section>
 </html>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const ctx = document.getElementById('ventasChart').getContext('2d');
-    
-    // Datos pasados desde el backend Thymeleaf
-    const labels = /*[[${labels}]]*/ ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
-    const data = /*[[${data}]]*/ [120, 80, 150, 200, 170, 190];
-    
-    const ventasChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Ventas',
-          data: data,
-          backgroundColor: '#00ae8b', // azul bootstrap
-          borderColor: '#00ae8b',
-          borderWidth: 1,
-          borderRadius: 5
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 20
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            enabled: true
-          }
-        }
-      }
-    });
-  });
-</script>
+

@@ -16,6 +16,8 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -62,6 +64,8 @@ public class Medicamento {
 	
 	@Column(name="FECHA_VENCIMIENTO",nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "La fecha de vencimiento es requerida")
+	@FutureOrPresent(message = "La fecha de vencimiento debe ser actual o futura")
 	private LocalDate fechaVencimiento;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -82,7 +86,7 @@ public class Medicamento {
 	@NotNull(message = "Seleccione una categoría")
 	private Categoria categoria;
 	
-	@Column(name="PREESCRIPCION")
-	@NotNull(message = "Seleccione una preescripcion")
+	@Column(name="PREESCRIPCION",nullable = false)
+	@NotBlank(message = "Seleccione una prescripción")
 	private String preescripcion;
 }

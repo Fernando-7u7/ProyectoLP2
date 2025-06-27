@@ -26,6 +26,14 @@ public class MedicamentoService {
 		return medicRepository.findAllWithFilters(filter.getIdCategoria(),filter.getIdProveedor());
 	}
 	
+	public long countMedicine() {
+		return medicRepository.count();
+	}
+	
+	public long countMedicineStockLow() {
+		return medicRepository.countMedicinesStockLow();
+	}
+	
 	public List<Medicamento> expiredMedicamento(){
 		LocalDate fechaLimite = LocalDate.now().plusDays(30);
 		return medicRepository.findExpiredMedications(fechaLimite);

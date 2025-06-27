@@ -12,6 +12,11 @@ import com.Farmacia.ProyectoLP2.model.Medicamento;
 public interface IMedicamentoRepository extends JpaRepository<Medicamento, String> {
 	List<Medicamento> findAllByOrderByIdMedicamentoDesc();
 
+	long count();
+	
+	@Query("SELECT COUNT(m) FROM Medicamento m WHERE m.stockActual < 10")
+	long countMedicinesStockLow();
+	
 	@Query("""
 			SELECT M FROM Medicamento M
 			WHERE (:idCategoria IS NULL OR M.categoria.idCategoria = :idCategoria)

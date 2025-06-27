@@ -18,4 +18,8 @@ public class CategoriaService {
 	public List<Categoria> getAll(){
 		return categoriaRepo.findAll();
 	}
+	
+	public long countCategories() {
+		return categoriaRepo.count();
+	}
 }

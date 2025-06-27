@@ -88,7 +88,20 @@ public class MedicamentoController {
 		}
 		String alert = Alert.sweetAlertSuccess(response.mensaje);
 		flash.addFlashAttribute("alert", alert);
-		return "redirect:admin/mantenimiento/medicamento/listado";
+		return "redirect:/admin/mantenimiento/medicamento/listado";
+	}
+	
+	@GetMapping("/ver/{id}")
+	public String view(@PathVariable String id, Model model) {
+		loadLists(model);
+		Medicamento m = medicamentoService.getOne(id);
+		if (m.getImagenBytes() != null) {
+	        String base64Img = Base64.getEncoder().encodeToString(m.getImagenBytes());
+	        m.setBase64Img(base64Img);
+	    }
+		model.addAttribute("medicamento", m);
+		model.addAttribute("pageTitle", "Ver Medicamento");
+		return "admin/mantenimiento/medicamento/verMedicamento";
 	}
 	
 	@GetMapping("/editar/{id}")
@@ -123,7 +136,7 @@ public class MedicamentoController {
 		}
 		String alert = Alert.sweetAlertSuccess(response.mensaje);
 		flash.addFlashAttribute("alert", alert);
-		return "redirect:admin/mantenimiento/medicamento/listado";
+		return "redirect:/admin/mantenimiento/medicamento/listado";
 	}
 	
 	@PostMapping("/eliminar")

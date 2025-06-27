@@ -7,3 +7,4 @@ public class ResultadoResponse {
 	public boolean success;
 	public String mensaje;
 }
+
