@@ -1,0 +1,131 @@
+:root {
+	--colorGreen: #00ae8b;
+	--colorLemonGreen: #acd401;
+	--colorWhite: #ffffff;
+	--colorGray: #ededed;
+	--colorBlack: #1c1c1c;
+	--colorGrayOscuro: #d4d4d4;;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+.logo {
+	width: 65px;
+	height: 45px;
+	transform: scale(1.7);
+}
+
+.navbar-brand strong {
+	font-size: 2rem;
+	background: linear-gradient(90deg, var(--colorGreen),
+		var(--colorLemonGreen));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+
+.navbar-custom {
+	background-color: var(--colorGray);
+}
+
+.banner {
+	object-fit: cover;
+	height: 450px;
+}
+
+.text-shadow {
+	text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+	filter: invert(1);
+}
+
+.navbar-custom .nav-link, .navbar-custom .navbar-brand, .navbar-custom .dropdown-toggle
+	{
+	color: var(--colorBlack) !important;
+}
+
+.navbar-custom .nav-link:hover {
+	color: var(--colorGreen) !important;
+}
+
+.offcanvas-custom {
+	background-color: var(--colorWhite);
+}
+
+.navbar-nav .nav-link {
+	font-size: 1.15rem;
+}
+
+.offcanvas-custom .nav-link {
+	font-size: 1.1rem;
+	color: #333;
+}
+
+.offcanvas-custom .nav-link i {
+	width: 20px;
+}
+
+.swiper-pagination-bullet-active {
+	opacity: var(--swiper-pagination-bullet-opacity, 1);
+	background: var(--colorGreen) !important;
+}
+
+.swiper-button-prev, .swiper-button-next {
+	user-select: none;
+}
+.form-check-input:checked {
+    background-color: var(--colorGreen) !important;
+    border-color: var(--colorGreen) !important;
+  }
+
+  .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 174, 139, 0.3) !important;
+  }
+
+  .form-check-input:checked + .form-check-label {
+    color: var(--colorGreen) !important;
+    font-weight: 600;
+  }
+
+  .categorias-titulo {
+    color: var(--colorGreen);
+    font-size:20px;
+    font-weight: bold;
+  }
+  
+  .med-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .med-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .med-card-img {
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .med-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .med-card-price {
+    color: var(--colorGreen, #00ae8b);
+    font-weight: bold;
+    font-size: 1rem;
+  }
