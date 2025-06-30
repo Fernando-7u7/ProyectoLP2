@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:fragment="layoutBase(contenido)">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FarmaciaJAR - [[${pageTitle}]]</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" th:href="@{/css/layoutCliente.css}" />
+<link rel="icon" type="image/png" th:href="@{/img/logo.png}" />
+<!-- CSS de Swiper -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- JS de Swiper -->
+<script
+	src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-custom shadow-sm sticky-top">
+		<div class="container-fluid">
+			<a
+				class="navbar-brand d-flex align-items-center justify-content-center"
+				th:href="@{/}"> <img th:src="@{/img/logo.png}" alt="FarmaciaJAR"
+				class="logo"> <strong>FarmaciaJAR</strong>
+			</a>
+
+			<button class="btn text-white d-lg-none" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+				<i class="fas fa-bars fs-4" style="color: #1c1c1c;"></i>
+			</button>
+
+			<ul
+				class="navbar-nav d-none d-lg-flex flex-row ms-auto gap-3 align-items-center">
+				<li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/medicamentos}">Medicamentos</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/contacto}">Contacto</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/carrito}"><i
+						class="fas fa-shopping-cart"></i></a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" role="button"
+					data-bs-toggle="dropdown"> <i class="fas fa-user"></i> <span
+						th:text="${username != null} ? ${username} : 'Cuenta'"></span>
+				</a>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li th:if="${username == null}"><a class="dropdown-item"
+							th:href="@{/login}">Iniciar sesión</a></li>
+						<li th:if="${username == null}"><a class="dropdown-item"
+							th:href="@{/registro}">Registrarse</a></li>
+						<li th:if="${username != null}"><a class="dropdown-item"
+							th:href="@{/perfil}">Mi Perfil</a></li>
+						<li th:if="${username != null}"><a
+							class="dropdown-item text-danger" th:href="@{/logout}">Cerrar
+								sesión</a></li>
+					</ul></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="offcanvas offcanvas-end offcanvas-custom" tabindex="-1"
+		id="offcanvasMenu" style="width: 220px;">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title">Menú</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+				aria-label="Cerrar"></button>
+		</div>
+		<div class="offcanvas-body d-flex flex-column gap-3">
+			<a class="nav-link" th:href="@{/}"><i class="fas fa-home"></i>
+				Inicio</a> <a class="nav-link" th:href="@{/medicamentos}"><i
+				class="fas fa-capsules"></i> Medicamentos</a> <a class="nav-link"
+				th:href="@{/contacto}"><i class="fas fa-envelope"></i> Contacto</a>
+			<a class="nav-link" th:href="@{/carrito}"><i
+				class="fas fa-shopping-cart"></i> Carrito</a>
+			<hr>
+			<div th:if="${username == null}">
+				<a class="nav-link" th:href="@{/login}"><i
+					class="fas fa-sign-in-alt"></i> Iniciar sesión</a> <a class="nav-link"
+					th:href="@{/registro}"><i class="fas fa-user-plus"></i>
+					Registrarse</a>
+			</div>
+			<div th:if="${username != null}">
+				<a class="nav-link" th:href="@{/perfil}"><i
+					class="fas fa-user-circle"></i> Mi Perfil</a> <a
+					class="nav-link text-danger" th:href="@{/logout}"><i
+					class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+			</div>
+		</div>
+	</div>
+
+	<main id="main-content">
+		<div th:replace="${contenido}">Contenido principal del cliente</div>
+	</main>
+
+	<footer class="bg-dark text-white pt-5 pb-4">
+		<div class="container text-center text-md-start">
+			<div class="row text-center text-md-start">
+
+				<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+					<h5 class="text-uppercase mb-4 fw-bold text-success">FarmaciaJAR</h5>
+					<p>Tu salud es nuestra prioridad. Ofrecemos medicamentos de
+						calidad, asesoría y servicio rápido de entrega.</p>
+				</div>
+
+				<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+					<h5 class="text-uppercase mb-4 fw-bold text-success">Enlaces</h5>
+					<p>
+						<a th:href="@{/medicamentos}" class="text-white text-decoration-none">Medicamentos</a>
+					</p>
+					<p>
+						<a th:href="@{/contacto}" class="text-white text-decoration-none">Contáctanos</a>
+					</p>
+					<p>
+						<a th:href="@{/nosotros}" class="text-white text-decoration-none">Sobre
+							Nosotros</a>
+					</p>
+					<p>
+						<a th:href="@{/faq}" class="text-white text-decoration-none">Preguntas
+							Frecuentes</a>
+					</p>
+				</div>
+
+				<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+					<h5 class="text-uppercase mb-4 fw-bold text-success">Contacto</h5>
+					<p>
+						<i class="bi bi-geo-alt-fill me-2"></i> Av. Salud 123, Lima, Perú
+					</p>
+					<p>
+						<i class="bi bi-envelope-fill me-2"></i> contacto@farmaciajar.com
+					</p>
+					<p>
+						<i class="bi bi-telephone-fill me-2"></i> (01) 123-4567
+					</p>
+					<p>
+						<i class="bi bi-whatsapp me-2"></i> +51 987 654 321
+					</p>
+				</div>
+
+				<div class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3 text-center">
+					<h5 class="text-uppercase mb-4 fw-bold text-success">Síguenos</h5>
+					<a href="#" class="text-white me-4 fs-1"><i
+						class="bi bi-facebook"></i></a> <a href="#"
+						class="text-white me-4 fs-1"><i class="bi bi-instagram"></i></a> <a
+						href="#" class="text-white fs-1"><i class="bi bi-youtube"></i></a>
+				</div>
+			</div>
+
+			<hr class="my-3 text-white" />
+
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<p class="mb-0">&copy; 2025 FarmaciaJAR. Todos los derechos
+						reservados.</p>
+					<p class="mb-0">
+						<a href="#" class="text-white text-decoration-none">Términos y
+							condiciones</a> | <a href="#" class="text-white text-decoration-none">Política
+							de privacidad</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script th:src="@{/js/layoutC.js}"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

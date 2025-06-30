@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutCliente :: layoutBase(~{::section})}">
+
+<section th:fragment="contenido">
+	<div class="swiper bannerSwiper">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<img th:src="@{/img/bannerM.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Promoción especial</h2>
+					<p class="text-shadow">Descuentos en medicamentos
+						seleccionados.</p>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<img th:src="@{/img/bannerM2.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Nuevos productos</h2>
+					<p class="text-shadow">Descubre nuestras novedades de salud y
+						bienestar.</p>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<img th:src="@{/img/bannerM3.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px; object-position: center 20%;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Consulta gratuita</h2>
+					<p class="text-shadow">Asesoría con especialistas en línea.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-button-next" style="color: #1c1c1c;"></div>
+		<div class="swiper-button-prev" style="color: #1c1c1c;"></div>
+		<div class="swiper-pagination"></div>
+	</div>
+
+	<div class="m-4">
+		<div class="text-center mb-4">
+			<h2 class="fw-bold text-dark">Medicamentos</h2>
+			<p class="text-muted">Explora nuestra variedad de medicamentos al
+				mejor precio, con calidad garantizada para tu bienestar.</p>
+		</div>
+		<div class="row">
+			<!-- FILTROS -->
+			<div class="col-md-2">
+				<form th:action="@{/medicamentos}" method="get"
+					th:object="${filter}" class="bg-light p-3 rounded shadow-sm">
+					<label class="form-label fw-bold mb-3 categorias-titulo h6">Categorías:</label>
+
+					<div class="form-check mb-2" th:each="cat : ${lstCategorias}">
+						<input class="form-check-input" type="checkbox"
+							th:field="*{idCategorias}" th:value="${cat.idCategoria}"
+							th:id="${'cat-' + cat.idCategoria}" onchange="this.form.submit()" />
+
+						<label class="form-check-label ms-1"
+							th:for="${'cat-' + cat.idCategoria}" th:text="${cat.descripcion}">Categoría</label>
+					</div>
+				</form>
+			</div>
+
+			<!-- LISTADO DE MEDICAMENTOS -->
+			<div class="col-md-10">
+				<div class="row">
+					<div th:each="m : ${pageMedicamentos.content}"
+						class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+						<div class="card h-100 med-card">
+							<img
+								th:src="${m.base64Img != null} ? 
+                'data:image/jpeg;base64,' + ${m.base64Img} : 
+                '/img/medicamento/' + ${m.idMedicamento} + '.jpg'"
+								class="card-img-top med-card-img" />
+
+							<div class="card-body text-center">
+								<h5 class="card-title med-card-title" th:text="${m.nombre}">Nombre
+									del Medicamento</h5>
+								<p class="med-card-price"
+									th:text="|S/. ${#numbers.formatDecimal(m.precio,1,2,'POINT')}|">S/.
+									00.00</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="pagination-controls text-center my-4">
+					<ul class="pagination justify-content-center">
+						<li class="page-item"
+							th:classappend="${!pageMedicamentos.hasPrevious()} ? 'disabled'">
+							<a class="page-link"
+							th:href="@{/medicamentos(page=${pageMedicamentos.number - 1}, size=${pageMedicamentos.size}, idCategorias=${filter.idCategorias})}">
+								<i class="fas fa-chevron-left"></i>
+						</a>
+
+						</li>
+						<li class="page-item"
+							th:each="i : ${#numbers.sequence(0, pageMedicamentos.totalPages -1)}"
+							th:classappend="${i == pageMedicamentos.number} ? 'active'">
+							<a class="page-link"
+							th:href="@{/medicamentos(page=${i}, size=${pageMedicamentos.size}, idCategorias=${filter.idCategorias})}"
+							th:text="${i + 1}">1</a>
+						</li>
+						<li class="page-item"
+							th:classappend="${!pageMedicamentos.hasNext()} ? 'disabled'">
+							<a class="page-link"
+							th:href="@{/medicamentos(page=${pageMedicamentos.number + 1}, size=${pageMedicamentos.size}, idCategorias=${filter.idCategorias})}">
+								<i class="fas fa-chevron-right"></i>
+						</a>
+						</li>
+
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+</section>
+</html>
