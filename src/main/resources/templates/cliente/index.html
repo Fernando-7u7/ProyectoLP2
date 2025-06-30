@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutCliente :: layoutBase(~{::section})}">
+<section th:fragment="contenido">
+	<div class="swiper bannerSwiper">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<img th:src="@{/img/banner1.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px; object-position: center 20%;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Bienvenido a FarmaciaJAR</h2>
+					<p class="text-shadow">Tu salud, nuestra prioridad.</p>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<img th:src="@{/img/banner2.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Productos de calidad</h2>
+					<p class="text-shadow">Encuentra todo lo que necesitas con
+						nosotros.</p>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<img th:src="@{/img/banner3.jpg}" class="w-100"
+					style="object-fit: cover; height: 500px; object-position: center 20%;">
+				<div
+					class="carousel-caption position-absolute top-50 start-50 translate-middle text-white text-center">
+					<h2 class="fw-bold text-shadow">Entrega rápida y segura</h2>
+					<p class="text-shadow">Directo a la puerta de tu casa.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-button-next" style="color: #1c1c1c;"></div>
+		<div class="swiper-button-prev" style="color: #1c1c1c;"></div>
+		<div class="swiper-pagination"></div>
+	</div>
+
+	<section class="m-5">
+		<h2 class="text-center mb-4">¿Por qué elegir FarmaciaJAR?</h2>
+		<div class="row text-center">
+			<div class="col-md-3">
+				<i class="bi bi-truck fs-1 text-success mb-2"></i>
+				<h5>Entrega rápida</h5>
+				<p>Envíos a todo Lima en 24-48 horas.</p>
+			</div>
+			<div class="col-md-3">
+				<i class="bi bi-shield-check fs-1 text-success mb-2"></i>
+				<h5>Productos garantizados</h5>
+				<p>Medicamentos originales y certificados.</p>
+			</div>
+			<div class="col-md-3">
+				<i class="bi bi-person-check fs-1 text-success mb-2"></i>
+				<h5>Asesoría profesional</h5>
+				<p>Farmacéuticos expertos para tus consultas.</p>
+			</div>
+			<div class="col-md-3">
+				<i class="bi bi-currency-dollar fs-1 text-success mb-2"></i>
+				<h5>Precios competitivos</h5>
+				<p>Ofertas y promociones exclusivas.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="m-5">
+		<h2 class="text-center mb-2">Productos Destacados</h2>
+		<p class="text-center text-muted mb-4">Los medicamentos preferidos
+			por nuestros clientes para cuidar tu salud.</p>
+		<div class="swiper mySwiper">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide" th:each="producto : ${destacados}">
+					<div class="card h-100 shadow-sm">
+						<img
+							th:src="${producto.base64Img != null} ? 
+               'data:image/jpeg;base64,' + ${producto.base64Img} : 
+               '/img/medicamento/' + ${producto.idMedicamento} + '.jpg'"
+							class="card-img-top" style="height: 280px; object-fit: cover;">
+						<div class="card-body text-center">
+							<h5 class="card-title fw-semibold" th:text="${producto.nombre}">Nombre</h5>
+							<p class="card-text text-success fw-bold fs-5"
+								th:text="|S/. ${#numbers.formatDecimal(producto.precio,1,2,'POINT')}|">Precio</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="swiper-button-next" style="color: #1c1c1c;"></div>
+			<div class="swiper-button-prev" style="color: #1c1c1c;"></div>
+		</div>
+		<div class="text-center mt-4">
+			<a th:href="@{/medicamentos}"
+				class="btn btn-success btn-lg fw-bold w-100">Ver todo el
+				catálogo</a>
+		</div>
+	</section>
+
+
+	<section class="m-5 text-center">
+		<h3 class="mb-3">¿Tienes dudas o necesitas ayuda?</h3>
+		<p class="lead">Nuestro equipo de atención está listo para
+			ayudarte.</p>
+		<div
+			class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+			<a href="#"
+				class="btn btn-outline-primary btn-lg d-flex align-items-center gap-2">
+				<i class="bi bi-telephone-fill fs-4"></i> Llámanos: (01) 123-4567
+			</a> <a href="#"
+				class="btn btn-success btn-lg d-flex align-items-center gap-2">
+				<i class="bi bi-whatsapp fs-4"></i> Escríbenos por WhatsApp
+			</a>
+		</div>
+		<p class="mt-4">
+			También puedes visitarnos en <strong>Av. Salud 123, Lima</strong>.
+		</p>
+	</section>
+
+
+</section>
+</html>

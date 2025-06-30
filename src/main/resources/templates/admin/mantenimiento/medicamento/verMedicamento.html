@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+
+<section th:fragment="contenido">
+    <div class="container mt-5">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-warning text-white text-center rounded-top-4">
+                <h2 class="mb-0">
+                    <i class="fa-solid fa-eye me-2"></i> Ver Medicamento
+                </h2>
+            </div>
+            <div class="card-body p-4">
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">ID Medicamento</label>
+                    <p class="form-control-plaintext" th:text="${medicamento.idMedicamento}"></p>
+                </div>
+
+                <div class="mb-4 text-center" style="max-width: 280px; margin: auto;">
+                    <label class="form-label fw-bold d-block mb-2">Imagen</label>
+                    <img class="image-prev-crud"
+                         th:src="${medicamento.base64Img != null} ?
+                            'data:image/jpeg;base64,' + ${medicamento.base64Img} :
+                            '/img/medicamento/' + ${medicamento.idMedicamento} + '.jpg'"
+                         alt="Imagen actual"
+                         onerror="this.onerror=null; this.src='/img/no-image.jpg';" />
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Fecha Vencimiento</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.fechaVencimiento}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.nombre}"></p>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Descripción</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.descripcion}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Stock</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.stockActual}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Precio</label>
+                        <p class="form-control-plaintext" th:text="|S/. ${#numbers.formatDecimal(medicamento.precio,1,2,'POINT')}|"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Categoría</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.categoria.descripcion}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Proveedor</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.proveedor.razonSocial}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Prescripción</label>
+                        <p class="form-control-plaintext" th:text="${medicamento.preescripcion}"></p>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-end">
+                    <a th:href="@{/admin/mantenimiento/medicamento/listado}" class="btn btn-dark">
+                        <i class="fa-solid fa-circle-left me-2"></i> Regresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</html>

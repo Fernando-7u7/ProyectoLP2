@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+
+<head>
+	<title>Mantenimiento Proveedores</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+		integrity="..." crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+
+</head>
+
+<section th:fragment="contenido">
+		<div class="row mb-4 mt-4 align-items-center">
+			<div class="col-md-10">
+				<h1 class="m-0">
+					<i class="fa-solid fa-truck-fast text-primary me-2"></i> Listado de Proveedores				
+				</h1>
+			</div>
+
+			<div class="col-md-2">
+				<a th:href="@{/admin/mantenimiento/proveedores/nuevo}" class="btn btn-success w-100">
+					<i class="fa-solid fa-plus"></i>
+					Nuevo Proveedor
+				</a>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<table id="tblProveedor" class="table table-hover table-striped table-borderless align-middle">
+					<thead class="table-dark text-center">
+						<tr>
+							<th>Item</th>
+							<th>RUC - Razón social</th>
+							<th><i class="fa-solid fa-phone"></i> Teléfono</th>
+							<th><i class="fa-solid fa-map-marker-alt"></i> Dirección</th>
+							<th><i class="fa-solid fa-circle-info"></i> Estado</th>
+							<th><i class="fa-solid fa-gear"></i> Acciones</th>
+						</tr>
+					</thead>
+					<tbody class="table-secondary">
+						<tr th:each="item, iterStat : ${lstProveedor}">
+							<td th:text="${iterStat.count}" class="text-center"></td>
+							<td th:text="${item.ruc + ' - ' + item.razonSocial}" class="text-left"></td>
+							<td th:text="${item.telefono}" class="text-center"></td>
+							<td th:text="${item.direccion}" class="text-center"></td>
+							<td th:text="${item.estado.descripcion}" class="text-center"></td>
+
+							</td>
+							<td class="text-center">
+								<a th:href="@{/admin/mantenimiento/proveedores/edicion/{id}(id=${item.idProveedor})}"
+									class="btn btn-sm btn-warning" title="Editar" >
+									<i class="fa-regular fa-pen-to-square text-white"></i>
+								</a>
+								<form th:action="@{/admin/mantenimiento/proveedores/eliminar}" method="post" style="display: inline;">
+								    <input type="hidden" name="idProveedor" th:value="${item.idProveedor}" />
+								    <button type="submit" class="btn btn-sm"
+								        th:classappend="${item.estado.idEstado == 1} ? 'btn-success' : 'btn-danger'"
+								        th:title="${item.estado.idEstado == 1} ? 'Activo - Click para desactivar' : 'Inactivo - Click para activar'">
+								        <i class="fa-solid"
+								            th:classappend="${item.estado.idEstado == 1} ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+								    </button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<th:block th:utext="${alert}"></th:block>
+	<script>
+	    $(document).ready(function () {
+	        $('#tblProveedor').DataTable({
+	            language: {
+	                url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+	                searchPlaceholder: "Buscar proveedor...",
+	                search: "Filtrar:"
+	            },
+	            order: [],
+	            dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>' +
+	                '<"row"<"col-12"tr>>' +
+	                '<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+	        });
+	    });
+	</script>
+</section>
+
+
+
+
+</html>
