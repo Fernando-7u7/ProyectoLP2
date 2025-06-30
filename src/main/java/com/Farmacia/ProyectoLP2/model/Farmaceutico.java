@@ -13,13 +13,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @DynamicInsert
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "TB_FARMACEUTICOS")
 public class Farmaceutico {
 
@@ -45,7 +50,7 @@ public class Farmaceutico {
 	private String documento;
 	
 	@Column(name = "TELEFONO")
-	@NotEmpty(message = "El teléfono es requerido")
+	@Pattern(regexp = "\\d{9}", message = "El teléfono debe contener solo 9 dígitos")
 	private String fono;
 	
 	@Column(name = "CORREO")
@@ -61,3 +66,4 @@ public class Farmaceutico {
 	private Estado estado;
 	
 }
+

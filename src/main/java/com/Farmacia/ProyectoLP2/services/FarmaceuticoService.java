@@ -1,6 +1,7 @@
 package com.Farmacia.ProyectoLP2.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,35 @@ public class FarmaceuticoService {
 
 	@Transactional
 	public ResultadoResponse update(Farmaceutico farmaceutico) {
-		try {
-			Farmaceutico registro = _IFarmaceuticoRepository.save(farmaceutico);
-			String mensaje = String.format("Farmaceutico nro. %s actualizado", registro.getIdFarmaceutico());
-			return new ResultadoResponse(true, mensaje);
-		} catch (Exception ex) {
-			return new ResultadoResponse(false, "Error al actualizar: " + ex.getMessage());
-		}
+	    try {
+
+	        Optional<Farmaceutico> optional = _IFarmaceuticoRepository.findById(farmaceutico.getIdFarmaceutico());
+	        
+	        if (optional.isPresent()) {
+	            Farmaceutico registro = optional.get();
+
+	            registro.setNombre(farmaceutico.getNombre());
+	            registro.setApellidos(farmaceutico.getApellidos());
+	            registro.setTipoDoc(farmaceutico.getTipoDoc());
+	            registro.setDocumento(farmaceutico.getDocumento());
+	            registro.setFono(farmaceutico.getFono());
+	            registro.setCorreo(farmaceutico.getCorreo());
+	            registro.setDireccion(farmaceutico.getDireccion());
+
+
+	            _IFarmaceuticoRepository.save(registro);
+
+	            String mensaje = String.format("Farmacéutico nro. %s actualizado correctamente", registro.getIdFarmaceutico());
+	            return new ResultadoResponse(true, mensaje);
+	        } else {
+	            return new ResultadoResponse(false, "Farmacéutico no encontrado");
+	        }
+
+	    } catch (Exception ex) {
+	        return new ResultadoResponse(false, "Error al actualizar: " + ex.getMessage());
+	    }
 	}
+
 
 	@Transactional
 	public ResultadoResponse delete(Integer id) {
