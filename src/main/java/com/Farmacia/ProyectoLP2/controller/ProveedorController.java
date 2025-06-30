@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.Estado;
 import com.Farmacia.ProyectoLP2.model.Proveedor;
 import com.Farmacia.ProyectoLP2.services.EstadoService;
@@ -23,7 +25,7 @@ import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping("/proveedor")
+@RequestMapping("/admin/mantenimiento/proveedores")
 
 public class ProveedorController {
 
@@ -37,9 +39,9 @@ public class ProveedorController {
 	@GetMapping("/listado")
 	public String listado(Model model) {
 
-		List<Proveedor> lstProveedor = _proveedorService.listarProveedoresActivos();
+		List<Proveedor> lstProveedor = _proveedorService.getAll();
 		model.addAttribute("lstProveedor", lstProveedor);
-		return "admin/mantenimiento/proveedor/listadoProveedor";
+		return "admin/mantenimiento/proveedores/listadoProveedor";
 	}
 
 	@GetMapping("/nuevo")
@@ -50,7 +52,7 @@ public class ProveedorController {
 		Proveedor proveedor = new Proveedor();
 
 		model.addAttribute("proveedor", proveedor);
-		return "admin/mantenimiento/proveedor/nuevoProveedor";
+		return "admin/mantenimiento/proveedores/nuevoProveedor";
 	}
 
 	@PostMapping("/registrar")
@@ -58,7 +60,7 @@ public class ProveedorController {
 	    
 		if (result.hasErrors()) {
 	        model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-	        return "admin/mantenimiento/proveedor/nuevoProveedor"; 
+	        return "admin/mantenimiento/proveedores/nuevoProveedor"; 
 	    }
 
 	    try {
@@ -67,13 +69,13 @@ public class ProveedorController {
 	        proveedor.setEstado(estadoActivo);
 
 	        Proveedor registrado = _proveedorService.create(proveedor);
-	        String mensaje = String.format("Proveedor nro. %s registrado correctamente.", registrado.getRazonSocial());
+	        String mensaje = String.format("Proveedor %s registrado correctamente.", registrado.getRazonSocial());
 	        flash.addFlashAttribute("alert", Alert.sweetToast(mensaje, "success", 5000));
-	        return "redirect:/proveedor/listado";
+	        return "redirect:/admin/mantenimiento/proveedores/listado";
 
 	    } catch (Exception ex) {
 	        model.addAttribute("alert", Alert.sweetAlertError("Error al registrar: " + ex.getMessage()));
-	        return "admin/mantenimiento/proveedor/nuevoProveedor";
+	        return "admin/mantenimiento/proveedores/nuevoProveedor";
 	    }
 	}
 
@@ -86,24 +88,37 @@ public class ProveedorController {
 		List<Estado> estados = _estadoService.getAll();
 		model.addAttribute("lstEstados", estados);
 		
-		return "admin/mantenimiento/proveedor/editarProveedor";
+		return "admin/mantenimiento/proveedores/editarProveedor";
 	}
 
 	@PostMapping("/guardar")
-	public String guardar(@ModelAttribute Proveedor proveedor, Model model, RedirectAttributes flash) {
-		try {
-			Proveedor actualizado = _proveedorService.update(proveedor);
+	public String guardar(@Valid @ModelAttribute Proveedor proveedor, BindingResult bindingResult, Model model, RedirectAttributes flash) {
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+	        return "admin/mantenimiento/proveedores/editarProveedor";
+	    }
 
-			String mensaje = String.format("Proveedor nro. %s actualizado correctamente.", actualizado.getIdProveedor());
-			flash.addFlashAttribute("alert", Alert.sweetToast(mensaje, "success", 5000));
+	    try {
+	        Proveedor actualizado = _proveedorService.update(proveedor);
 
-			return "redirect:/proveedor/listado";
+	        String mensaje = String.format("Proveedor nro. %s actualizado correctamente.", actualizado.getIdProveedor());
+	        flash.addFlashAttribute("alert", Alert.sweetToast(mensaje, "success", 5000));
 
-		} catch (Exception ex) {
-			model.addAttribute("alert", Alert.sweetAlertError("Error al actualizar: " + ex.getMessage()));
+	        return "redirect:/admin/mantenimiento/proveedores/listado";
 
-			return "admin/mantenimiento/proveedor/editarProveedor";
-		}
+	    } catch (Exception ex) {
+	        model.addAttribute("alert", Alert.sweetAlertError("Error al actualizar: " + ex.getMessage()));
+	        return "admin/mantenimiento/proveedores/editarProveedor";
+	    }
+	}
+
+	
+	@PostMapping("/eliminar")
+	public String toggleEstado(@RequestParam("idProveedor") Integer idProveedor, RedirectAttributes flash) {
+	    ResultadoResponse response = _proveedorService.delete(idProveedor);
+	    String alert = Alert.sweetAlertSuccess(response.mensaje);
+	    flash.addFlashAttribute("alert", alert);
+	    return "redirect:/admin/mantenimiento/proveedores/listado";
 	}
 
 }
