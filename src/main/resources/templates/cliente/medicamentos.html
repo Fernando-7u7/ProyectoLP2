@@ -68,6 +68,15 @@
 			<!-- LISTADO DE MEDICAMENTOS -->
 			<div class="col-md-10">
 				<div class="row">
+					<div th:if="${pageMedicamentos.content.empty}"
+						class="col-12 text-center my-5">
+						<i class="fas fa-search fa-3x text-muted mb-3"></i>
+						<h5 class="text-muted">No se encontraron medicamentos
+							disponibles</h5>
+						<p class="text-secondary">Probá con otras categorías o ajustá
+							los filtros.</p>
+					</div>
+
 					<div th:each="m : ${pageMedicamentos.content}"
 						class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
 						<div class="card h-100 med-card">
@@ -83,6 +92,11 @@
 								<p class="med-card-price"
 									th:text="|S/. ${#numbers.formatDecimal(m.precio,1,2,'POINT')}|">S/.
 									00.00</p>
+									<form th:action="@{/carrito/agregar}" method="post">
+                <input type="hidden" name="idMedicamento" th:value="${m.idMedicamento}" />
+                <input type="number" name="cantidad" value="1" min="1" style="width: 60px;" />
+                <button type="submit" class="btn btn-primary btn-sm mt-2">Agregar al carrito</button>
+            </form>
 							</div>
 						</div>
 					</div>

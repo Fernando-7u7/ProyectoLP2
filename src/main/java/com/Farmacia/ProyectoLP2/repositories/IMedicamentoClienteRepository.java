@@ -13,10 +13,10 @@ public interface IMedicamentoClienteRepository extends JpaRepository<Medicamento
 	@Query("""
 			SELECT M FROM Medicamento M
 			Where M.estado.idEstado = 1
-			AND M.preescripcion = "SRM"
+			AND M.preescripcion = 'SRM'
 			""")
-	List<Medicamento> findMedicinesActive();
-
+	Page<Medicamento> findMedicinesActive(Pageable pageable);
+	
 	@Query("""
 			    SELECT m
 			    FROM DetalleCompra d
@@ -33,6 +33,7 @@ public interface IMedicamentoClienteRepository extends JpaRepository<Medicamento
 			    SELECT M FROM Medicamento M
 			    WHERE (:idCategorias IS NULL OR M.categoria.idCategoria IN :idCategorias)
 			      AND M.estado.idEstado = 1
+			      AND M.preescripcion = 'SRM'
 			    ORDER BY M.idMedicamento DESC
 			""")
 	Page<Medicamento> findAllWithFilters(@Param("idCategorias") List<Integer> idCategorias, Pageable pageable);

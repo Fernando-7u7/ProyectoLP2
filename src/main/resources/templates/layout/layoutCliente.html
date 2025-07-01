@@ -44,8 +44,14 @@
 				<li class="nav-item"><a class="nav-link"
 					th:href="@{/medicamentos}">Medicamentos</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/contacto}">Contacto</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/carrito}"><i
-						class="fas fa-shopping-cart"></i></a></li>
+				<li class="nav-item"><a href="#" class="nav-link"
+					data-bs-toggle="modal" data-bs-target="#cartModal"
+					aria-label="Abrir carrito de compras"> <i
+						class="fas fa-shopping-cart"></i>
+				</a></li>
+
+				<!-- Modal del carrito -->
+
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" role="button"
 					data-bs-toggle="dropdown"> <i class="fas fa-user"></i> <span
@@ -65,7 +71,54 @@
 			</ul>
 		</div>
 	</nav>
+	<div class="modal fade" id="cartModal" tabindex="-1"
+		aria-labelledby="cartModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body">
+					<div
+						th:if="${carrito == null or #lists.isEmpty(carrito.items.values())}">
+						<p>No hay productos en el carrito.</p>
+					</div>
+					<div
+						th:if="${carrito != null and !#lists.isEmpty(carrito.items.values())}">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Medicamento</th>
+									<th>Cantidad</th>
+									<th>Precio</th>
+									<th>Subtotal</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="detalle : ${carrito.items.values()}">
+									<td th:text="${detalle.medicamento.nombre}">Nombre</td>
+									<td th:text="${detalle.cantidad}">1</td>
+									<td th:text="${#numbers.formatDecimal(detalle.precio,1,2)}">S/.
+										00.00</td>
+									<td
+										th:text="${#numbers.formatDecimal(detalle.cantidad * detalle.precio,1,2)}">S/.
+										00.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 
+				<div class="modal-footer">
+					<a th:href=@{/carrito/verCompras} class="btn btn-primary">Ver Carrito Completo</a>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="offcanvas offcanvas-end offcanvas-custom" tabindex="-1"
 		id="offcanvasMenu" style="width: 220px;">
 		<div class="offcanvas-header">
@@ -113,7 +166,8 @@
 				<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
 					<h5 class="text-uppercase mb-4 fw-bold text-success">Enlaces</h5>
 					<p>
-						<a th:href="@{/medicamentos}" class="text-white text-decoration-none">Medicamentos</a>
+						<a th:href="@{/medicamentos}"
+							class="text-white text-decoration-none">Medicamentos</a>
 					</p>
 					<p>
 						<a th:href="@{/contacto}" class="text-white text-decoration-none">Contáctanos</a>
