@@ -37,31 +37,32 @@
 			<div class="d-flex flex-column h-100 px-2">
 				<ul class="list-unstyled flex-grow-1">
 					<li><a th:href="@{/admin/dashboard}"
-						th:classappend="${requestURI == '/admin/dashboard'} ? ' active' : ''"
-						class="text-white nav-link px-3 py-2"> Dashboard </a></li>
-					<li><a th:href="@{/admin/mantenimiento/medicamento/listado}"
-						class="text-white nav-link px-3 py-2"
-						th:classappend="${requestURI.startsWith('/admin/mantenimiento/medicamento')}  ? ' active' : ''">Medicamentos</a></li>
+							th:classappend="${requestURI == '/admin/dashboard'} ? ' active' : ''"
+							class="text-white nav-link px-3 py-2"> Dashboard </a></li>
+					<li><a th:href="@{/admin/mantenimiento/medicamento/listado}" class="text-white nav-link px-3 py-2"
+							th:classappend="${requestURI.startsWith('/admin/mantenimiento/medicamento')}  ? ' active' : ''">Medicamentos</a>
+					</li>
 					<li><a th:href="@{/admin/mantenimiento/farmaceuticos/listado}" class="text-white nav-link px-3 py-2"
 							th:classappend="${requestURI.startsWith('/admin/mantenimiento/farmaceuticos')}  ? ' active' : ''">Farmacéuticos</a>
 					</li>
-					<li><a th:href="@{/admin/mantenimiento/proveedores/listado}" class="text-white nav-link px-3 py-2">Proveedores</a></li>
+					<li><a th:href="@{/admin/mantenimiento/proveedores/listado}"
+							class="text-white nav-link px-3 py-2">Proveedores</a></li>
 					<li><a th:href="@{/admin/usuarios}" class="text-white nav-link px-3 py-2">Usuarios</a></li>
 				</ul>
 				<ul class="list-unstyled">
-					<li class="mt-auto"><a th:href="@{/logout}"
-							class="bg-danger btn text-white nav-link px-3 py-2">Cerrar
-							sesión</a></li>
+					<li class="mt-auto"><a id="cerrarSesionLink" class="bg-danger btn text-white nav-link px-3 py-2"
+							href="#">Cerrar sesión</a></li>
 				</ul>
 			</div>
 		</nav>
 
+		<form id="cerrarSesionForm" th:action="@{/cerrar-sesion-admin}" method="post" style="display: none;"></form>
 		<div id="content" class="flex-grow-1">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
 				<div class="container-fluid">
 					<button class="btn btn-outline-quartary d-lg-none" id="menu-toggle">☰</button>
 					<span class="ms-auto navbar-text"> <i class="bi bi-person-circle"></i> <span
-							th:text="${username}">Admin</span>
+							th:text="${nombre}">Admin</span>
 					</span>
 				</div>
 			</nav>
@@ -76,6 +77,25 @@
 		</div>
 	</div>
 	<script th:src="@{/js/layout.js}"></script>
+	<script>
+			document.getElementById("cerrarSesionLink").addEventListener("click", function (e) {
+				e.preventDefault();
+
+				Swal.fire({
+					title: "¿Deseas cerrar sesión?",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Sí, cerrar",
+					cancelButtonText: "No"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById("cerrarSesionForm").submit();
+					}
+				});
+			});
+		</script>
 </body>
 
 </html>

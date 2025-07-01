@@ -10,13 +10,16 @@ import jakarta.servlet.http.HttpSession;
 @ControllerAdvice
 public class GlobalAttributes {
 
-    @ModelAttribute
-    public void setGlobalAttributes(Model model, HttpSession session) {
-       
-    }
-    
-    @ModelAttribute
-    public void addGlobalAttributes(Model model, HttpServletRequest request) {
-        model.addAttribute("requestURI", request.getRequestURI());
-    }
+	@ModelAttribute
+	public void setGlobalAttributes(Model model, HttpSession session) {
+		Object nombre = session.getAttribute("nombre");
+		if (nombre != null) {
+			model.addAttribute("nombre", nombre);
+		}
+	}
+
+	@ModelAttribute
+	public void addGlobalAttributes(Model model, HttpServletRequest request) {
+		model.addAttribute("requestURI", request.getRequestURI());
+	}
 }
