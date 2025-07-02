@@ -14,7 +14,10 @@ public class GlobalAttributes {
 
     @ModelAttribute
     public void setGlobalAttributes(Model model, HttpSession session) {
-       
+    	Object nombre = session.getAttribute("nombre");
+		if (nombre != null) {
+			model.addAttribute("nombre", nombre);
+		}
     }
     
     @ModelAttribute

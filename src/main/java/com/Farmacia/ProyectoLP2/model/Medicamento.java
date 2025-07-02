@@ -65,7 +65,7 @@ public class Medicamento {
 	@Column(name="FECHA_VENCIMIENTO",nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "La fecha de vencimiento es requerida")
-	@FutureOrPresent(message = "La fecha de vencimiento debe ser actual o futura")
+	@FutureOrPresent(message = "La fecha de vencimiento debe ser futura")
 	private LocalDate fechaVencimiento;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

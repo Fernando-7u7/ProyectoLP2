@@ -18,8 +18,7 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			           SUM(d.cantidad * d.precio) AS totalVendido
 			    FROM OrdenCompra o
 			    JOIN o.detalles d
-			    WHERE o.estado = 'COMPLETADA'
-			      AND o.fecha >= :fechaLimite
+			    WHERE o.fecha >= :fechaLimite
 			    GROUP BY DATE_FORMAT(o.fecha, '%Y-%m')
 			    ORDER BY mes
 			""")

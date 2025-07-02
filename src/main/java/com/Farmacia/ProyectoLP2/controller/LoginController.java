@@ -44,13 +44,13 @@ public class LoginController {
 		session.setAttribute("correo", usuarioValidado.getCorreo());
 		session.setAttribute("rol", usuarioValidado.getRol());
 
-		String alert = Alert.sweetAlertSuccess("Bienvenido" + usuarioValidado.getNombre());
+		String alert = Alert.sweetAlertSuccess("¡Hola " + usuarioValidado.getNombre() + "! Bienvenido(a) de nuevo.");
 		flash.addFlashAttribute("alert", alert);
 		
 		if(usuarioValidado.getRol().getIdRol() == 1) {
 			return "redirect:/admin/dashboard";
 		}else {
-		return "redirect:/index";
+		return "redirect:/";
 		}
 	}
 
@@ -70,6 +70,6 @@ public class LoginController {
 	@PostMapping("/cerrar-sesion-admin")
 	public String cerrarSesionAdmin(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:/";
 	}
 }
