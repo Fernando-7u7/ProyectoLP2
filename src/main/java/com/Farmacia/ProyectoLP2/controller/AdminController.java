@@ -14,6 +14,7 @@ import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.services.CategoriaService;
 import com.Farmacia.ProyectoLP2.services.MedicamentoService;
 import com.Farmacia.ProyectoLP2.services.OrdenCompraService;
+import com.Farmacia.ProyectoLP2.services.ProveedorService;
 
 
 @Controller
@@ -28,12 +29,15 @@ public class AdminController {
 	@Autowired
 	private OrdenCompraService ordenCompraService;
 	
+	@Autowired
+	private ProveedorService proveedorService; 
 	@GetMapping("/dashboard")
 	public String dashboardIndex(Model model) {
 		List<Medicamento> lstMedicamento = medicService.expiredMedicamento();
 		long totalMedicamento = medicService.countMedicine();
 		long stockBajo = medicService.countMedicineStockLow();
 		long totalCategoria = categoriaService.countCategories();
+		long totalProveedor = proveedorService.countProveedores();
 		List<IMonthlySale> ventasUltimos6Meses = ordenCompraService.getSalesForSixMonthlys();
 		lstMedicamento.forEach(m -> {
 	        if (m.getImagenBytes() != null) {
@@ -46,6 +50,7 @@ public class AdminController {
 		model.addAttribute("totalMedicamento", totalMedicamento);
 		model.addAttribute("stockBajo", stockBajo);
 		model.addAttribute("totalCategoria", totalCategoria);
+		model.addAttribute("totalProveedor", totalProveedor);
 		model.addAttribute("ventasUltimos6Meses", ventasUltimos6Meses);
 
 		return "admin/dashboard";

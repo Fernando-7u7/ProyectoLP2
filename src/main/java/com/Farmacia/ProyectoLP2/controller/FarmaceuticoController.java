@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.Usuario;
-import com.Farmacia.ProyectoLP2.services.EstadoService;
 import com.Farmacia.ProyectoLP2.services.UsuarioFarmaceuticoService;
 import com.Farmacia.ProyectoLP2.util.Alert;
 
@@ -30,13 +29,11 @@ public class FarmaceuticoController {
 	@Autowired
 	private UsuarioFarmaceuticoService farmaceuticoService;
 
-	@Autowired
-	private EstadoService estadoService;
-
 	@GetMapping("/listado")
 	public String listado(Model model) {
 
 		List<Usuario> lstFarmaceuticos;
+		model.addAttribute("pageTitle", "Farmaceutico");
 
 		lstFarmaceuticos = farmaceuticoService.search();
 
@@ -47,15 +44,15 @@ public class FarmaceuticoController {
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
 		model.addAttribute("userFarma", new Usuario());
+		model.addAttribute("pageTitle", "Crear Farmaceutico");
 		return "admin/mantenimiento/farmaceuticos/nuevo";
 	}
 
 	@PostMapping("/registrar")
-	public String registrar(@Valid @ModelAttribute Usuario userFarma, BindingResult bindingResult, Model model,
+	public String registrar(@Valid @ModelAttribute("userFarma") Usuario userFarma, BindingResult bindingResult, Model model,
 			RedirectAttributes flash) {
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-		    model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
@@ -63,7 +60,6 @@ public class FarmaceuticoController {
 
 		if (!response.success) {
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-			model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
@@ -75,20 +71,19 @@ public class FarmaceuticoController {
 
 	@GetMapping("/edicion/{id}")
 	public String edicion(@PathVariable Integer id, Model model) {
-
 		Usuario farmaceutico = farmaceuticoService.getOne(id);
 		model.addAttribute("farmaceutico", farmaceutico);
+		model.addAttribute("pageTitle", "Actualizar Farmaceutico");
 		return "admin/mantenimiento/farmaceuticos/edicion";
 
 	}
 
 	@PostMapping("/guardar")
-	public String guardar(@Valid @ModelAttribute Usuario farmaceutico, BindingResult bindingResult, Model model,
+	public String guardar(@Valid @ModelAttribute("farmaceutico") Usuario farmaceutico, BindingResult bindingResult, Model model,
 			RedirectAttributes flash) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
@@ -97,7 +92,6 @@ public class FarmaceuticoController {
 		if (!response.success) {
 
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 

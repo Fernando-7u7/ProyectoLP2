@@ -33,9 +33,6 @@ public class OrdenCompra {
 	//Luego se crea la entidad
 	private Integer idUsuario;
 	
-	@Column(name = "ESTADO", nullable = false)
-	private String estado;
-	
 	// En la clase OrdenCompra
 	@OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL)
 	// mappedBy = indica que esta relación está controlada por el atributo 'ordenCompra' de DetalleCompra.

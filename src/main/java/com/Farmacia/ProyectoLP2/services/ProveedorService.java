@@ -26,6 +26,10 @@ public class ProveedorService {
         return proveedorRepo.findByEstado_IdEstadoNot(2);
     }
 	
+    public long countProveedores() {
+		return proveedorRepo.count();
+	}
+    
     @Transactional
 	public Proveedor create(Proveedor proveedor) {
 		try {

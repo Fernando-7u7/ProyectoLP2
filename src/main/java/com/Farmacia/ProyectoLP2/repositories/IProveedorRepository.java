@@ -12,8 +12,10 @@ import com.Farmacia.ProyectoLP2.model.Proveedor;
 
 public interface IProveedorRepository extends JpaRepository<Proveedor, Integer>{
 	List<Proveedor> findAll();
+	
 	List<Proveedor> findByEstado_IdEstadoNot(@Param("idEstado") Integer idEstado);
-
+	
+	long count();
 	
 	@Modifying
 	@Query("UPDATE Proveedor P SET P.estado.idEstado = 1 WHERE P.idProveedor = :id")

@@ -85,7 +85,6 @@ public class CarroController {
         // Ejemplo básico:
         OrdenCompra orden = new OrdenCompra();
         orden.setFecha(LocalDate.now());
-        orden.setEstado("COMPLETADA");
         orden.setIdUsuario(1); // ejemplo
 
         // Aquí asumes que tienes un servicio para guardar la orden y detalles
