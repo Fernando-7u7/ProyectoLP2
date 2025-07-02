@@ -50,7 +50,7 @@ public class LoginController {
 		if(usuarioValidado.getRol().getIdRol() == 1) {
 			return "redirect:/admin/dashboard";
 		}else {
-		return "redirect:/index";
+		return "redirect:/";
 		}
 	}
 
@@ -70,6 +70,6 @@ public class LoginController {
 	@PostMapping("/cerrar-sesion-admin")
 	public String cerrarSesionAdmin(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:/";
 	}
 }

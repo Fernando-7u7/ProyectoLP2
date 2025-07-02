@@ -50,12 +50,12 @@
 					<li><a th:href="@{/admin/usuarios}" class="text-white nav-link px-3 py-2">Usuarios</a></li>
 				</ul>
 				<ul class="list-unstyled">
-					<li class="mt-auto"><a id="cerrarSesionLink" class="bg-danger btn text-white nav-link px-3 py-2"
-							href="#">Cerrar sesión</a></li>
+					<li class="mt-auto"><a th:href="@{/logout}"
+							class="bg-danger btn text-white nav-link px-3 py-2">Cerrar
+							sesión</a></li>
 				</ul>
 			</div>
 		</nav>
-
 		<form id="cerrarSesionForm" th:action="@{/cerrar-sesion-admin}" method="post" style="display: none;"></form>
 		<div id="content" class="flex-grow-1">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
