@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.Usuario;
-import com.Farmacia.ProyectoLP2.services.EstadoService;
 import com.Farmacia.ProyectoLP2.services.UsuarioFarmaceuticoService;
 import com.Farmacia.ProyectoLP2.util.Alert;
 
@@ -29,9 +28,6 @@ public class FarmaceuticoController {
 
 	@Autowired
 	private UsuarioFarmaceuticoService farmaceuticoService;
-
-	@Autowired
-	private EstadoService estadoService;
 
 	@GetMapping("/listado")
 	public String listado(Model model) {

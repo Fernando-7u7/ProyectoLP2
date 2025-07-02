@@ -45,6 +45,7 @@ CREATE TABLE TB_USUARIOS (
     NOMBRE VARCHAR(50) NOT NULL,
     APELLIDO VARCHAR(50) NOT NULL,
     CORREO VARCHAR(50) NOT NULL,
+    DNI CHAR(8) NOT NULL,
     CLAVE VARCHAR(50) NOT NULL,
     DIRECCION VARCHAR(50) NULL,
     TELEFONO CHAR(9) NOT NULL,
@@ -54,32 +55,24 @@ CREATE TABLE TB_USUARIOS (
     FOREIGN KEY(ESTADO) REFERENCES TB_ESTADO(ID_ESTADO)
 );
 /*Prueba para meter el dashboard de ventas*/
-INSERT INTO TB_USUARIOS (NOMBRE, APELLIDO, CORREO, CLAVE, DIRECCION, TELEFONO, ROL, ESTADO)
+INSERT INTO TB_USUARIOS (NOMBRE, APELLIDO, CORREO, DNI, CLAVE, DIRECCION, TELEFONO, ROL, ESTADO)
 VALUES
-('Juan', 'Pérez', 'juan.perez@example.com', 'clave123', 'Calle Falsa 123', '987654321', 1, 1),
-('María', 'López', 'maria.lopez@example.com', 'clave456', 'Av. Siempre Viva 456', '912345678', 2, 1),
-('Ana', 'García', 'ana.garcia@example.com', 'clave321', 'Jr. Independencia 789', '934567891', 2, 2);
+('Juan', 'Pérez', 'juan.perez@example.com', '12345678', 'clave123', 'Calle Falsa 123', '987654321', 1, 1),
+('María', 'López', 'maria.lopez@example.com', '01234567','clave456', 'Av. Siempre Viva 456', '912345678', 2, 1),
+('Ana', 'García', 'ana.garcia@example.com', '32109876', 'clave321', 'Jr. Independencia 789', '934567891', 3, 2),
+('Carlos', 'Ramírez', 'carlos.ramirez@example.com', '11223344', 'clavecar1', 'Calle Central 101', '901122334', 3, 1),
+('Lucía', 'Fernández', 'lucia.fernandez@example.com', '22334455', 'clavelu2', 'Av. Libertad 202', '902233445', 3, 1),
+('Pedro', 'Sánchez', 'pedro.sanchez@example.com', '33445566', 'claveped3', 'Jr. Perú 303', '903344556', 3, 1),
+('Valeria', 'Torres', 'valeria.torres@example.com', '44556677', 'claveval4', 'Calle Real 404', '904455667', 3, 2),
+('Esteban', 'Morales', 'esteban.morales@example.com', '55667788', 'claveest5', 'Av. Cultura 505', '905566778', 3, 2),
+('Julieta', 'Cáceres', 'julieta.caceres@example.com', '66778899', 'clavejul6', 'Jr. Bolognesi 606', '906677889', 3, 1),
+('Martín', 'Quispe', 'martin.quispe@example.com', '77889900', 'clavemar7', 'Calle Colmena 707', '907788990', 3, 1),
+('Renata', 'Delgado', 'renata.delgado@example.com', '88990011', 'claveren8', 'Av. Grau 808', '908899001', 3, 1),
+('Sebastián', 'Rojas', 'sebastian.rojas@example.com', '99001122', 'claveseb9', 'Jr. Cuzco 909', '909900112', 3, 2),
+('Camila', 'Vargas', 'camila.vargas@example.com', '10111213', 'clavecam0', 'Calle Amazonas 1010', '910111213', 3, 1);
 
-CREATE TABLE TB_FARMACEUTICOS (
-    ID_FARMACEUTICO INT PRIMARY KEY AUTO_INCREMENT,
-    NOMBRES VARCHAR(50) NOT NULL,
-    APELLIDOS VARCHAR(50) NOT NULL,
-    TIPO_DOCUMENTO VARCHAR(3) CHECK(TIPO_DOCUMENTO IN('DNI','CE','PAS')),
-    DOCUMENTO VARCHAR(12) NOT NULL,
-    TELEFONO CHAR(9) NOT NULL,
-    CORREO VARCHAR(50) NOT NULL,
-    DIRECCION VARCHAR(50) NULL,
-    ESTADO INT DEFAULT 1,
-    FOREIGN KEY (ESTADO) REFERENCES TB_ESTADO(ID_ESTADO)
-);
 
-INSERT INTO TB_FARMACEUTICOS (NOMBRES, APELLIDOS, TIPO_DOCUMENTO, DOCUMENTO, TELEFONO, CORREO, DIRECCION, ESTADO)
-VALUES
-('María', 'González Pérez', 'DNI', '71234567', '987654321', 'maria.gonzalez@farmacia.com', 'Av. Los Jardines 123', 1),
-('Carlos', 'Martínez Rojas', 'DNI', '87654321', '912345678', 'carlos.martinez@farmacia.com', 'Calle Las Flores 456', 1),
-('Ana', 'López Sánchez', 'CE', 'X12345678', '923456789', 'ana.lopez@farmacia.com', 'Jr. Libertad 789', 1),
-('Pedro', 'Ramírez Vargas', 'DNI', '65432198', '934567890', 'pedro.ramirez@farmacia.com', 'Av. Primavera 101', 1),
-('Lucía', 'Torres Medina', 'PAS', 'PA8765432', '945678901', 'lucia.torres@farmacia.com', 'Calle Los Pinos 202', 1);
+
 
 CREATE TABLE TB_PROVEEDORES (
     ID_PROVEEDOR INT PRIMARY KEY AUTO_INCREMENT,
@@ -176,8 +169,6 @@ CREATE TABLE TB_ORDENES_COMPRA (
 	ID_ORDEN INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_USUARIO INT NOT NULL,
     FECHA DATE NOT NULL,
-    ESTADO VARCHAR(15) NOT NULL DEFAULT 'COMPLETADA' 
-	CHECK (ESTADO IN ('PENDIENTE', 'COMPLETADA', 'CANCELADA')),
     FOREIGN KEY (ID_USUARIO) REFERENCES TB_USUARIOS (ID_USUARIO)
 );
 
@@ -192,19 +183,19 @@ CREATE TABLE TB_DETALLE_COMPRA (
 );
 
 /*Prueba para meter el dashboard de ventas*/
-INSERT INTO TB_ORDENES_COMPRA (ID_ORDEN, ID_USUARIO, FECHA, ESTADO)
+INSERT INTO TB_ORDENES_COMPRA (ID_ORDEN, ID_USUARIO, FECHA)
 VALUES
-(1001, 1, '2025-06-15', 'COMPLETADA'),
-(1002, 2, '2025-05-20', 'COMPLETADA'),
-(1003, 3, '2025-04-22', 'COMPLETADA'),
-(1004, 2, '2025-03-24', 'COMPLETADA'),
-(1005, 1, '2025-02-25', 'COMPLETADA'),
-(1006, 2, '2025-01-23', 'COMPLETADA'),
-(1007, 2, '2024-12-19', 'COMPLETADA'),
-(1008, 3, '2024-11-17', 'COMPLETADA'),
-(1009, 3, '2024-10-17', 'COMPLETADA'),
-(1010, 3, '2024-09-17', 'COMPLETADA'),
-(1011, 3, '2024-08-17', 'COMPLETADA');
+(1001, 1, '2025-06-15'),
+(1002, 2, '2025-05-20'),
+(1003, 3, '2025-04-22'),
+(1004, 2, '2025-03-24'),
+(1005, 1, '2025-02-25'),
+(1006, 2, '2025-01-23'),
+(1007, 2, '2024-12-19'),
+(1008, 3, '2024-11-17'),
+(1009, 3, '2024-10-17'),
+(1010, 3, '2024-09-17'),
+(1011, 3, '2024-08-17');
 
 INSERT INTO TB_DETALLE_COMPRA (ID_ORDEN, ID_MEDICAMENTO, CANTIDAD, PRECIO)
 VALUES
