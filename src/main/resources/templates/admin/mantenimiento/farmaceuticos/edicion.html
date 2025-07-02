@@ -16,7 +16,7 @@
 
           <div class="mb-4">
             <label for="idFarmaceutico" class="form-label fw-bold">ID Farmacéutico</label>
-            <input type="text" class="form-control" readonly th:field="*{idFarmaceutico}" id="idFarmaceutico" />
+            <input type="text" class="form-control" readonly th:field="*{idUsuario}" id="idFarmaceutico" />
           </div>
 
           <div class="row g-3">
@@ -28,21 +28,21 @@
               <div class="invalid-feedback" th:errors="*{nombre}"></div>
             </div>
 
-            <div class="col-md-4">
-              <label for="apellidos" class="form-label fw-bold">Apellidos</label>
-              <input type="text" class="form-control" placeholder="Ingrese los apellidos" required
-                     th:field="*{apellidos}" id="apellidos"
-                     th:classappend="${#fields.hasErrors('apellidos')} ? 'is-invalid' : ''" />
-              <div class="invalid-feedback" th:errors="*{apellidos}"></div>
-            </div>
-
-            <div class="col-md-4">
-              <label for="fono" class="form-label fw-bold">Teléfono</label>
-              <input type="text" class="form-control" placeholder="Ingrese un teléfono" required
-                     th:field="*{fono}" id="fono"
-                     th:classappend="${#fields.hasErrors('fono')} ? 'is-invalid' : ''" />
-              <div class="invalid-feedback" th:errors="*{fono}"></div>
-            </div>
+			<div class="col-md-4">
+				<label for="apellido" class="form-label fw-bold">Apellidos</label>
+				<input type="text" class="form-control" placeholder="Ingrese los apellidos" required
+					th:field="*{apellido}"
+					th:classappend="${#fields.hasErrors('apellido')} ? 'is-invalid' : ''">
+				<div class="invalid-feedback" th:errors="*{apellido}"></div>
+			</div>
+			
+			<div class="col-md-4">
+				<label for="telefono" class="form-label fw-bold">Teléfono</label>
+				<input type="text" class="form-control" placeholder="Ingrese un teléfono" required
+					th:field="*{telefono}"
+					th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid' : ''">
+				<div class="invalid-feedback" th:errors="*{telefono}"></div>
+			</div>
 
             <div class="col-md-4">
               <label for="correo" class="form-label fw-bold">Correo</label>
@@ -52,25 +52,19 @@
               <div class="invalid-feedback" th:errors="*{correo}"></div>
             </div>
 
-            <div class="col-md-4">
-              <label for="tipoDoc" class="form-label fw-bold">Tipo de Documento</label>
-              <select class="form-select" required th:field="*{tipoDoc}" id="tipoDoc"
-                      th:classappend="${#fields.hasErrors('tipoDoc')} ? 'is-invalid' : ''">
-                <option value="">--Seleccione--</option>
-                <option value="DNI">DNI</option>
-                <option value="CE">CE</option>
-                <option value="PAS">PAS</option>
-              </select>
-              <div class="invalid-feedback" th:errors="*{tipoDoc}"></div>
-            </div>
+			<div class="col-md-4">
+				<label for="dni" class="form-label fw-bold">DNI</label>
+				<input type="text" class="form-control" placeholder="Ingrese un dni" required
+					th:field="*{dni}" th:classappend="${#fields.hasErrors('dni')} ? 'is-invalid' : ''">
+				<div class="invalid-feedback" th:errors="*{dni}"></div>
+			</div>
 
-            <div class="col-md-4">
-              <label for="documento" class="form-label fw-bold">Nro Documento</label>
-              <input type="text" class="form-control" placeholder="Ingrese un documento" required
-                     th:field="*{documento}" id="documento"
-                     th:classappend="${#fields.hasErrors('documento')} ? 'is-invalid' : ''" />
-              <div class="invalid-feedback" th:errors="*{documento}"></div>
-            </div>
+			<div class="col-md-4">
+				<label for="clave" class="form-label fw-bold">Clave</label>
+				<input type="text" class="form-control" placeholder="Ingrese una clave" required
+					th:field="*{clave}" th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid' : ''">
+				<div class="invalid-feedback" th:errors="*{clave}"></div>
+			</div>
 
             <div class="col-md-6">
               <label for="direccion" class="form-label fw-bold">Dirección</label>
@@ -80,16 +74,6 @@
               <div class="invalid-feedback" th:errors="*{direccion}"></div>
             </div>
 
-            <div class="col-md-6">
-              <label for="estado" class="form-label fw-bold">Estado</label>
-              <select class="form-select" required th:field="*{estado}" id="estado"
-                      th:classappend="${#fields.hasErrors('estado')} ? 'is-invalid' : ''">
-                <option value="">--Seleccione--</option>
-                <option th:each="item: ${estado}"
-                        th:value="${item.idEstado}" th:text="${item.descripcion}"></option>
-              </select>
-              <div class="invalid-feedback" th:errors="*{estado}"></div>
-            </div>
           </div>
 
           <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">

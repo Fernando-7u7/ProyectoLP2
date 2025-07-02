@@ -46,36 +46,36 @@ public class FarmaceuticoController {
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
-		model.addAttribute("farmaceutico", new Usuario());
+		model.addAttribute("userFarma", new Usuario());
 		return "admin/mantenimiento/farmaceuticos/nuevo";
 	}
 
 	@PostMapping("/registrar")
-	public String registrar(@Valid @ModelAttribute Usuario farmaceutico, BindingResult bindingResult, Model model,
+	public String registrar(@Valid @ModelAttribute Usuario userFarma, BindingResult bindingResult, Model model,
 			RedirectAttributes flash) {
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
-			model.addAttribute("farmaceutico", farmaceutico);
+		    model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+		    model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
-		ResultadoResponse response = farmaceuticoService.create(farmaceutico);
+		ResultadoResponse response = farmaceuticoService.create(userFarma);
 
 		if (!response.success) {
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-			model.addAttribute("farmaceutico", farmaceutico);
+			model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
 		String mensaje = Alert
-				.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdUsuario() + " registrado");
+				.sweetAlertSuccess("Farmacéutico con código " + userFarma.getIdUsuario() + " registrado");
 		flash.addFlashAttribute("alert", mensaje);
 		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
 
 	@GetMapping("/edicion/{id}")
 	public String edicion(@PathVariable Integer id, Model model) {
-		model.addAttribute("estado", estadoService.getAll());
+
 		Usuario farmaceutico = farmaceuticoService.getOne(id);
 		model.addAttribute("farmaceutico", farmaceutico);
 		return "admin/mantenimiento/farmaceuticos/edicion";
@@ -87,16 +87,17 @@ public class FarmaceuticoController {
 			RedirectAttributes flash) {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
 		ResultadoResponse response = farmaceuticoService.update(farmaceutico);
 
 		if (!response.success) {
-			model.addAttribute("estado", estadoService.getAll());
+
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
+		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 

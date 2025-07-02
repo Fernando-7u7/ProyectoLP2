@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,9 @@ public class Usuario {
 	@NotEmpty(message = "Los apellidos son requeridos")
 	private String apellido;
 	
-	@Column(name = "CORREO",nullable = false)
+	@Column(name = "CORREO", nullable = false)
 	@NotEmpty(message = "El correo es requerido")
+	@Email(message = "El correo es requerido")
 	private String correo;
 	
 	@Column(name = "DNI",nullable = false)

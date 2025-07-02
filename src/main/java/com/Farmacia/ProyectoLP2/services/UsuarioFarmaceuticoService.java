@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
-import com.Farmacia.ProyectoLP2.model.Estado;
 import com.Farmacia.ProyectoLP2.model.Rol;
 import com.Farmacia.ProyectoLP2.model.Usuario;
 import com.Farmacia.ProyectoLP2.repositories.IRolRepository;
@@ -68,12 +67,12 @@ public class UsuarioFarmaceuticoService {
 
 				registro.setNombre(usuario.getNombre());
 				registro.setApellido(usuario.getApellido());
-				registro.setCorreo(usuario.getApellido());
+				registro.setCorreo(usuario.getCorreo());
 				registro.setDni(usuario.getDni());
 				registro.setClave(usuario.getClave());
 				registro.setDireccion(usuario.getDireccion());
 				registro.setTelefono(usuario.getTelefono());
-				registro.setRol(usuario.getRol());
+				registro.setClave(usuario.getClave());
 
 				_usuarioRepository.save(registro);
 
