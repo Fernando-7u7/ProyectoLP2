@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.Farmacia.ProyectoLP2.dto.FarmaceuticoFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
-import com.Farmacia.ProyectoLP2.model.Farmaceutico;
+import com.Farmacia.ProyectoLP2.model.Usuario;
 import com.Farmacia.ProyectoLP2.services.EstadoService;
-import com.Farmacia.ProyectoLP2.services.FarmaceuticoService;
+import com.Farmacia.ProyectoLP2.services.UsuarioFarmaceuticoService;
 import com.Farmacia.ProyectoLP2.util.Alert;
 
 import jakarta.validation.Valid;
@@ -29,98 +28,91 @@ import jakarta.validation.Valid;
 public class FarmaceuticoController {
 
 	@Autowired
-	private FarmaceuticoService farmaceuticoService;
-	
+	private UsuarioFarmaceuticoService farmaceuticoService;
+
 	@Autowired
 	private EstadoService estadoService;
 
 	@GetMapping("/listado")
-	public String listado(@ModelAttribute FarmaceuticoFilter filter, Model model) {
+	public String listado(Model model) {
 
-		if (filter == null) {
-			filter = new FarmaceuticoFilter();
-		}
+		List<Usuario> lstFarmaceuticos;
 
-		List<Farmaceutico> lstFarmaceuticos;
-
-		if (filter.getTipoDoc() != null && !filter.getTipoDoc().isEmpty()) {
-			lstFarmaceuticos = farmaceuticoService.search(filter);
-		} else {
-			lstFarmaceuticos = farmaceuticoService.getAll();
-		}
+		lstFarmaceuticos = farmaceuticoService.search();
 
 		model.addAttribute("lstFarmaceuticos", lstFarmaceuticos);
-		model.addAttribute("filter", filter);
-	    return "admin/mantenimiento/farmaceuticos/listado";
+		return "admin/mantenimiento/farmaceuticos/listado";
 	}
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
-		model.addAttribute("estado", estadoService.getAll());
-		model.addAttribute("farmaceutico", new Farmaceutico());
+		model.addAttribute("userFarma", new Usuario());
 		return "admin/mantenimiento/farmaceuticos/nuevo";
 	}
 
 	@PostMapping("/registrar")
-	public String registrar(@Valid @ModelAttribute Farmaceutico farmaceutico, BindingResult bindingResult, Model model,
+	public String registrar(@Valid @ModelAttribute Usuario userFarma, BindingResult bindingResult, Model model,
 			RedirectAttributes flash) {
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("estado", estadoService.getAll());
-			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+		    model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+		    model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
-		ResultadoResponse response = farmaceuticoService.create(farmaceutico);
+		ResultadoResponse response = farmaceuticoService.create(userFarma);
 
 		if (!response.success) {
-			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
+			model.addAttribute("userFarma", userFarma);
 			return "admin/mantenimiento/farmaceuticos/nuevo";
 		}
 
-		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " registrado");		
+		String mensaje = Alert
+				.sweetAlertSuccess("Farmacéutico con código " + userFarma.getIdUsuario() + " registrado");
 		flash.addFlashAttribute("alert", mensaje);
 		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
 
 	@GetMapping("/edicion/{id}")
 	public String edicion(@PathVariable Integer id, Model model) {
-		model.addAttribute("estado", estadoService.getAll());
-		Farmaceutico farmaceutico = farmaceuticoService.getOne(id);
+
+		Usuario farmaceutico = farmaceuticoService.getOne(id);
 		model.addAttribute("farmaceutico", farmaceutico);
 		return "admin/mantenimiento/farmaceuticos/edicion";
 
 	}
 
 	@PostMapping("/guardar")
-	public String guardar(@Valid @ModelAttribute Farmaceutico farmaceutico, BindingResult bindingResult, Model model,
+	public String guardar(@Valid @ModelAttribute Usuario farmaceutico, BindingResult bindingResult, Model model,
 			RedirectAttributes flash) {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("estado", estadoService.getAll());
 			model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
+		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
 		ResultadoResponse response = farmaceuticoService.update(farmaceutico);
 
 		if (!response.success) {
-			model.addAttribute("estado", estadoService.getAll());
+
 			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
+		    model.addAttribute("farmaceutico", farmaceutico);
 			return "admin/mantenimiento/farmaceuticos/edicion";
 		}
 
-		String mensaje = Alert.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdFarmaceutico() + " actualizado");		
-		flash.addFlashAttribute("alert",mensaje);
+		String mensaje = Alert
+				.sweetAlertSuccess("Farmacéutico con código " + farmaceutico.getIdUsuario() + " actualizado");
+		flash.addFlashAttribute("alert", mensaje);
 		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
-	
+
 	@PostMapping("/eliminar")
-	public String toggleEstado(@RequestParam("idFarmaceutico") Integer idFarmaceutico, RedirectAttributes flash) {
-	    ResultadoResponse response = farmaceuticoService.delete(idFarmaceutico);
-	    String alert = Alert.sweetAlertSuccess(response.mensaje);
-	    flash.addFlashAttribute("alert", alert);
-	    return "redirect:/admin/mantenimiento/farmaceuticos/listado";
+	public String toggleEstado(@RequestParam("idUsuario") Integer idFarmaceutico, RedirectAttributes flash) {
+		ResultadoResponse response = farmaceuticoService.delete(idFarmaceutico);
+		String alert = Alert.sweetAlertSuccess(response.mensaje);
+		flash.addFlashAttribute("alert", alert);
+		return "redirect:/admin/mantenimiento/farmaceuticos/listado";
 	}
 
 }
