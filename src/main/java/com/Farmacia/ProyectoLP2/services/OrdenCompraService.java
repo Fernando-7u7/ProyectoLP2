@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.Farmacia.ProyectoLP2.dto.DetalleCompraPK;
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.model.DetalleCompra;
+import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
 import com.Farmacia.ProyectoLP2.repositories.IDetalleCompraRepository;
+import com.Farmacia.ProyectoLP2.repositories.IMedicamentoClienteRepository;
 import com.Farmacia.ProyectoLP2.repositories.IOrdenCompraRepository;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +27,13 @@ public class OrdenCompraService {
 	
 	@Autowired
 	private IDetalleCompraRepository detalleCompraRepo; 
+	
+	@Autowired
+	private IMedicamentoClienteRepository medicamentoClienteRepository;
+	
+	public List<OrdenCompra> getOrdenForIdUser(Integer idUsuario) {
+        return ordenCompraRepo.findByUsuarioId(idUsuario);
+    }
 	
 	public List<IMonthlySale> getSalesForSixMonthlys() {
 	    LocalDate fechaLimite = LocalDate.now()
@@ -38,18 +47,29 @@ public class OrdenCompraService {
 	}
 	
 	@Transactional
-    public void guardarOrdenConDetalles(OrdenCompra orden, Collection<DetalleCompra> detalles) {
-        ordenCompraRepo.save(orden);
+	public void guardarOrdenConDetalles(OrdenCompra orden, Collection<DetalleCompra> detalles) {
+	    ordenCompraRepo.save(orden);
 
-        for (DetalleCompra detalle : detalles) {
-            detalle.setOrdenCompra(orden);
+	    for (DetalleCompra detalle : detalles) {
+	        Medicamento medicamento = detalle.getMedicamento();
+	        int cantidadComprada = detalle.getCantidad();
 
-            DetalleCompraPK pk = new DetalleCompraPK();
-            pk.setIdOrden(orden.getIdOrden());
-            pk.setIdMedicamento(detalle.getMedicamento().getIdMedicamento());
-            detalle.setId(pk);
+	        if (medicamento.getStockActual() < cantidadComprada) {
+	            throw new IllegalStateException("Stock insuficiente para el medicamento: " + medicamento.getNombre());
+	        }
 
-            detalleCompraRepo.save(detalle);
-        }
-    }
+	        medicamento.setStockActual(medicamento.getStockActual() - cantidadComprada);
+	        medicamentoClienteRepository.save(medicamento);
+
+	        detalle.setOrdenCompra(orden);
+	        DetalleCompraPK pk = new DetalleCompraPK();
+	        pk.setIdOrden(orden.getIdOrden());
+	        pk.setIdMedicamento(medicamento.getIdMedicamento());
+	        detalle.setId(pk);
+
+	        detalleCompraRepo.save(detalle);
+	    }
+	}
+
+	
 }
