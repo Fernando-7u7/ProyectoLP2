@@ -1,6 +1,7 @@
 package com.Farmacia.ProyectoLP2.controller;
 
 import java.time.LocalDate;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,7 +61,10 @@ public class CarroController {
 			carrito = new Carro();
 		}
 		Medicamento medicamento = medicamentoClienteService.getOne(idMedicamento);
-
+		if (medicamento.getImagenBytes() != null) {
+		    String base64 = Base64.getEncoder().encodeToString(medicamento.getImagenBytes());
+		    medicamento.setBase64Img(base64);
+		}
 		String alert = carrito.agregarProducto(medicamento, cantidad);
 		session.setAttribute("carrito", carrito);
 

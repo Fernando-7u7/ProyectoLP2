@@ -118,7 +118,7 @@
                       'data:image/jpeg;base64,' + ${detalle.medicamento.base64Img} : 
                       '/img/medicamento/' + ${detalle.medicamento.idMedicamento} + '.jpg'"
 											alt="Imagen medicamento"
-											style="width: 90px; height: auto; object-fit: cover;" /></td>
+											style="width: 90px; height: auto; object-fit: cover;" onerror="this.onerror=null; this.src='/img/no-image.jpg';"/></td>
 										<td th:text="${detalle.medicamento.nombre}">Nombre</td>
 										<td th:text="${detalle.cantidad}">1</td>
 										<td
