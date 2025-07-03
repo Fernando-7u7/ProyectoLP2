@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,8 +50,9 @@ public class Usuario {
     @Email(message = "Correo inválido", groups = {IValidacionFarmaceutico.class, IValidacionUsuario.class})
 	private String correo;
 
-	@Column(name = "DNI", nullable = false)
+	@Column(name = "DNI", nullable = false, length = 8)
 	@NotEmpty(message = "El DNI es requerido", groups = IValidacionFarmaceutico.class)
+	@Size(min = 8, max = 8, message = "El DNI debe tener exactamente 8 caracteres")
 	private String dni;
 
 	@Column(name = "CLAVE", nullable = false)

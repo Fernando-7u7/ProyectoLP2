@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.Farmacia.ProyectoLP2.dto.DetalleCompraPK;
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.dto.OrdenFechaFilter;
+import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
 import com.Farmacia.ProyectoLP2.model.DetalleCompra;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
@@ -86,6 +87,20 @@ public class OrdenCompraService {
 	        detalleCompraRepo.save(detalle);
 	    }
 	}
+	
+	public ResultadoResponse create(OrdenCompra orden) {
+	    try {
+
+	        guardarOrdenConDetalles(orden, orden.getDetalles());
+
+	        String mensaje = String.format("Orden con número %s registrado", orden.getIdOrden());
+	        return new ResultadoResponse(true, mensaje);
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        return new ResultadoResponse(false, "Error al registrar: " + ex.getMessage());
+	    }
+	}
+
 
 	
 }

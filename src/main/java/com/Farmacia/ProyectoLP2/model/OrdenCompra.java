@@ -34,7 +34,7 @@ public class OrdenCompra {
 	@ManyToOne
 	@JoinColumn(name = "ID_USUARIO", nullable = false)
 	private Usuario usuario;
-	
+
 	// En la clase OrdenCompra
 	@OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL)
 	// mappedBy = indica que esta relación está controlada por el atributo 'ordenCompra' de DetalleCompra.
