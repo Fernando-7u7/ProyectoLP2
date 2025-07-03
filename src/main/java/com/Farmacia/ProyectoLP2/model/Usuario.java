@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -71,5 +70,9 @@ public class Usuario {
 	
 	public String getFullUsuario() {
 		return String.format("%s - %s %s", nombre, apellido);
+	}
+	
+	public String getNomsConApes() {
+		return getNombre() + ' ' + getApellido();
 	}
 }

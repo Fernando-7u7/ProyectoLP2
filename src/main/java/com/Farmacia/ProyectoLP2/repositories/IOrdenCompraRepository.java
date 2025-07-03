@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
+import com.Farmacia.ProyectoLP2.model.Rol;
+
 
 public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integer> {
 	@Modifying
@@ -23,4 +25,16 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			    ORDER BY mes
 			""")
 	List<IMonthlySale> getSalesForMonthlys(@Param("fechaLimite") LocalDate fechaLimite);
+
+	@Query("""
+	        SELECT o FROM OrdenCompra o
+	        WHERE 
+	        (:rol IS NULL OR o.usuario.rol = :rol)
+	        ORDER BY 
+	        o.usuario.rol.idRol DESC
+	        """)
+	List<OrdenCompra> findByRol(Rol rol);
+
+
+
 }

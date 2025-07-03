@@ -13,8 +13,10 @@ import com.Farmacia.ProyectoLP2.dto.DetalleCompraPK;
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.model.DetalleCompra;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
+import com.Farmacia.ProyectoLP2.model.Rol;
 import com.Farmacia.ProyectoLP2.repositories.IDetalleCompraRepository;
 import com.Farmacia.ProyectoLP2.repositories.IOrdenCompraRepository;
+import com.Farmacia.ProyectoLP2.repositories.IRolRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -24,7 +26,15 @@ public class OrdenCompraService {
 	private IOrdenCompraRepository ordenCompraRepo;
 	
 	@Autowired
-	private IDetalleCompraRepository detalleCompraRepo; 
+	private IDetalleCompraRepository detalleCompraRepo;
+	
+	@Autowired
+	private IRolRepository rolRepository;
+	
+	public List<OrdenCompra> search(Integer idRol){
+	    Rol rol = rolRepository.findById(idRol).orElse(null);
+	    return ordenCompraRepo.findByRol(rol);
+	}
 	
 	public List<IMonthlySale> getSalesForSixMonthlys() {
 	    LocalDate fechaLimite = LocalDate.now()

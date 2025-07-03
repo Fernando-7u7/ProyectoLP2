@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -29,10 +31,10 @@ public class OrdenCompra {
 	@Column(name = "FECHA", nullable = false)
 	private LocalDate fecha;
 	
-	@Column(name = "ID_USUARIO", nullable = false)
-	//Luego se crea la entidad
-	private Integer idUsuario;
-	
+	@ManyToOne
+	@JoinColumn(name = "ID_USUARIO", nullable = false)
+	private Usuario usuario;
+
 	// En la clase OrdenCompra
 	@OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL)
 	// mappedBy = indica que esta relación está controlada por el atributo 'ordenCompra' de DetalleCompra.

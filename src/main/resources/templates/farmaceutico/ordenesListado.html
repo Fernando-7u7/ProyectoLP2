@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutFarmaceutico :: layoutBase(~{::section})}">
+
+<section th:fragment="contenido">
+
+	<!-- TÍTULO -->
+	<div class="row mb-3 align-items-center">
+		<div class="col-md-12">
+			<h1 class="titulo-ordenes">Listado de Órdenes de Compra</h1>
+		</div>
+	</div>
+
+	<!-- FORMULARIO DE FILTRADO POR FECHAS -->
+	<form class="form-fechas" method="get" th:action="@{/farmaceutico/orden/listado}">
+		<input type="date" name="fechaInicio" required />
+		<input type="date" name="fechaFin" required />
+		<a th:href="@{/farmaceutico/orden/filtro}" class="btn btn-info">
+			<i class="fa-solid fa-filter me-2"></i>
+			Filtrar
+		</a>
+		<a th:href="@{/farmaceutico/orden/nuevo}" class="btn btn-success">
+			<i class="fa-solid fa-plus me-2"></i>
+			Nueva Orden de Compra
+		</a>
+	</form>
+
+	<!-- TABLA DE ÓRDENES -->
+	<div class="row mb-3" id="contenedor-tabla">
+		<div class="col-md-12">
+			<table id="tblOrdenes" class="table table-hover table-sm table-dark table-borderless">
+				<thead class="table-light text-center">
+					<tr>
+						<th>Número</th>
+						<th>Fecha de registro</th>
+						<th>Usuario</th>
+						<th>Rol</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody class="text-center">
+					<tr th:each="item : ${lstBoletas}">
+						<td th:text="${item.idOrden}"></td>
+						<td th:text="${item.fecha}"></td>
+						<td th:text="${item.usuario.nomsConApes}"></td>
+						<td
+							th:text="${item.usuario.rol.descripcion == 'F' ? 'Farmacéutico' : item.usuario.rol.descripcion}">
+						</td>
+						<td th:text="|S/. ${#numbers.formatDecimal(item.total,1,2,'POINT')}|" class="text-end"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- MENSAJE TOAST / ALERTA -->
+	<th:block th:utext="${toast}"></th:block>
+
+	<!-- ACTIVAR DATATABLE -->
+	<script>
+		$(document).ready(function () {
+			$('#tblOrdenes').DataTable({
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+					searchPlaceholder: "Buscar farmacéutico...",
+					search: "Filtrar:"
+				},
+				order: [],
+				dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>' +
+					'<"row"<"col-12"tr>>' +
+					'<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+			});
+		});
+	</script>
+</section>
+
+</html>
