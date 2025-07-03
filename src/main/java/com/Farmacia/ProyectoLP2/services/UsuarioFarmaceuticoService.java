@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
+import com.Farmacia.ProyectoLP2.model.Estado;
 import com.Farmacia.ProyectoLP2.model.Rol;
 import com.Farmacia.ProyectoLP2.model.Usuario;
+import com.Farmacia.ProyectoLP2.repositories.IEstadoRepository;
 import com.Farmacia.ProyectoLP2.repositories.IRolRepository;
 import com.Farmacia.ProyectoLP2.repositories.IUsuarioRepository;
 
@@ -22,6 +24,9 @@ public class UsuarioFarmaceuticoService {
 
 	@Autowired
 	private IRolRepository _rolRepository;
+	
+	@Autowired
+	private IEstadoRepository _estadoRepository;
 
 	public Usuario getOne(Integer id) {
 		return _usuarioRepository.findById(id).orElseThrow();
@@ -39,22 +44,26 @@ public class UsuarioFarmaceuticoService {
 	@Transactional
 	public ResultadoResponse create(Usuario usuario) {
 	    try {
+	        Rol rolFarmaceutico = _rolRepository.findById(3).orElse(null); // ID 3 = farmacéutico
+	        Estado estadoActivo = _estadoRepository.findById(1).orElse(null); // ID 1 = activo
 
-	        Rol rolFarmaceutico = _rolRepository.findById(3).orElse(null);
-	        
-	        if (rolFarmaceutico == null) {
-	            return new ResultadoResponse(false, "Rol no encontrado");
+	        if (rolFarmaceutico == null || estadoActivo == null) {
+	            return new ResultadoResponse(false, "Rol o estado no encontrado");
 	        }
 
 	        usuario.setRol(rolFarmaceutico);
+	        usuario.setEstado(estadoActivo); // ⚠️ Esto es lo que faltaba
 
 	        Usuario registro = _usuarioRepository.save(usuario);
 	        String mensaje = String.format("Farmacéutico nro. %s registrado", registro.getIdUsuario());
+
 	        return new ResultadoResponse(true, mensaje);
 	    } catch (Exception ex) {
+	        ex.printStackTrace(); // para que puedas ver el error exacto en consola
 	        return new ResultadoResponse(false, "Error al registrar: " + ex.getMessage());
 	    }
 	}
+
 
 	@Transactional
 	public ResultadoResponse update(Usuario usuario) {

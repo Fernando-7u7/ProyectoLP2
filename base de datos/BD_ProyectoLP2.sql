@@ -45,7 +45,7 @@ CREATE TABLE TB_USUARIOS (
     NOMBRE VARCHAR(50) NOT NULL,
     APELLIDO VARCHAR(50) NOT NULL,
     CORREO VARCHAR(50) NOT NULL,
-    DNI CHAR(8) NOT NULL,
+    DNI CHAR(8) NULL,
     CLAVE VARCHAR(50) NOT NULL,
     DIRECCION VARCHAR(50) NULL,
     TELEFONO CHAR(9) NOT NULL,
@@ -70,6 +70,8 @@ VALUES
 ('Renata', 'Delgado', 'renata.delgado@example.com', '88990011', 'claveren8', 'Av. Grau 808', '908899001', 3, 1),
 ('Sebastián', 'Rojas', 'sebastian.rojas@example.com', '99001122', 'claveseb9', 'Jr. Cuzco 909', '909900112', 3, 2),
 ('Camila', 'Vargas', 'camila.vargas@example.com', '10111213', 'clavecam0', 'Calle Amazonas 1010', '910111213', 3, 1);
+
+
 
 CREATE TABLE TB_PROVEEDORES (
     ID_PROVEEDOR INT PRIMARY KEY AUTO_INCREMENT,
