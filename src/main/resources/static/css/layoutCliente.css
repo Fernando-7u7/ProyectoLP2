@@ -129,3 +129,22 @@ body {
     font-weight: bold;
     font-size: 1rem;
   }
+  
+.scroll-container {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  /* Sticky en cada th para mejor compatibilidad */
+  .scroll-container table thead th {
+    position: sticky;
+    top: -1px;
+    background: var(--colorLemonGreen); /* fondo que no deje ver contenido debajo */
+    z-index: 100;
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
+  }
+  
+  .table-light tr th{
+  background: var(--colorGreen);
+  color:var(--colorWhite);
+  }

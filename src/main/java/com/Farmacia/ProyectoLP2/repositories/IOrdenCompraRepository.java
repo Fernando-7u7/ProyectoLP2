@@ -44,5 +44,8 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			 o.usuario.rol.idRol DESC
 			 """)
 	List<OrdenCompra> findByFechaAndRol(@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin, Rol rol);
+	
+	@Query("SELECT o FROM OrdenCompra o WHERE o.usuario.id = :id ORDER BY o.fecha DESC")
+	List<OrdenCompra> findByUsuarioId(@Param("id") Integer id);
 
 }

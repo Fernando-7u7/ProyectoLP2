@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.Farmacia.ProyectoLP2.dto.MedicamentoFilter;
 import com.Farmacia.ProyectoLP2.dto.MedicamentoSeleccionado;
 import com.Farmacia.ProyectoLP2.dto.OrdenFechaFilter;
-import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
 import com.Farmacia.ProyectoLP2.services.CategoriaService;
 import com.Farmacia.ProyectoLP2.services.MedicamentoService;
