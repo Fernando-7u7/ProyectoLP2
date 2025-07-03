@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutFarmaceutico :: layoutBase(~{::section})}">
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutFarmaceutico :: layoutBase(~{::section})}">
 
 <section th:fragment="contenido">
 
@@ -10,35 +11,36 @@
 		</div>
 	</div>
 
-	<!-- FORMULARIO DE FILTRADO POR FECHAS -->
-	<form class="form-fechas" method="get" th:action="@{/orden/listado}" th:object="${filterFecha}">
-	    <input type="date" name="fechaIni" th:value="${filterFecha.fechaIni}" required />
-	    <input type="date" name="fechaFin" th:value="${filterFecha.fechaFin}" required />
-	    <button type="submit" class="btn btn-info">
-	        <i class="fa-solid fa-filter me-2"></i>
-	        Filtrar
-	    </button>
-	    <div class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
-	        <a th:href="@{/orden/listado}" class="btn btn-outline-secondary w-100">
-	            <i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
-	        </a>
-	    </div>
+	<form class="form-fechas" method="get" th:action="@{/orden/listado}"
+		th:object="${filterFecha}">
+		<input type="date" name="fechaIni"
+			th:value="${filterFecha != null ? filterFecha.fechaIni : ''}"
+			required /> <input type="date" name="fechaFin"
+			th:value="${filterFecha != null ? filterFecha.fechaFin : ''}"
+			required />
+
+		<button type="submit" class="btn btn-info">
+			<i class="fa-solid fa-filter me-2"></i> Filtrar
+		</button>
+		<div
+			class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
+			<a th:href="@{/orden/listado}"
+				class="btn btn-outline-secondary w-100"> <i
+				class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+			</a>
+		</div>
 	</form>
-	
+
 	<div>
-		<form method="get" th:action="@{/orden/nuevo}">
-		    <button type="submit" class="btn btn-success">
-		        <i class="fa-solid fa-plus me-2"></i>
-		        Nueva Orden de Compra
-		    </button>
-		</form>
+		<a th:href="@{/orden/nuevo}" class="btn btn-success"> <i
+			class="fa-solid fa-plus me-2"></i> Nueva Orden de Compra
+		</a>
 	</div>
-
-
 	<!-- TABLA DE ÓRDENES -->
 	<div class="row mb-3" id="contenedor-tabla">
 		<div class="col-md-12">
-			<table id="tblOrdenes" class="table table-hover table-sm table-dark table-borderless">
+			<table id="tblOrdenes"
+				class="table table-hover table-sm table-dark table-borderless">
 				<thead class="table-light text-center">
 					<tr>
 						<th>Número</th>
@@ -56,7 +58,9 @@
 						<td
 							th:text="${item.usuario.rol.descripcion == 'F' ? 'Farmacéutico' : item.usuario.rol.descripcion}">
 						</td>
-						<td th:text="|S/. ${#numbers.formatDecimal(item.total,1,2,'POINT')}|" class="text-end"></td>
+						<td
+							th:text="|S/. ${#numbers.formatDecimal(item.total,1,2,'POINT')}|"
+							class="text-end"></td>
 					</tr>
 				</tbody>
 			</table>
