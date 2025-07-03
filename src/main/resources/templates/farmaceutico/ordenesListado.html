@@ -12,23 +12,28 @@
 
 	<!-- FORMULARIO DE FILTRADO POR FECHAS -->
 	<form class="form-fechas" method="get" th:action="@{/orden/listado}" th:object="${filterFecha}">
-		<input type="date" name="fechaIni" th:value="${filterFecha.fechaIni}" required />
-		<input type="date" name="fechaFin" th:value="${filterFecha.fechaFin}" required />
-		<input type="hidden" name="_method" value="get" />
-		<button type="submit" class="btn btn-info">
-			<i class="fa-solid fa-filter me-2"></i>
-			Filtrar
-		</button>
-		<a th:href="@{/farmaceutico/orden/nuevo}" class="btn btn-success">
-			<i class="fa-solid fa-plus me-2"></i>
-			Nueva Orden de Compra
-		</a>
-		<div class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
-			<a th:href="@{/farmaceutico/orden/filtrado}" class="btn btn-outline-secondary w-100">
-				<i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
-			</a>
-		</div>
+	    <input type="date" name="fechaIni" th:value="${filterFecha.fechaIni}" required />
+	    <input type="date" name="fechaFin" th:value="${filterFecha.fechaFin}" required />
+	    <button type="submit" class="btn btn-info">
+	        <i class="fa-solid fa-filter me-2"></i>
+	        Filtrar
+	    </button>
+	    <div class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
+	        <a th:href="@{/orden/listado}" class="btn btn-outline-secondary w-100">
+	            <i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+	        </a>
+	    </div>
 	</form>
+	
+	<div>
+		<form method="get" th:action="@{/orden/nuevo}">
+		    <button type="submit" class="btn btn-success">
+		        <i class="fa-solid fa-plus me-2"></i>
+		        Nueva Orden de Compra
+		    </button>
+		</form>
+	</div>
+
 
 	<!-- TABLA DE ÓRDENES -->
 	<div class="row mb-3" id="contenedor-tabla">

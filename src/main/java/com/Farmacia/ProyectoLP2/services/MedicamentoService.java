@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.Farmacia.ProyectoLP2.dto.MedicamentoFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
+import com.Farmacia.ProyectoLP2.model.Estado;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
+import com.Farmacia.ProyectoLP2.repositories.IEstadoRepository;
 import com.Farmacia.ProyectoLP2.repositories.IMedicamentoRepository;
 
 import jakarta.transaction.Transactional;
@@ -17,6 +19,9 @@ import jakarta.transaction.Transactional;
 public class MedicamentoService {
 	@Autowired
 	private IMedicamentoRepository medicRepository;
+	
+	@Autowired
+	private IEstadoRepository estadoRepository;
 
 	public List<Medicamento> getAll() {
 		return medicRepository.findAllByOrderByIdMedicamentoDesc();
@@ -101,5 +106,11 @@ public class MedicamentoService {
 	    } catch (Exception e) {
 	        return new ResultadoResponse(false, "Error al cambiar estado: " + e.getMessage());
 	    }
+	}
+	
+	public List<Medicamento> getActivos() {
+		
+	       Estado estadoMedi = estadoRepository.findById(1).orElse(null);
+	       return medicRepository.findByEstado(estadoMedi);
 	}
 }

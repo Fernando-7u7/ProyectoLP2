@@ -55,7 +55,11 @@ public class LoginController {
 
 		if (usuarioValidado.getRol().getIdRol() == 1) {
 			return "redirect:/admin/dashboard";
-		} else {
+		} 
+		if (usuarioValidado.getRol().getIdRol() == 3) {
+			return "redirect:/orden/listado";
+		} 
+		else {
 			return "redirect:/";
 		}
 	}
