@@ -21,23 +21,20 @@ public class RegistroController {
 
 	@Autowired
 	private UsuarioService usuarioSerice;
-	
-	
-	
-	
+		
 	@GetMapping("/registro")
 	public String nuevo(Model model) {
 		model.addAttribute("usuario", new Usuario());
 		model.addAttribute("pageTitle", "Crear Usuario");
 		return "cliente/registro";
 	}
-	
-
 
 	@PostMapping("/registrar")
-	public String registrar(@Validated(IValidacionUsuario.class) @ModelAttribute("usuario") Usuario usuario,
+	public String registrar(@Validated(IValidacionUsuario.class)  @ModelAttribute("usuario") Usuario usuario,
 	                        BindingResult bindingResult, Model model, RedirectAttributes flash) {
-
+		bindingResult.getAllErrors().forEach(error -> {
+            System.out.println("Error validación: " + error.getDefaultMessage());
+        });
 	    if (bindingResult.hasErrors()) {
 	        model.addAttribute("alert", Alert.sweetAlertInfo("Falta completar información"));
 	        return "cliente/registro";

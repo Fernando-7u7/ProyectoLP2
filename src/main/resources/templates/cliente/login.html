@@ -1,71 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<title>Login</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-		integrity="..." crossorigin="anonymous" />
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<!--<link rel="stylesheet" th:href="@{/css/login.css}">-->
+<meta charset="UTF-8">
+<title>Iniciar Sesión</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" th:href="@{/img/logo.png}" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<style>
+:root {
+	--colorGreen: #00ae8b;
+	--colorLemonGreen: #acd401;
+	}
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+.login-container {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+}
+
+.login-card {
+	height: 100%;
+	border: none;
+	border-radius: 0;
+}
+
+.swiper-container {
+	height: 100%;
+	width: 100%;
+}
+
+.swiper-slide {
+	background-position: center;
+	background-size: cover;
+}
+
+.login-form {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 40px;
+}
+
+@media ( max-width : 768px) {
+	.swiper-container {
+		display: none;
+	}
+}
+
+.text-logo {
+	background: linear-gradient(90deg, var(--colorGreen),
+		var(--colorLemonGreen));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+	font-weight: bold;
+}
+.text-green {
+  color: var(--colorGreen);
+}
+
+.text-lemon {
+  color: var(--colorLemonGreen);
+}
+
+.btn-green {
+  background-color: var(--colorGreen);
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-green:hover {
+  background-color: #00977a;
+  color: #fff;
+}
+
+.logo {
+  height: 50px;
+  transform: scale(1.5);
+}
+</style>
 </head>
 
 <body>
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="box-login">
+	<div class="login-container">
+		<div class="row g-0 h-100">
 
-				<div class="card shadow-lg">
-					<div class="card-header text-center bg-info text-white">
-						<h3>Farmacia JAR</h3>
-					</div>
-
-					<div class="card-body">
-						<h5 class="text-center mb-4">Inicio de Sesión</h5>
-
-						<form th:action="@{/iniciar-sesion}" method="post" th:object="${filter}">
-
-							<div class="mb-3">
-								<label class="form-label">Cuenta</label>
-								<div class="input-group">
-									<span class="input-group-text">
-										<i class="fa-solid fa-user"></i>
-									</span>
-									<input type="text" th:field="*{correo}" class="form-control"
-										placeholder="Ingrese su cuenta">
-								</div>
-							</div>
-
-
-							<div class="mb-3">
-								<label class="form-label">Contraseña</label>
-
-								<div class="input-group">
-									<span class="input-group-text">
-										<i class="fa-solid fa-key"></i>
-									</span>
-									<input type="password" th:field="*{clave}" class="form-control"
-										placeholder="Ingrese su contraseña">
-								</div>
-							</div>
-
-							<div class="d-grid">
-								<button type="submit" class="btn btn-dark">
-									<i class="fas fa-sign-in-alt"></i> INGRESAR
-								</button>
-							</div>
-						</form>
-					</div>
-
-					<div class="card-footer text-muted text-center">
-						&copy; 2025 FarmaciaJAR - Todos los derechos reservados
+			<!-- Carrusel izquierda -->
+			<div class="col-md-6 d-none d-md-block">
+				<div class="swiper swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide"
+							style="background-image: url('/img/login.png');"></div>
+						<div class="swiper-slide"
+							style="background-image: url('/img/login1.jpg');"></div>
+						<div class="swiper-slide"
+							style="background-image: url('/img/login2.png');"></div>
 					</div>
 				</div>
 			</div>
+
+			<!-- Formulario derecha -->
+			<div class="col-md-6 bg-white d-flex flex-column justify-content-center p-5">
+  <!-- Logo superior derecho -->
+  <div class="text-end mb-4">
+    <a class="d-inline-flex align-items-center text-decoration-none" th:href="@{/}">
+      <img th:src="@{/img/logo.png}" alt="FarmaciaJAR" class="logo" >
+      <strong class="fs-3 text-logo">FarmaciaJAR</strong>
+    </a>
+  </div>
+
+  <!-- Contenido del formulario -->
+  <div class="login-form">
+    <div class="mb-4">
+      <h3 class="text-green fw-bold">Bienvenido de nuevo</h3>
+      <p class="text-muted mb-0">Inicia sesión para continuar</p>
+    </div>
+
+    <form th:action="@{/iniciar-sesion}" method="post" th:object="${filter}">
+      <div class="mb-3">
+        <label class="form-label">Correo</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+          <input type="text" th:field="*{correo}" class="form-control" placeholder="Ingrese su correo">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+          <input type="password" th:field="*{clave}" class="form-control" placeholder="Ingrese su contraseña">
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-green">
+          <i class="fas fa-sign-in-alt"></i> INGRESAR
+        </button>
+      </div>
+    </form>
+
+    <!-- Registro -->
+    <div class="mt-4 text-center">
+      <span class="text-muted">¿No tienes una cuenta?</span>
+      <a th:href="@{/registro}" class="text-lemon fw-semibold text-decoration-none">Crea una aquí</a>
+    </div>
+
+    <div class="mt-4 text-center text-muted small">
+      &copy; 2025 Farmacia JAR - Todos los derechos reservados
+    </div>
+  </div>
+</div>
+
+
 		</div>
 	</div>
-	<th:block th:utext="${alert}"></th:block>
-</body>
 
+	<th:block th:utext="${alert}"></th:block>
+
+	<!-- Inicializar Swiper -->
+	<script>
+    const swiper = new Swiper('.swiper-container', {
+  loop: true,
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
+  allowTouchMove: false,       
+  navigation: false
+});
+  </script>
+</body>
 </html>

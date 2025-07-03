@@ -50,9 +50,9 @@ public class Usuario {
     @Email(message = "Correo inválido", groups = {IValidacionFarmaceutico.class, IValidacionUsuario.class})
 	private String correo;
 
-	@Column(name = "DNI", nullable = false, length = 8)
 	@NotEmpty(message = "El DNI es requerido", groups = IValidacionFarmaceutico.class)
-	@Size(min = 8, max = 8, message = "El DNI debe tener exactamente 8 caracteres")
+	@Size(min = 8, max = 8, message = "El DNI debe tener exactamente 8 caracteres", groups = IValidacionFarmaceutico.class)
+	@Column(name = "DNI", nullable = true, length = 8)
 	private String dni;
 
 	@Column(name = "CLAVE", nullable = false)
