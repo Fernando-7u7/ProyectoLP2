@@ -12,7 +12,6 @@ import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
 import com.Farmacia.ProyectoLP2.model.Rol;
 
-
 public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integer> {
 	@Modifying
 	@Query(value = """
@@ -27,14 +26,23 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 	List<IMonthlySale> getSalesForMonthlys(@Param("fechaLimite") LocalDate fechaLimite);
 
 	@Query("""
-	        SELECT o FROM OrdenCompra o
-	        WHERE 
-	        (:rol IS NULL OR o.usuario.rol = :rol)
-	        ORDER BY 
-	        o.usuario.rol.idRol DESC
-	        """)
+			SELECT o FROM OrdenCompra o
+			WHERE
+			(:rol IS NULL OR o.usuario.rol = :rol)
+			ORDER BY
+			o.usuario.rol.idRol DESC
+			""")
 	List<OrdenCompra> findByRol(Rol rol);
 
-
+	@Query("""
+			 SELECT o FROM OrdenCompra o
+			 WHERE
+			 o.fecha BETWEEN :fechaIni AND :fechaFin
+			 AND
+			 (:rol IS NULL OR o.usuario.rol = :rol)
+			 ORDER BY
+			 o.usuario.rol.idRol DESC
+			 """)
+	List<OrdenCompra> findByFechaAndRol(@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin, Rol rol);
 
 }

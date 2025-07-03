@@ -11,17 +11,23 @@
 	</div>
 
 	<!-- FORMULARIO DE FILTRADO POR FECHAS -->
-	<form class="form-fechas" method="get" th:action="@{/farmaceutico/orden/listado}">
-		<input type="date" name="fechaInicio" required />
-		<input type="date" name="fechaFin" required />
-		<a th:href="@{/farmaceutico/orden/filtro}" class="btn btn-info">
+	<form class="form-fechas" method="get" th:action="@{/orden/listado}" th:object="${filterFecha}">
+		<input type="date" name="fechaIni" th:value="${filterFecha.fechaIni}" required />
+		<input type="date" name="fechaFin" th:value="${filterFecha.fechaFin}" required />
+		<input type="hidden" name="_method" value="get" />
+		<button type="submit" class="btn btn-info">
 			<i class="fa-solid fa-filter me-2"></i>
 			Filtrar
-		</a>
+		</button>
 		<a th:href="@{/farmaceutico/orden/nuevo}" class="btn btn-success">
 			<i class="fa-solid fa-plus me-2"></i>
 			Nueva Orden de Compra
 		</a>
+		<div class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
+			<a th:href="@{/farmaceutico/orden/filtrado}" class="btn btn-outline-secondary w-100">
+				<i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+			</a>
+		</div>
 	</form>
 
 	<!-- TABLA DE ÓRDENES -->
@@ -38,7 +44,7 @@
 					</tr>
 				</thead>
 				<tbody class="text-center">
-					<tr th:each="item : ${lstBoletas}">
+					<tr th:each="item : ${lstOrdenes}">
 						<td th:text="${item.idOrden}"></td>
 						<td th:text="${item.fecha}"></td>
 						<td th:text="${item.usuario.nomsConApes}"></td>
