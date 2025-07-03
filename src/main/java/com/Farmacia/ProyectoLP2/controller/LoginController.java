@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Farmacia.ProyectoLP2.dto.AutenticacionFilter;
@@ -21,10 +22,13 @@ public class LoginController {
 	@Autowired
 	private AutenticacionService autenticacionService;
 
-	@GetMapping({"/login" })
-	public String login(Model model) {
-		model.addAttribute("filter", new AutenticacionFilter());
-		return "cliente/login";
+	@GetMapping("/login")
+	public String login(@RequestParam(value = "alert", required = false) String alert, Model model) {
+	    model.addAttribute("filter", new AutenticacionFilter());
+	    if (alert != null && !alert.isEmpty()) {
+	        model.addAttribute("alert", Alert.sweetAlertInfo(alert));
+	    }
+	    return "cliente/login";
 	}
 
 	@PostMapping("/iniciar-sesion")
@@ -39,18 +43,20 @@ public class LoginController {
 		}
 
 		String nombreCompleto = String.format("%s %s", usuarioValidado.getNombre(), usuarioValidado.getApellido());
+		session.setAttribute("usuario", usuarioValidado);
 		session.setAttribute("idUsuario", usuarioValidado.getIdUsuario());
 		session.setAttribute("nombre", nombreCompleto);
 		session.setAttribute("correo", usuarioValidado.getCorreo());
+		session.setAttribute("direccion", usuarioValidado.getDireccion());
 		session.setAttribute("rol", usuarioValidado.getRol());
 
 		String alert = Alert.sweetAlertSuccess("¡Hola " + usuarioValidado.getNombre() + "! Bienvenido(a) de nuevo.");
 		flash.addFlashAttribute("alert", alert);
-		
-		if(usuarioValidado.getRol().getIdRol() == 1) {
+
+		if (usuarioValidado.getRol().getIdRol() == 1) {
 			return "redirect:/admin/dashboard";
-		}else {
-		return "redirect:/";
+		} else {
+			return "redirect:/";
 		}
 	}
 

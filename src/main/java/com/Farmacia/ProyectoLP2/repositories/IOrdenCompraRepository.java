@@ -23,4 +23,7 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			    ORDER BY mes
 			""")
 	List<IMonthlySale> getSalesForMonthlys(@Param("fechaLimite") LocalDate fechaLimite);
+	
+	@Query("SELECT o FROM OrdenCompra o WHERE o.usuario.id = :id ORDER BY o.fecha DESC")
+	List<OrdenCompra> findByUsuarioId(@Param("id") Integer id);
 }
