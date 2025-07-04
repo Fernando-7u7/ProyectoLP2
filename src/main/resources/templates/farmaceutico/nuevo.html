@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/layoutFarmaceutico :: layoutBase(~{::section})}">
-	
+
 <section th:fragment="contenido">
 
 	<div class="container mt-4">
@@ -50,7 +50,7 @@
 						<div class="col-md-4">
 							<label>Nombre</label>
 							<input type="text" class="form-control" th:field="*{descripcion}" readonly
-							th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid' : ''">
+								th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid' : ''">
 						</div>
 						<div class="col-md-2">
 							<label>Precio</label>
@@ -118,29 +118,29 @@
 
 	<!-- Script con jQuery -->
 	<script>
-	  $(document).ready(function () {
+		$(document).ready(function () {
 
-	    // Evento para seleccionar medicamento
-	    $(document).on('click', '.btnSeleccionar', function () {
-	      let codigo = $(this).data('codigo');
-	      let nombre = $(this).data('descripcion');
-	      let precio = $(this).data('precio');
+			// Evento para seleccionar medicamento
+			$(document).on('click', '.btnSeleccionar', function () {
+				let codigo = $(this).data('codigo');
+				let nombre = $(this).data('descripcion');
+				let precio = $(this).data('precio');
 
-	      $('#codProducto').val(codigo);
-	      $('#descripcion').val(nombre);
-	      $('#precio').val(precio);
-	      $('#cantidad').val(1);
+				$('#codProducto').val(codigo);
+				$('#descripcion').val(nombre);
+				$('#precio').val(precio);
+				$('#cantidad').val(1);
 
-	      $('#modalProductos').modal('hide');
-	    });
+				$('#modalProductos').modal('hide');
+			});
 
-	    // Evento cuando se oculta el modal para limpiar backdrop
-	    $('#modalProductos').on('hidden.bs.modal', function () {
-	      $('.modal-backdrop').remove();     // Elimina fondo negro
-	      $('body').removeClass('modal-open'); // Restaura el scroll
-	    });
-	  });
+			// Evento cuando se oculta el modal para limpiar backdrop
+			$('#modalProductos').on('hidden.bs.modal', function () {
+				$('.modal-backdrop').remove();     // Elimina fondo negro
+				$('body').removeClass('modal-open'); // Restaura el scroll
+			});
+		});
 	</script>
 </section>
-	
+
 </html>
