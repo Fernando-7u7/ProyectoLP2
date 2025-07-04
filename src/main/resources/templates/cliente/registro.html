@@ -89,7 +89,6 @@ html, body {
 <body>
 	<div class="container-fluid full-height">
 		<div class="row h-100">
-			<!-- Columna Izquierda: Formulario -->
 			<div
 				class="col-md-6 bg-white d-flex flex-column justify-content-center p-5">
 				<div class="text-end mb-4">
@@ -108,6 +107,7 @@ html, body {
 				<form novalidate th:action="@{/registrar}" method="post"
 					th:object="${usuario}">
 					<div class="row">
+						<!-- Nombre -->
 						<div class="col-md-6 mb-3">
 							<label class="form-label">Nombre</label>
 							<div class="input-group">
@@ -120,7 +120,7 @@ html, body {
 							</div>
 						</div>
 
-
+						<!-- Apellido -->
 						<div class="col-md-6 mb-3">
 							<label class="form-label">Apellido</label>
 							<div class="input-group">
@@ -128,61 +128,64 @@ html, body {
 									class="fa-solid fa-user"></i></span> <input type="text"
 									th:field="*{apellido}" class="form-control"
 									th:classappend="${#fields.hasErrors('apellido')} ? ' is-invalid' : ''"
-									placeholder="Ingrese su apellido">
+									placeholder="Ingrese su apellido" />
 								<div class="invalid-feedback" th:errors="*{apellido}"></div>
+							</div>
+						</div>
+
+						<!-- Correo -->
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Correo</label>
+							<div class="input-group">
+								<span class="input-group-text"><i
+									class="fa-solid fa-envelope"></i></span> <input type="email"
+									th:field="*{correo}" class="form-control"
+									th:classappend="${#fields.hasErrors('correo')} ? ' is-invalid' : ''"
+									placeholder="Ingrese su correo" />
+								<div class="invalid-feedback" th:errors="*{correo}"></div>
+							</div>
+						</div>
+
+						<!-- Contraseña -->
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Contraseña</label>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+								<input type="password" th:field="*{clave}" class="form-control"
+									th:classappend="${#fields.hasErrors('clave')} ? ' is-invalid' : ''"
+									placeholder="Ingrese su contraseña" />
+								<div class="invalid-feedback" th:errors="*{clave}"></div>
+							</div>
+						</div>
+
+						<!-- Dirección -->
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Dirección</label>
+							<div class="input-group">
+								<span class="input-group-text"><i
+									class="fa-solid fa-house"></i></span> <input type="text"
+									th:field="*{direccion}" class="form-control"
+									th:classappend="${#fields.hasErrors('direccion')} ? ' is-invalid' : ''"
+									placeholder="Ingrese su dirección" />
+								<div class="invalid-feedback" th:errors="*{direccion}"></div>
+							</div>
+						</div>
+
+						<!-- Teléfono -->
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Teléfono</label>
+							<div class="input-group">
+								<span class="input-group-text"><i
+									class="fa-solid fa-phone"></i></span> <input type="text"
+									th:field="*{telefono}" class="form-control"
+									th:classappend="${#fields.hasErrors('telefono')} ? ' is-invalid' : ''"
+									placeholder="Ingrese su teléfono" />
+								<div class="invalid-feedback" th:errors="*{telefono}"></div>
 							</div>
 						</div>
 					</div>
 
-					<div class="mb-3">
-						<label class="form-label">Correo</label>
-						<div class="input-group">
-							<span class="input-group-text"><i
-								class="fa-solid fa-envelope"></i></span> <input type="email"
-								th:field="*{correo}" class="form-control"
-								th:classappend="${#fields.hasErrors('correo')} ? ' is-invalid' : ''"
-								placeholder="Ingrese su correo">
-							<div class="invalid-feedback" th:errors="*{correo}"></div>
-						</div>
-					</div>
-
-					<div class="mb-3">
-						<label class="form-label">Contraseña</label>
-						<div class="input-group">
-							<span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-							<input type="password" th:field="*{clave}" class="form-control"
-								th:classappend="${#fields.hasErrors('clave')} ? ' is-invalid' : ''"
-								placeholder="Ingrese su contraseña">
-							<div class="invalid-feedback" th:errors="*{clave}"></div>
-						</div>
-					</div>
-
-					<div class="mb-3">
-						<label class="form-label">Dirección</label>
-						<div class="input-group">
-							<span class="input-group-text"><i
-								class="fa-solid fa-house"></i></span> <input type="text"
-								th:field="*{direccion}" class="form-control"
-								th:classappend="${#fields.hasErrors('direccion')} ? ' is-invalid' : ''"
-								placeholder="Ingrese su dirección">
-							<div class="invalid-feedback" th:errors="*{direccion}"></div>
-						</div>
-
-					</div>
-
-					<div class="mb-4">
-						<label class="form-label">Teléfono</label>
-						<div class="input-group">
-							<span class="input-group-text"><i
-								class="fa-solid fa-phone"></i></span> <input type="text"
-								th:field="*{telefono}" class="form-control"
-								th:classappend="${#fields.hasErrors('telefono')} ? ' is-invalid' : ''"
-								placeholder="Ingrese su teléfono">
-							<div class="invalid-feedback" th:errors="*{telefono}"></div>
-						</div>
-
-					</div>
-
+					<!-- Botón -->
 					<div class="d-grid mb-3">
 						<button type="submit" class="btn btn-green">
 							<i class="fas fa-user-plus"></i> REGISTRARSE
@@ -196,6 +199,7 @@ html, body {
 							sesión aquí</a>
 					</div>
 				</form>
+
 
 
 				<div class="mt-4 text-center text-muted small">&copy; 2025

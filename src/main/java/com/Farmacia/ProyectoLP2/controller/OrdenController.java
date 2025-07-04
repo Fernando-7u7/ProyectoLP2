@@ -1,5 +1,6 @@
 package com.Farmacia.ProyectoLP2.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,70 +49,76 @@ public class OrdenController {
 	@Autowired
 	private OrdenCompraService ordenService;
 
-	@Autowired
-	private ProveedorService proveedorService;
-
-	@Autowired
-	private CategoriaService categoriaService;
-
 	@ModelAttribute("seleccionados")
 	public List<MedicamentoSeleccionado> inicializarSeleccionados() {
 		return new ArrayList<>();
 	}
 
 	@GetMapping("/listado")
-	public String listado(@ModelAttribute OrdenFechaFilter filterFecha, Model model) {
+	public String listado(@ModelAttribute OrdenFechaFilter filterFecha, Model model, HttpSession session,
+			RedirectAttributes redirectAttrs) {
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null) {
+			redirectAttrs.addFlashAttribute("alert",
+					Alert.sweetAlertInfo("¡Ups! Necesitas iniciar sesión."));
+			return "redirect:/login";
+		}
 		List<OrdenCompra> lstOrdenes;
 
 		if (filterFecha.getFechaIni() != null && filterFecha.getFechaFin() != null) {
-
-			lstOrdenes = ordenService.searchByFecha(filterFecha, 3);
+			lstOrdenes = ordenService.searchByUsuarioAndFecha(usuario.getIdUsuario(), filterFecha);
 		} else {
-
-			lstOrdenes = ordenService.search(3);
+			lstOrdenes = ordenService.searchByUsuario(usuario.getIdUsuario());
 		}
-		model.addAttribute("contenidoFarmaceutico", "farmaceutico/ordenesListado :: contenido");
+
 		model.addAttribute("filterFecha", filterFecha);
+		model.addAttribute("pageTitle", "Órdenes");
 		model.addAttribute("lstOrdenes", lstOrdenes);
 
 		return "farmaceutico/ordenesListado";
 	}
-	
+
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
 		System.out.println("Entrando a /orden/nuevo");
 		model.addAttribute("medicamentos", medicamentoService.getActivos());
-		model.addAttribute("medicamentoSeleccionado", new  MedicamentoSeleccionado());
+		model.addAttribute("pageTitle", "Crear Orden");
+		model.addAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
 		return "farmaceutico/nuevo";
 	}
-
 
 	@PostMapping("/agregar")
 	public String agregar(@Valid @ModelAttribute MedicamentoSeleccionado seleccionado, BindingResult bindingResult,
 			@ModelAttribute("seleccionados") List<MedicamentoSeleccionado> seleccionados, Model model) {
-		
+
 		model.addAttribute("medicamentos", medicamentoService.getActivos());
 		model.addAttribute("medicamentoSeleccionado", seleccionado);
-		
+
 		if (bindingResult.hasErrors()) {
 			String mensaje = obtenerMensajeValidacionAgregar(bindingResult);
 			model.addAttribute("alert", Alert.sweetAlertInfo(mensaje));
 			return "farmaceutico/nuevo";
 		}
-		
+
 		boolean existe = seleccionados.stream().anyMatch(m -> m.getCodProducto().equals(seleccionado.getCodProducto()));
 
 		if (existe) {
 			model.addAttribute("alert", Alert.sweetAlertInfo("El medicamento se encuentra en la lista"));
 			return "farmaceutico/nuevo";
 		}
+		Medicamento medicamento = medicamentoService.getOne(seleccionado.getCodProducto());
+		if (medicamento.getStockActual() < seleccionado.getCantidad()) {
+			model.addAttribute("alert", Alert.sweetAlertError("Stock insuficiente para el medicamento: "
+					+ medicamento.getNombre() + ". Stock disponible: " + medicamento.getStockActual()));
+			return "farmaceutico/nuevo";
+		}
 
-		seleccionados.add(seleccionado);	
-		
-		model.addAttribute("medicamentoSeleccionado", new  MedicamentoSeleccionado());
+		seleccionados.add(seleccionado);
+
+		model.addAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
 		return "farmaceutico/nuevo";
 	}
-	
+
 	@PostMapping("/quitar")
 	public String quitar(@RequestParam String codigo,
 			@ModelAttribute("seleccionados") List<MedicamentoSeleccionado> seleccionados, Model model) {
@@ -124,63 +131,64 @@ public class OrdenController {
 	}
 
 	@PostMapping("/registrar")
-	public String registrar(@ModelAttribute OrdenCompra orden, @ModelAttribute("seleccionados") List<MedicamentoSeleccionado> seleccionados, Model model,
-	        RedirectAttributes flash, HttpSession session, SessionStatus status) {
-	    model.addAttribute("medicamentos", medicamentoService.getActivos());
-	    model.addAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
+	public String registrar(@ModelAttribute OrdenCompra orden,
+			@ModelAttribute("seleccionados") List<MedicamentoSeleccionado> seleccionados, Model model,
+			RedirectAttributes flash, HttpSession session, SessionStatus status) {
+		model.addAttribute("medicamentos", medicamentoService.getActivos());
+		model.addAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
 
-	    // Obtenemos dato de sesión
-	    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
-	    
-	    // Validamos sesión
-	    if (idUsuario == null) {
-	        flash.addFlashAttribute("alert", Alert.sweetAlertError("Sesión expirada"));
-	        return "redirect:/login";
-	    }
-	    
-	    // Obtenemos al usuario y lo seteamos
-	    Usuario usuario = usuarioService.getOne(idUsuario); 
-	    orden.setUsuario(usuario);
-	    
-	    // Validamos que al menos haya un seleccionado
-	    if (seleccionados.isEmpty()) {
-	        model.addAttribute("alert", Alert.sweetAlertInfo("Agregue un medicamento por lo menos"));
-	        return "farmaceutico/nuevo";
-	    }
-	    
-	    // Mapeamos los datos seleccionados a DetalleCompra y lo seteamos
-	    List<DetalleCompra> lstDetalleOrdenes = seleccionados.stream().map(item -> {
-	        Medicamento medicamento = medicamentoService.getOne(item.getCodProducto());
-	        Integer cantidad = item.getCantidad();
-	        Double precio = item.getPrecio();
+		// Obtenemos dato de sesión
+		Integer idUsuario = (Integer) session.getAttribute("idUsuario");
 
-	        DetalleCompra detalle = new DetalleCompra();
-	        DetalleCompraPK pk = new DetalleCompraPK();
-	               
-	        // Aquí asumimos que orden.getId() ya tiene valor
-	        pk.setIdMedicamento(medicamento.getIdMedicamento());
-	        detalle.setId(pk);
+		// Validamos sesión
+		if (idUsuario == null) {
+			flash.addFlashAttribute("alert", Alert.sweetAlertError("Sesión expirada"));
+			return "redirect:/login";
+		}
 
-	        detalle.setMedicamento(medicamento);
-	        detalle.setCantidad(cantidad);
-	        detalle.setPrecio(precio);
-	        detalle.setOrdenCompra(orden);
+		// Obtenemos al usuario y lo seteamos
+		Usuario usuario = usuarioService.getOne(idUsuario);
+		orden.setUsuario(usuario);
+		orden.setFecha(LocalDate.now());
 
-	        return detalle;
-	    }).toList();
+		// Validamos que al menos haya un seleccionado
+		if (seleccionados.isEmpty()) {
+			model.addAttribute("alert", Alert.sweetAlertInfo("Agregue un medicamento por lo menos"));
+			return "farmaceutico/nuevo";
+		}
 
-	    
-	    orden.setDetalles(lstDetalleOrdenes);
-	    
-	    ResultadoResponse response = ordenService.create(orden);
-	    if (!response.success) {
-	        model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-	        return "farmaceutico/nuevo";
-	    }
-	    String toast = Alert.sweetToast(response.mensaje, "success", 5000);
-	    flash.addFlashAttribute("toast", toast);
-	    status.setComplete();
-	    return "redirect:/orden/listado";
+		// Mapeamos los datos seleccionados a DetalleCompra y lo seteamos
+		List<DetalleCompra> lstDetalleOrdenes = seleccionados.stream().map(item -> {
+			Medicamento medicamento = medicamentoService.getOne(item.getCodProducto());
+			Integer cantidad = item.getCantidad();
+			Double precio = item.getPrecio();
+
+			DetalleCompra detalle = new DetalleCompra();
+			DetalleCompraPK pk = new DetalleCompraPK();
+
+			// Aquí asumimos que orden.getId() ya tiene valor
+			pk.setIdMedicamento(medicamento.getIdMedicamento());
+			detalle.setId(pk);
+
+			detalle.setMedicamento(medicamento);
+			detalle.setCantidad(cantidad);
+			detalle.setPrecio(precio);
+			detalle.setOrdenCompra(orden);
+
+			return detalle;
+		}).toList();
+
+		orden.setDetalles(lstDetalleOrdenes);
+
+		ResultadoResponse response = ordenService.create(orden);
+		if (!response.success) {
+			model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
+			return "farmaceutico/nuevo";
+		}
+		String toast = Alert.sweetToast(response.mensaje, "success", 5000);
+		flash.addFlashAttribute("toast", toast);
+		status.setComplete();
+		return "redirect:/orden/listado";
 	}
 
 	private String obtenerMensajeValidacionAgregar(BindingResult bindingResult) {
@@ -189,7 +197,7 @@ public class OrdenController {
 
 		if (bindingResult.hasFieldErrors("precio"))
 			return bindingResult.getFieldError("precio").getDefaultMessage();
-		
+
 		if (bindingResult.hasFieldErrors("descripcion"))
 			return bindingResult.getFieldError("descripcion").getDefaultMessage();
 

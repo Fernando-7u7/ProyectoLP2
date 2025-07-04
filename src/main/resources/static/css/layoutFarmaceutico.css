@@ -145,4 +145,36 @@ table td {
 	background-color: var(--colorLemonGreen);
 }
 
+.dt-length, .dt-search{
+	color:var(--colorWhite);
+}
+.btn-success {
+  background-color: #00ae8b !important;
+  border-color: #00ae8b !important;
+}
 
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
+  background-color: #00846f !important; /* un tono más oscuro para hover */
+  border-color: #00846f !important;
+}
+
+
+.btn-info {
+  background-color: #acd401 !important;
+  border-color: #acd401 !important;
+  color: #222 !important; /* texto oscuro para contraste */
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+.show > .btn-info.dropdown-toggle {
+  background-color: #91b800 !important; /* tono más oscuro para hover */
+  border-color: #91b800 !important;
+  color: #222 !important;
+}

@@ -16,35 +16,44 @@
 
 	<form method="get"
 		th:action="@{/admin/mantenimiento/medicamento/listado}"
-		th:object="${filter}" class="card p-3 mb-4 shadow-sm">
-		<div class="row align-items-end">
-			<div class="col-md-4 mb-3">
-				<label class="form-label" for="categoria">Categoría</label> <select
-					class="form-select" th:field="*{idCategoria}"
+		th:object="${filter}" class="card p-4 shadow-sm border-0 mb-4">
+		<div class="row g-3 align-items-end">
+			<div class="col-md-4">
+				<label for="categoria" class="form-label fw-semibold">Categoría</label>
+				<select class="form-select" th:field="*{idCategoria}"
 					onchange="this.form.submit()">
-					<option value="">-- Todos --</option>
+					<option value="">-- Todas --</option>
 					<option th:each="item : ${lstCategoria}"
 						th:value="${item.idCategoria}" th:text="${item.descripcion}"></option>
 				</select>
 			</div>
-			<div class="col-md-4 mb-3">
-				<label class="form-label" for="proveedor">Proveedor</label> <select
-					class="form-select" th:field="*{idProveedor}"
+			<div class="col-md-4">
+				<label for="proveedor" class="form-label fw-semibold">Proveedor</label>
+				<select class="form-select" th:field="*{idProveedor}"
 					onchange="this.form.submit()">
 					<option value="">-- Todos --</option>
 					<option th:each="item : ${lstProveedor}"
 						th:value="${item.idProveedor}" th:text="${item.razonSocial}"></option>
 				</select>
 			</div>
-			<div
-				class="col-md-4 mb-3 d-flex justify-content-start align-items-end">
+			<div class="col-md-3">
+				<label for="preescripcion" class="form-label fw-semibold">Preescripción</label>
+				<select class="form-select" th:field="*{preescripcion}"
+					onchange="this.form.submit()">
+					<option value="">-- Todas --</option>
+					<option value="SRM">SRM</option>
+					<option value="CRM">CRM</option>
+				</select>
+			</div>
+			<div class="col-md-1 d-grid">
 				<a th:href="@{/admin/mantenimiento/medicamento/listado}"
-					class="btn btn-outline-secondary w-100"> <i
-					class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+					class="btn btn-outline-danger"> <i
+					class="fa-solid fa-eraser me-1"></i> Limpiar
 				</a>
 			</div>
 		</div>
 	</form>
+
 
 	<div class="row mb-3">
 		<div class="col-md-12">

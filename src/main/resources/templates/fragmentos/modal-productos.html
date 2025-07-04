@@ -1,59 +1,79 @@
 <div th:fragment="modal-productos(medicamentos, idModal)">
-	<div class="modal fade" th:id="${idModal}" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Seleccionar Medicamento</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-				</div>
+  <div class="modal fade" th:id="${idModal}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content bg-dark text-white border-secondary shadow">
 
-				<div class="modal-body">
-					<div class="table-responsive">
-						<table id="tblSelectorMeds" class="table table-hover">
-							<thead class="table-secondary">
-								<tr>
-									<th>Código</th>
-									<th>Nombre</th>
-									<th>Precio</th>
-									<th>Acción</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="med : ${medicamentos}">
-									<td th:text="${med.idMedicamento}"></td>
-									<td th:text="${med.nombre}"></td>
-									<td th:text="${med.precio}"></td>
-									<td>
-										<button type="button" class="btn btn-primary btnSeleccionar"
-											th:data-codigo="${med.idMedicamento}"
-											th:data-descripcion="${med.descripcion}" th:data-precio="${med.precio}">
-											Seleccionar
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Script de inicialización -->
-<	<script>
-		$(document).ready(function () {
-			const idTabla = '#tblSelectorMeds';
-			if ($.fn.DataTable.isDataTable(idTabla)) {
-				$(idTabla).DataTable().destroy();
-			}
-			$('#tblSelectorMeds').DataTable({
-				lengthMenu: [5, 10],
-				pageLength: 5,
-				language: {
-					url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
-					search: "Filtro general :"
-				}
-			});
-		});
-		
-	</script>
+        <div class="modal-header border-bottom border-secondary">
+          <h5 class="modal-title fw-bold" id="modalLabel">
+            <i class="fa-solid fa-magnifying-glass me-2"></i> Seleccionar Medicamento
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <div>
+            <table id="tblSelectorMeds" class="table table-hover table-dark align-middle text-white mb-0">
+              <thead class="table-secondary text-dark">
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+             <tbody>
+  <tr th:each="med : ${medicamentos}">
+    <td th:text="${med.idMedicamento}"></td>
+    <td th:text="${med.nombre}"></td>
+    <td th:text="|S/. ${#numbers.formatDecimal(med.precio, 1, 'COMMA', 2, 'POINT')}|"></td>
+    <td>
+      <button type="button"
+              class="btn btn-sm d-flex align-items-center gap-1"
+              th:classappend="${med.stockActual == 0} ? 'btn-secondary disabled' : 'btn-primary btnSeleccionar'"
+              th:data-codigo="${med.idMedicamento}"
+              th:data-descripcion="${med.nombre}"
+              th:data-precio="${med.precio}"
+              th:disabled="${med.stockActual == 0}">
+        <i class="fa-solid" th:classappend="${med.stockActual == 0} ? 'fa-ban' : 'fa-check'"></i>
+        <span th:text="${med.stockActual == 0} ? 'Sin stock' : 'Seleccionar'"></span>
+      </button>
+    </td>
+  </tr>
+  <tr th:if="${#lists.isEmpty(medicamentos)}">
+    <td colspan="4" class="text-center fst-italic text-muted">No hay medicamentos disponibles</td>
+  </tr>
+</tbody>
+
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Script de inicialización DataTables -->
+  <script>
+    $(document).ready(function () {
+      const idTabla = '#tblSelectorMeds';
+
+      if ($.fn.DataTable.isDataTable(idTabla)) {
+        $(idTabla).DataTable().destroy();
+      }
+
+      $(idTabla).DataTable({
+        lengthMenu: [5, 10, 20],
+        pageLength: 5,
+        language: {
+          url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json',
+          search: "Filtro general :"
+        },
+        columnDefs: [
+          { orderable: false, targets: 3 }
+        ],
+        responsive: true,
+        autoWidth: false,
+      });
+    });
+  </script>
 </div>

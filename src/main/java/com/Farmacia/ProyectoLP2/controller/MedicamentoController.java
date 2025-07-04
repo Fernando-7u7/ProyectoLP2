@@ -47,6 +47,9 @@ public class MedicamentoController {
 
 	@GetMapping("/listado")
 	public String listMedicine(@ModelAttribute MedicamentoFilter filter, Model model) {
+		if ("".equals(filter.getPreescripcion())) {
+	        filter.setPreescripcion(null);
+	    }
 	    List<Medicamento> lstMedicamento = medicamentoService.search(filter); 
 	    lstMedicamento.forEach(m -> {
 	        if (m.getImagenBytes() != null) {

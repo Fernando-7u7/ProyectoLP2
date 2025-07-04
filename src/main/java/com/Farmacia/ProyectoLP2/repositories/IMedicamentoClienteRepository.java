@@ -22,6 +22,7 @@ public interface IMedicamentoClienteRepository extends JpaRepository<Medicamento
 			    FROM DetalleCompra d
 			    JOIN d.medicamento m
 			    JOIN d.ordenCompra o
+			    WHERE m.preescripcion = 'SRM'
 			    GROUP BY m.id, m.nombre
 			    ORDER BY SUM(d.cantidad) DESC
 			    LIMIT 9

@@ -18,11 +18,11 @@ public class MedicamentoSeleccionado {
 
 	@NotNull(message = "El precio es requerido")
 	@Positive(message = "El precio debe ser mayor a 0")
-	private double precio;
+	private Double precio;
 	
 	@NotNull(message = "La cantidad es requerida")
 	@Positive(message = "Mínimo 1")
-	private int cantidad;
+	private Integer cantidad;
 
 	public Double getSubtotal() {
 		return precio * cantidad;

@@ -40,15 +40,13 @@ public class OrdenCompraService {
 	    return ordenCompraRepo.findByRolAdmin(idRol.getIdRol());
 	}
 	
-	public List<OrdenCompra> search(Integer idRol){
-	    Rol rol = rolRepository.findById(idRol).orElse(null);
-	    return ordenCompraRepo.findByRol(rol);
+	public List<OrdenCompra> searchByUsuario(Integer idUsuario) {
+	    return ordenCompraRepo.findByUsuarioId(idUsuario);
 	}
-	
-    public List<OrdenCompra> searchByFecha(OrdenFechaFilter filterFecha, Integer idRol) {
-	    Rol rol = rolRepository.findById(idRol).orElse(null);
-        return ordenCompraRepo.findByFechaAndRol(filterFecha.getFechaIni(), filterFecha.getFechaFin(), rol);
-    }
+
+	public List<OrdenCompra> searchByUsuarioAndFecha(Integer idUsuario, OrdenFechaFilter filterFecha) {
+	    return ordenCompraRepo.findByUsuarioAndFecha(idUsuario, filterFecha.getFechaIni(), filterFecha.getFechaFin());
+	}
 	
 	@Autowired
 	private IMedicamentoClienteRepository medicamentoClienteRepository;

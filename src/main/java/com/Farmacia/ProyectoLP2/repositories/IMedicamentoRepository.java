@@ -33,11 +33,13 @@ public interface IMedicamentoRepository extends JpaRepository<Medicamento, Strin
 			WHERE (:idCategoria IS NULL OR M.categoria.idCategoria = :idCategoria)
 			         AND
 			         (:idProveedor IS NULL OR M.proveedor.idProveedor = :idProveedor)
+			         AND
+			         (:preescripcion IS NULL OR M.preescripcion = :preescripcion)
 			         ORDER BY
 			         M.idMedicamento DESC
 			         """)
 	List<Medicamento> findAllWithFilters(@Param("idCategoria") Integer idCategoria,
-			@Param("idProveedor") Integer idProveedor);
+			@Param("idProveedor") Integer idProveedor, @Param("preescripcion") String preescripcion);
 
 	@Query("SELECT m FROM Medicamento m WHERE m.fechaVencimiento <= :fechaLimite AND m.fechaVencimiento >= CURRENT_DATE")
 	List<Medicamento> findExpiredMedications(@Param("fechaLimite") LocalDate fechaLimite);

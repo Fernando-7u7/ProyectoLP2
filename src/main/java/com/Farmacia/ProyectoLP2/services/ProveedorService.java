@@ -19,7 +19,7 @@ public class ProveedorService {
 	
 	@Transactional
 	public List<Proveedor> getAll() {
-		return proveedorRepo.findAll();
+		return proveedorRepo.findAllByOrderByIdProveedorDesc();
 	}
 	
     public List<Proveedor> listarProveedoresActivos() {

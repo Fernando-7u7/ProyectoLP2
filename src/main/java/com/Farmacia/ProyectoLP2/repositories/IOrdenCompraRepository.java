@@ -30,7 +30,7 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 	@Query("""
 			    SELECT o FROM OrdenCompra o
 			    WHERE (:idRol IS NULL OR o.usuario.rol.idRol = :idRol)
-			    ORDER BY o.fecha DESC
+			    ORDER BY o.idOrden DESC
 			""")
 	List<OrdenCompra> findByRolAdmin(@Param("idRol") Integer idRol);
 
@@ -39,7 +39,7 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			WHERE
 			(:rol IS NULL OR o.usuario.rol = :rol)
 			ORDER BY
-			o.usuario.rol.idRol DESC
+			o.idOrden DESC
 			""")
 	List<OrdenCompra> findByRol(Rol rol);
 
@@ -50,12 +50,21 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 			AND
 			(:rol IS NULL OR o.usuario.rol = :rol)
 			ORDER BY
-			o.usuario.rol.idRol DESC
+			o.idOrden DESC
 			""")
 	List<OrdenCompra> findByFechaAndRol(@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin,
 			Rol rol);
 
-	@Query("SELECT o FROM OrdenCompra o WHERE o.usuario.id = :id ORDER BY o.fecha DESC")
+	@Query("""
+			    SELECT o FROM OrdenCompra o
+			    WHERE o.usuario.idUsuario = :idUsuario
+			    AND o.fecha BETWEEN :fechaIni AND :fechaFin
+			    ORDER BY o.idOrden DESC
+			""")
+	List<OrdenCompra> findByUsuarioAndFecha(@Param("idUsuario") Integer idUsuario,
+			@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin);
+
+	@Query("SELECT o FROM OrdenCompra o WHERE o.usuario.id = :id ORDER BY o.idOrden DESC")
 	List<OrdenCompra> findByUsuarioId(@Param("id") Integer id);
 
 }

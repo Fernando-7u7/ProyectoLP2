@@ -79,7 +79,13 @@
 
 					<div th:each="m : ${pageMedicamentos.content}"
 						class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-						<div class="card h-100 med-card">
+						<div class="card h-100 med-card position-relative"
+							th:classappend="${m.stockActual == 0} ? ' opacity-50'">
+							<div
+								class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 small"
+								th:if="${m.stockActual == 0}" style="z-index: 1;">Sin
+								stock</div>
+
 							<img
 								th:src="${m.base64Img != null} ? 
                 'data:image/jpeg;base64,' + ${m.base64Img} : 
@@ -102,16 +108,16 @@
 										class="form-control form-control-sm" />
 
 									<button type="submit" class="btn btn-primary btn-sm"
-										th:disabled="${m.stockActual == 0}">Agregar</button>
+										th:disabled="${m.stockActual == 0}"
+										th:classappend="${m.stockActual == 0} ? ' btn-secondary disabled' : ''">
+										<span
+											th:text="${m.stockActual == 0} ? 'Sin stock' : 'Agregar'">Agregar</span>
+									</button>
 								</form>
-
 							</div>
 						</div>
 					</div>
 				</div>
-
-
-
 				<div class="pagination-controls text-center my-4">
 					<ul class="pagination justify-content-center">
 						<li class="page-item"
@@ -143,7 +149,5 @@
 			</div>
 		</div>
 	</div>
-
-
 </section>
 </html>

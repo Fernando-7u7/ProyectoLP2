@@ -47,7 +47,7 @@ public class Usuario {
 
 	@Column(name = "CORREO", nullable = false)
 	@NotEmpty(message = "El correo es requerido", groups = {IValidacionFarmaceutico.class, IValidacionUsuario.class})
-    @Email(message = "Correo inválido", groups = {IValidacionFarmaceutico.class, IValidacionUsuario.class})
+	@Email(message = "Ingrese un correo electrónico válido", groups = {IValidacionFarmaceutico.class, IValidacionUsuario.class})
 	private String correo;
 
 	@NotEmpty(message = "El DNI es requerido", groups = IValidacionFarmaceutico.class)
