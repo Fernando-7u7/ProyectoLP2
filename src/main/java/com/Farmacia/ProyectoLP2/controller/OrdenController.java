@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +35,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/orden")
+@SessionAttributes("seleccionados")
 public class OrdenController {
 
 	@Autowired
@@ -75,12 +77,11 @@ public class OrdenController {
 	}
 	
 	@GetMapping("/nuevo")
-	public String nuevo(RedirectAttributes flash) {
-	    flash.addFlashAttribute("contenidoFarmaceutico", "farmaceutico/ordenesListado :: contenido");
-	    flash.addFlashAttribute("medicamentos", medicamentoService.getActivos());
-	    flash.addFlashAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
-
-	    return "redirect:/orden/nuevo";
+	public String nuevo(Model model) {
+		System.out.println("Entrando a /orden/nuevo");
+		model.addAttribute("medicamentos", medicamentoService.getActivos());
+		model.addAttribute("medicamentoSeleccionado", new  MedicamentoSeleccionado());
+		return "farmaceutico/nuevo";
 	}
 
 

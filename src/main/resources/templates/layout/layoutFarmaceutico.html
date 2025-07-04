@@ -92,10 +92,12 @@
 	</div>
 
 
-	<main id="main-content">
+	<!--  <main id="main-content">
 		<th:block th:replace="~{farmaceutico/ordenesListado :: contenido}"></th:block>
-	</main>
-
+	</main>-->
+<main class="container-fluid py-4" id="main-content">
+				<div th:replace="${contenido}">Contenido principal</div>
+			</main>
 
 	<th:block th:utext="${alert}"></th:block>
 	<script th:src="@{/js/layoutC.js}"></script>
