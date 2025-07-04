@@ -8,4 +8,5 @@ import lombok.Setter;
 public class MedicamentoFilter {
 	private Integer idCategoria;
 	private Integer idProveedor;
+	private String preescripcion;
 }

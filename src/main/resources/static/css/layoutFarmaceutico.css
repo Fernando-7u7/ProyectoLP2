@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Poppins&display=swap');
+
+:root {
+	--colorGreen: #00ae8b;
+	--colorLemonGreen: #acd401;
+	--colorWhite: #ffffff;
+	--colorGray: #ededed;
+	--colorBlack: #1c1c1c;
+	--colorGrayOscuro: #d4d4d4;
+}
+
+/* Reset general */
+* {
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow-x: hidden;
+	min-height: 100vh;
+	background-image: url('/img/fondo-farma.jpg');
+	background-size: cover;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: rgba(0, 0, 0, 0.6); /* Fallback si no carga la imagen */
+}
+
+/* Capa semitransparente para asegurar contraste */
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6); /* oscurece fondo */
+	z-index: -1;
+}
+
+/* Navbar */
+.logo {
+	width: 65px;
+	height: 45px;
+	transform: scale(1.7);
+}
+
+.navbar-brand strong {
+	font-size: 2rem;
+	background: linear-gradient(90deg, var(--colorGreen), var(--colorLemonGreen));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+
+.navbar-custom {
+	background-color: var(--colorGray);
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand,
+.navbar-custom .dropdown-toggle {
+	color: var(--colorBlack) !important;
+}
+
+.navbar-custom .nav-link:hover {
+	color: var(--colorGreen) !important;
+}
+
+.navbar-nav .nav-link {
+	font-size: 1.15rem;
+}
+
+.offcanvas-custom {
+	background-color: var(--colorWhite);
+}
+
+.offcanvas-custom .nav-link {
+	font-size: 1.1rem;
+	color: #333;
+}
+
+.offcanvas-custom .nav-link i {
+	width: 20px;
+}
+
+
+/* ============================= */
+/* ESTILOS PARA ORDENES LISTADO */
+/* ============================= */
+
+.titulo-ordenes {
+	color: var(--colorWhite);
+	text-align: center;
+	margin-bottom: 1.5rem;
+	margin-top: 50px; /* agregado */
+}
+
+#contenedor-tabla {
+	width: 70%;
+	margin: 0 auto;
+}
+
+table.table-dark {
+	background-color: #2c2c2c;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+table th,
+table td {
+	vertical-align: middle;
+	color: var(--colorWhite);
+}
+
+.form-fechas {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 2rem;
+	flex-wrap: wrap;
+}
+
+.form-fechas input[type="date"] {
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	border: 1px solid var(--colorGrayOscuro);
+	background-color: var(--colorWhite);
+	color: var(--colorBlack);
+}
+
+.form-fechas button {
+	background-color: var(--colorGreen);
+	border: none;
+	color: var(--colorWhite);
+	padding: 0.5rem 1.2rem;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+}
+
+.form-fechas button:hover {
+	background-color: var(--colorLemonGreen);
+}
+
+.dt-length, .dt-search{
+	color:var(--colorWhite);
+}
+.btn-success {
+  background-color: #00ae8b !important;
+  border-color: #00ae8b !important;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
+  background-color: #00846f !important; /* un tono más oscuro para hover */
+  border-color: #00846f !important;
+}
+
+
+.btn-info {
+  background-color: #acd401 !important;
+  border-color: #acd401 !important;
+  color: #222 !important; /* texto oscuro para contraste */
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+.show > .btn-info.dropdown-toggle {
+  background-color: #91b800 !important; /* tono más oscuro para hover */
+  border-color: #91b800 !important;
+  color: #222 !important;
+}

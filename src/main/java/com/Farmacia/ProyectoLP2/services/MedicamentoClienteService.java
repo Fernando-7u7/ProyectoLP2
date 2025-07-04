@@ -16,20 +16,20 @@ public class MedicamentoClienteService {
 	@Autowired
 	private IMedicamentoClienteRepository medicRepo;
 
-	public List<Medicamento> getAll() {
-		return medicRepo.findMedicinesActive();
-	}
-
 	public List<Medicamento> getFeatured() {
 		return medicRepo.findMedicinesMoreSales();
 	}
 
 	public Page<Medicamento> getMedicineforCategorie(MedicamentoFilterCliente filter, Pageable pageable) {
 		if (filter.getIdCategorias() == null || filter.getIdCategorias().isEmpty()) {
-			return medicRepo.findAll(pageable);
+			return medicRepo.findMedicinesActive(pageable);
 		} else {
 			return medicRepo.findAllWithFilters(filter.getIdCategorias(), pageable);
 		}
+	}
+	
+	public Medicamento getOne(String id) {
+		return medicRepo.findById(id).orElseThrow();
 	}
 
 }

@@ -40,12 +40,14 @@ public class ProveedorController {
 	public String listado(Model model) {
 
 		List<Proveedor> lstProveedor = _proveedorService.getAll();
+		model.addAttribute("pageTitle", "Proveedor");
 		model.addAttribute("lstProveedor", lstProveedor);
 		return "admin/mantenimiento/proveedores/listadoProveedor";
 	}
 
 	@GetMapping("/nuevo")
 	public String nuevo(Model model) {
+		model.addAttribute("pageTitle", "Crear Proveedor");
 
 		model.addAttribute("proveedor", _proveedorService.getAll());
 
@@ -81,10 +83,9 @@ public class ProveedorController {
 
 	@GetMapping("/edicion/{idProveedor}")
 	public String edicion(@PathVariable Integer idProveedor, Model model) {
-
+		model.addAttribute("pageTitle", "Editar Proveedor");
 		Proveedor proveedor = _proveedorService.getOne(idProveedor);
 		model.addAttribute("proveedor", proveedor);
-		
 		List<Estado> estados = _estadoService.getAll();
 		model.addAttribute("lstEstados", estados);
 		

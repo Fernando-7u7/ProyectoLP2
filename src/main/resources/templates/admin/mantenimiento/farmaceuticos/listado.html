@@ -28,32 +28,6 @@
         </a>
     </div>
 
-	<form method="get" th:action="@{/admin/mantenimiento/farmaceuticos/listado}" th:object="${filter}"
-	      class="card p-3 mb-4 shadow-sm">
-	    <div class="row align-items-end">
-	        <!-- Columna izquierda: Selector de tipo de documento -->
-	        <div class="col-md-4 mb-3">
-	            <label for="tipoDoc" class="form-label">Tipo de Documento:</label>
-	            <select class="form-select" th:field="*{tipoDoc}" onchange="this.form.submit()">
-	                <option value="">-- Todos --</option>
-	                <option value="DNI" th:text="'DNI'">DNI</option>
-	                <option value="CE" th:text="'CE'">CE</option>
-	                <option value="PAS" th:text="'PAS'">PAS</option>
-	            </select>
-	        </div>
-
-	        <!-- Columna vacía central -->
-	        <div class="col-md-4 mb-3"></div>
-
-	        <!-- Columna derecha: Botón de limpiar -->
-	        <div class="col-md-4 mb-3">
-	            <a th:href="@{/admin/mantenimiento/farmaceuticos/listado}" class="btn btn-outline-secondary w-100">
-	                <i class="fa-solid fa-eraser me-2"></i> Limpiar filtros
-	            </a>
-	        </div>
-	    </div>
-	</form>
-
     <div class="row mb-3">
         <div class="col-md-12">
             <table id="tblFarmaceuticos" class="table table-hover table-bordered table-striped align-middle">
@@ -62,7 +36,7 @@
                         <th><i class="fa-solid fa-hashtag"></i> Número</th>
                         <th><i class="fa-solid fa-user"></i> Nombres</th>
                         <th><i class="fa-solid fa-user"></i> Apellidos</th>
-                        <th><i class="fa-solid fa-id-card"></i> Documento</th>
+                        <th><i class="fa-solid fa-id-card"></i> DNI</th>
                         <th><i class="fa-solid fa-phone"></i> Teléfono</th>
                         <th><i class="fa-solid fa-envelope"></i> Correo</th>
                         <th><i class="fa-solid fa-map-marker-alt"></i> Dirección</th>
@@ -72,22 +46,22 @@
                 </thead>
                 <tbody class="table-secondary text-center">
                     <tr th:each="item : ${lstFarmaceuticos}">
-                        <td th:text="${item.idFarmaceutico}"></td>
+                        <td th:text="${item.idUsuario}"></td>
                         <td th:text="${item.nombre}"></td>
-                        <td th:text="${item.apellidos}"></td>
-                        <td th:text="|${item.tipoDoc} - ${item.documento}|"></td>
-                        <td th:text="${item.fono}"></td>
+                        <td th:text="${item.apellido}"></td>
+                        <td th:text="${item.dni}"></td>
+                        <td th:text="${item.telefono}"></td>
                         <td th:text="${item.correo}"></td>
                         <td th:text="${item.direccion}"></td>
                         <td th:text="${item.estado.descripcion}"></td>
                         <td>
-                            <a th:href="@{/admin/mantenimiento/farmaceuticos/edicion/{id}(id=${item.idFarmaceutico})}"
+                            <a th:href="@{/admin/mantenimiento/farmaceuticos/edicion/{id}(id=${item.idUsuario})}"
                                 class="btn btn-sm btn-warning" title="Editar">
                                 <i class="fa-regular fa-pen-to-square text-white"></i>
                             </a>
                             <form th:action="@{/admin/mantenimiento/farmaceuticos/eliminar}" method="post"
                                 style="display: inline;">
-                                <input type="hidden" name="idFarmaceutico" th:value="${item.idFarmaceutico}" />
+                                <input type="hidden" name="idUsuario" th:value="${item.idUsuario}" />
                                 <button type="submit" class="btn btn-sm"
                                     th:classappend="${item.estado.idEstado == 1} ? 'btn-success' : 'btn-danger'"
                                     th:title="${item.estado.idEstado == 1} ? 'Activo - Click para desactivar' : 'Inactivo - Click para activar'">

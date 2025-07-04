@@ -68,9 +68,24 @@
 			<!-- LISTADO DE MEDICAMENTOS -->
 			<div class="col-md-10">
 				<div class="row">
+					<div th:if="${pageMedicamentos.content.empty}"
+						class="col-12 text-center my-5">
+						<i class="fas fa-search fa-3x text-muted mb-3"></i>
+						<h5 class="text-muted">No se encontraron medicamentos
+							disponibles</h5>
+						<p class="text-secondary">Probá con otras categorías o ajustá
+							los filtros.</p>
+					</div>
+
 					<div th:each="m : ${pageMedicamentos.content}"
 						class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-						<div class="card h-100 med-card">
+						<div class="card h-100 med-card position-relative"
+							th:classappend="${m.stockActual == 0} ? ' opacity-50'">
+							<div
+								class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 small"
+								th:if="${m.stockActual == 0}" style="z-index: 1;">Sin
+								stock</div>
+
 							<img
 								th:src="${m.base64Img != null} ? 
                 'data:image/jpeg;base64,' + ${m.base64Img} : 
@@ -83,13 +98,26 @@
 								<p class="med-card-price"
 									th:text="|S/. ${#numbers.formatDecimal(m.precio,1,2,'POINT')}|">S/.
 									00.00</p>
+								<form th:action="@{/carrito/agregar}" method="post"
+									class="d-flex justify-content-center align-items-center gap-2 mt-3">
+									<input type="hidden" name="idMedicamento"
+										th:value="${m.idMedicamento}" /> <input type="number"
+										name="cantidad" value="1" min="1" max="${m.stockActual}"
+										required
+										style="width: 70px; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 0.375rem; text-align: center;"
+										class="form-control form-control-sm" />
+
+									<button type="submit" class="btn btn-primary btn-sm"
+										th:disabled="${m.stockActual == 0}"
+										th:classappend="${m.stockActual == 0} ? ' btn-secondary disabled' : ''">
+										<span
+											th:text="${m.stockActual == 0} ? 'Sin stock' : 'Agregar'">Agregar</span>
+									</button>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
-
 				<div class="pagination-controls text-center my-4">
 					<ul class="pagination justify-content-center">
 						<li class="page-item"
@@ -121,7 +149,5 @@
 			</div>
 		</div>
 	</div>
-
-
 </section>
 </html>

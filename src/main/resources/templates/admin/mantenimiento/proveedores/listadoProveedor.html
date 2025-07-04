@@ -48,14 +48,12 @@
 						</tr>
 					</thead>
 					<tbody class="table-secondary">
-						<tr th:each="item, iterStat : ${lstProveedor}">
-							<td th:text="${iterStat.count}" class="text-center"></td>
+						<tr th:each="item : ${lstProveedor}">
+							<td th:text="${item.idProveedor}" class="text-center"></td>
 							<td th:text="${item.ruc + ' - ' + item.razonSocial}" class="text-left"></td>
 							<td th:text="${item.telefono}" class="text-center"></td>
 							<td th:text="${item.direccion}" class="text-center"></td>
 							<td th:text="${item.estado.descripcion}" class="text-center"></td>
-
-							</td>
 							<td class="text-center">
 								<a th:href="@{/admin/mantenimiento/proveedores/edicion/{id}(id=${item.idProveedor})}"
 									class="btn btn-sm btn-warning" title="Editar" >

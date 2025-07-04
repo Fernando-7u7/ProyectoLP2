@@ -10,7 +10,8 @@ CREATE TABLE TB_ROLES (
 INSERT INTO TB_ROLES(ID_ROL,DESCRIPCION)
 VALUES
 (1,'A'),
-(2,'C');
+(2,'C'),
+(3,'F');
 
 CREATE TABLE TB_ESTADO(
 	ID_ESTADO INT PRIMARY KEY,
@@ -44,6 +45,7 @@ CREATE TABLE TB_USUARIOS (
     NOMBRE VARCHAR(50) NOT NULL,
     APELLIDO VARCHAR(50) NOT NULL,
     CORREO VARCHAR(50) NOT NULL,
+    DNI CHAR(8) NULL,
     CLAVE VARCHAR(50) NOT NULL,
     DIRECCION VARCHAR(50) NULL,
     TELEFONO CHAR(9) NOT NULL,
@@ -53,32 +55,23 @@ CREATE TABLE TB_USUARIOS (
     FOREIGN KEY(ESTADO) REFERENCES TB_ESTADO(ID_ESTADO)
 );
 /*Prueba para meter el dashboard de ventas*/
-INSERT INTO TB_USUARIOS (NOMBRE, APELLIDO, CORREO, CLAVE, DIRECCION, TELEFONO, ROL, ESTADO)
+INSERT INTO TB_USUARIOS (NOMBRE, APELLIDO, CORREO, DNI, CLAVE, DIRECCION, TELEFONO, ROL, ESTADO)
 VALUES
-('Juan', 'Pérez', 'juan.perez@example.com', 'clave123', 'Calle Falsa 123', '987654321', 1, 1),
-('María', 'López', 'maria.lopez@example.com', 'clave456', 'Av. Siempre Viva 456', '912345678', 2, 1),
-('Ana', 'García', 'ana.garcia@example.com', 'clave321', 'Jr. Independencia 789', '934567891', 2, 2);
+('Juan', 'Pérez', 'juan.perez@example.com', '12345678', 'clave123', 'Calle Falsa 123', '987654321', 1, 1),
+('María', 'López', 'maria.lopez@example.com', '01234567','clave456', 'Av. Siempre Viva 456', '912345678', 2, 1),
+('Ana', 'García', 'ana.garcia@example.com', '32109876', 'clave321', 'Jr. Independencia 789', '934567891', 3, 2),
+('Carlos', 'Ramírez', 'carlos.ramirez@example.com', '11223344', 'clavecar1', 'Calle Central 101', '901122334', 3, 1),
+('Lucía', 'Fernández', 'lucia.fernandez@example.com', '22334455', 'clavelu2', 'Av. Libertad 202', '902233445', 3, 1),
+('Pedro', 'Sánchez', 'pedro.sanchez@example.com', '33445566', 'claveped3', 'Jr. Perú 303', '903344556', 3, 1),
+('Valeria', 'Torres', 'valeria.torres@example.com', '44556677', 'claveval4', 'Calle Real 404', '904455667', 3, 2),
+('Esteban', 'Morales', 'esteban.morales@example.com', '55667788', 'claveest5', 'Av. Cultura 505', '905566778', 3, 2),
+('Julieta', 'Cáceres', 'julieta.caceres@example.com', '66778899', 'clavejul6', 'Jr. Bolognesi 606', '906677889', 3, 1),
+('Martín', 'Quispe', 'martin.quispe@example.com', '77889900', 'clavemar7', 'Calle Colmena 707', '907788990', 3, 1),
+('Renata', 'Delgado', 'renata.delgado@example.com', '88990011', 'claveren8', 'Av. Grau 808', '908899001', 3, 1),
+('Sebastián', 'Rojas', 'sebastian.rojas@example.com', '99001122', 'claveseb9', 'Jr. Cuzco 909', '909900112', 3, 2),
+('Camila', 'Vargas', 'camila.vargas@example.com', '10111213', 'clavecam0', 'Calle Amazonas 1010', '910111213', 3, 1);
 
-CREATE TABLE TB_FARMACEUTICOS (
-    ID_FARMACEUTICO INT PRIMARY KEY AUTO_INCREMENT,
-    NOMBRES VARCHAR(50) NOT NULL,
-    APELLIDOS VARCHAR(50) NOT NULL,
-    TIPO_DOCUMENTO VARCHAR(3) CHECK(TIPO_DOCUMENTO IN('DNI','CE','PAS')),
-    DOCUMENTO VARCHAR(12) NOT NULL,
-    TELEFONO CHAR(9) NOT NULL,
-    CORREO VARCHAR(50) NOT NULL,
-    DIRECCION VARCHAR(50) NULL,
-    ESTADO INT DEFAULT 1,
-    FOREIGN KEY (ESTADO) REFERENCES TB_ESTADO(ID_ESTADO)
-);
 
-INSERT INTO TB_FARMACEUTICOS (NOMBRES, APELLIDOS, TIPO_DOCUMENTO, DOCUMENTO, TELEFONO, CORREO, DIRECCION, ESTADO)
-VALUES
-('María', 'González Pérez', 'DNI', '71234567', '987654321', 'maria.gonzalez@farmacia.com', 'Av. Los Jardines 123', 1),
-('Carlos', 'Martínez Rojas', 'DNI', '87654321', '912345678', 'carlos.martinez@farmacia.com', 'Calle Las Flores 456', 1),
-('Ana', 'López Sánchez', 'CE', 'X12345678', '923456789', 'ana.lopez@farmacia.com', 'Jr. Libertad 789', 1),
-('Pedro', 'Ramírez Vargas', 'DNI', '65432198', '934567890', 'pedro.ramirez@farmacia.com', 'Av. Primavera 101', 1),
-('Lucía', 'Torres Medina', 'PAS', 'PA8765432', '945678901', 'lucia.torres@farmacia.com', 'Calle Los Pinos 202', 1);
 
 CREATE TABLE TB_PROVEEDORES (
     ID_PROVEEDOR INT PRIMARY KEY AUTO_INCREMENT,
@@ -172,11 +165,9 @@ VALUES
 ('M0050', NULL, 'Bromuro de ipratropio 2ml',19.00,  45,  '2026-12-12', 1, 'Broncodilatador anticolinérgico', 4, 'SRM',4);
 
 CREATE TABLE TB_ORDENES_COMPRA (
-    ID_ORDEN INT PRIMARY KEY,
+	ID_ORDEN INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_USUARIO INT NOT NULL,
     FECHA DATE NOT NULL,
-    ESTADO VARCHAR(15) NOT NULL DEFAULT 'COMPLETADA' 
-	CHECK (ESTADO IN ('PENDIENTE', 'COMPLETADA', 'CANCELADA')),
     FOREIGN KEY (ID_USUARIO) REFERENCES TB_USUARIOS (ID_USUARIO)
 );
 
@@ -191,19 +182,19 @@ CREATE TABLE TB_DETALLE_COMPRA (
 );
 
 /*Prueba para meter el dashboard de ventas*/
-INSERT INTO TB_ORDENES_COMPRA (ID_ORDEN, ID_USUARIO, FECHA, ESTADO)
+INSERT INTO TB_ORDENES_COMPRA (ID_ORDEN, ID_USUARIO, FECHA)
 VALUES
-(1001, 1, '2025-06-15', 'COMPLETADA'),
-(1002, 2, '2025-05-20', 'COMPLETADA'),
-(1003, 3, '2025-04-22', 'COMPLETADA'),
-(1004, 2, '2025-03-24', 'COMPLETADA'),
-(1005, 1, '2025-02-25', 'COMPLETADA'),
-(1006, 2, '2025-01-23', 'COMPLETADA'),
-(1007, 2, '2024-12-19', 'COMPLETADA'),
-(1008, 3, '2024-11-17', 'COMPLETADA'),
-(1009, 3, '2024-10-17', 'COMPLETADA'),
-(1010, 3, '2024-09-17', 'COMPLETADA'),
-(1011, 3, '2024-08-17', 'COMPLETADA');
+(1001, 2, '2025-06-15'),
+(1002, 2, '2025-05-20'),
+(1003, 3, '2025-04-22'),
+(1004, 2, '2025-03-24'),
+(1005, 3, '2025-02-25'),
+(1006, 2, '2025-01-23'),
+(1007, 2, '2024-12-19'),
+(1008, 3, '2024-11-17'),
+(1009, 4, '2024-10-17'),
+(1010, 3, '2024-09-17'),
+(1011, 3, '2024-08-17');
 
 INSERT INTO TB_DETALLE_COMPRA (ID_ORDEN, ID_MEDICAMENTO, CANTIDAD, PRECIO)
 VALUES
@@ -224,7 +215,6 @@ VALUES
 (1009, 'M0010', 1, 10.50),
 (1010, 'M0008', 1, 10.50),
 (1010, 'M0009', 1, 10.50);
-
 
 SELECT * FROM TB_ORDENES_COMPRA
 SELECT * FROM TB_DETALLE_COMPRA
@@ -278,3 +268,56 @@ BEGIN
     WHERE ID_MEDICAMENTO = p_ID_MEDICAMENTO;
 END;
 // DELIMITER ;
+/* Para el jasperReport*/
+CREATE OR REPLACE VIEW v_header_orden_compra AS
+SELECT 
+    o.ID_ORDEN,
+    o.FECHA,
+    u.ID_USUARIO,
+    u.DIRECCION,
+    u.TELEFONO,
+    CONCAT(COALESCE(u.NOMBRE, ''), ' ', COALESCE(u.APELLIDO, '')) AS nombreCompletoUsuario,
+    CONCAT('B001 - ', LPAD(o.ID_ORDEN, 8, '0')) AS numOrden,
+    CASE 
+        WHEN u.ROL = 3 THEN 'Farmacéutico:'
+        WHEN u.ROL = 2 THEN 'Cliente:'
+        ELSE 'Desconocido'
+    END AS tipoUsuario
+FROM TB_ORDENES_COMPRA o
+JOIN TB_USUARIOS u ON o.ID_USUARIO = u.ID_USUARIO;
+
+CREATE OR REPLACE VIEW v_detail_orden_compra AS
+SELECT 
+    d.ID_ORDEN,
+    d.ID_MEDICAMENTO,
+    m.NOMBRE,
+    d.CANTIDAD,
+    d.PRECIO,
+    (d.CANTIDAD * d.PRECIO) AS subtotal
+FROM TB_DETALLE_COMPRA d
+JOIN TB_MEDICAMENTOS m ON d.ID_MEDICAMENTO = m.ID_MEDICAMENTO;
+
+CREATE OR REPLACE VIEW v_stock_medicamentos AS
+SELECT 
+    m.NOMBRE AS nombre_medicamento,
+    m.STOCK_ACTUAL,
+    CASE
+		WHEN m.PREESCRIPCION = 'CRM' THEN 'Con receta médica'
+		WHEN m.PREESCRIPCION = 'SRM' THEN 'Sin receta médica'
+        ELSE 'RECETA DESCONOCIDA'
+	END AS clasificacion,
+    c.DESCRIPCION AS categoria,
+    CASE 
+        WHEN m.STOCK_ACTUAL = 0 THEN 'Sin Stock'
+        WHEN m.STOCK_ACTUAL <= 10 THEN 'Stock Bajo'
+        ELSE 'Stock Suficiente'
+    END AS nivel_stock,
+    CASE 
+        WHEN m.FECHA_VENCIMIENTO < CURRENT_DATE THEN 'Vencido'
+        WHEN m.FECHA_VENCIMIENTO <= CURRENT_DATE + INTERVAL 30 DAY THEN 'Por Vencer'
+        ELSE 'Vigente'
+    END AS estado_vencimiento
+FROM 
+    TB_MEDICAMENTOS m
+JOIN 
+    TB_CATEGORIA c ON m.ID_CATEGORIA = c.ID_CATEGORIA

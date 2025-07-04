@@ -7,30 +7,43 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.Farmacia.ProyectoLP2.model.Estado;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
 
 public interface IMedicamentoRepository extends JpaRepository<Medicamento, String> {
 	List<Medicamento> findAllByOrderByIdMedicamentoDesc();
 
+	@Query("""
+			SELECT m FROM Medicamento m
+			WHERE
+			(:estado is null or m.estado = :estado)
+			ORDER BY
+			    m.idMedicamento DESC
+			""")
+	List<Medicamento> findByEstado(Estado estado);
+
 	long count();
-	
+
 	@Query("SELECT COUNT(m) FROM Medicamento m WHERE m.stockActual < 10")
 	long countMedicinesStockLow();
-	
+
 	@Query("""
 			SELECT M FROM Medicamento M
 			WHERE (:idCategoria IS NULL OR M.categoria.idCategoria = :idCategoria)
-            AND
-            (:idProveedor IS NULL OR M.proveedor.idProveedor = :idProveedor)
-            ORDER BY
-            M.idMedicamento DESC
-            """)
+			         AND
+			         (:idProveedor IS NULL OR M.proveedor.idProveedor = :idProveedor)
+			         AND
+			         (:preescripcion IS NULL OR M.preescripcion = :preescripcion)
+			         ORDER BY
+			         M.idMedicamento DESC
+			         """)
 	List<Medicamento> findAllWithFilters(@Param("idCategoria") Integer idCategoria,
-			@Param("idProveedor") Integer idProveedor);
-	
+			@Param("idProveedor") Integer idProveedor, @Param("preescripcion") String preescripcion);
+
 	@Query("SELECT m FROM Medicamento m WHERE m.fechaVencimiento <= :fechaLimite AND m.fechaVencimiento >= CURRENT_DATE")
 	List<Medicamento> findExpiredMedications(@Param("fechaLimite") LocalDate fechaLimite);
-	
+
 	@Modifying
 	@Query("UPDATE Medicamento m SET m.estado.id = 1 WHERE m.idMedicamento = :id")
 	void activarMedicamento(@Param("id") String id);

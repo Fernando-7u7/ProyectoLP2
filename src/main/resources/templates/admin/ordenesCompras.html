@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/layoutAdmin :: layoutBase(~{::section})}">
+
+<section th:fragment="contenido">
+
+	<div class="container mt-4">
+		<h2 class="mb-4">
+			<i class="fa-solid fa-cart-shopping me-2"></i>Órdenes de Compra
+		</h2>
+
+		<form method="get" th:action="@{/admin/ordenes}" th:object="${filter}"
+			class="card p-4 mb-4 shadow-sm border-0">
+			<div class="row align-items-end">
+				<div class="col-md-5 mb-3">
+					<label class="form-label fw-semibold" for="categoria"><i
+						class="fa-solid fa-user-tag me-1"></i> Roles</label> <select
+						class="form-select" th:field="*{idRol}"
+						onchange="this.form.submit()">
+						<option value="">-- Todos --</option>
+						<option th:each="item : ${lstRoles}" th:value="${item.idRol}"
+							th:text="${item.roles}" th:if="${item.descripcion != 'A'}">
+						</option>
+					</select>
+				</div>
+				<div
+					class="col-md-3 mb-3 d-flex justify-content-start align-items-end">
+					<a th:href="@{/admin/ordenes}"
+						class="btn btn-outline-secondary w-100"> <i
+						class="fa-solid fa-eraser me-2"></i> Limpiar filtros
+					</a>
+				</div>
+			</div>
+		</form>
+
+		<table id="tblPedidos"
+			class="table table-hover table-bordered shadow-sm">
+			<thead class="table-dark">
+				<tr>
+					<th>ID</th>
+					<th>Fecha</th>
+					<th>Usuario</th>
+					<th>Rol</th>
+					<th>Total</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="orden : ${lstPedidos}">
+					<td th:text="${orden.idOrden}"></td>
+					<td th:text="${orden.fecha}"></td>
+					<td th:text="${orden.usuario.nomsConApes}"></td>
+					<td th:text="${orden.usuario.rol.roles}"></td>
+					<td class="text-end"
+						th:text="|S/. ${#numbers.formatDecimal(orden.total, 1, 2,'POINT')}|"></td>
+					<td class="text-center"><a
+						th:href="@{/reportes/boleta(numBol=${orden.idOrden})}"
+						class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center"
+						target="_blank" title="Descargar PDF del pedido"> <i
+							class="fas fa-file-pdf me-2"></i> PDF
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
+</html>
+
+<script>
+	$(document).ready(function () {
+		$('#tblPedidos').DataTable({
+			language: {
+				url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/es-ES.json'
+			},
+			order: [],
+			searching: false, // Aquí quitamos el filtro de búsqueda (search box)
+			pageLength: 10
+		});
+	});
+</script>

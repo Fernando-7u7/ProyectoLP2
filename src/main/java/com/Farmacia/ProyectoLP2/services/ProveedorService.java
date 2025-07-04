@@ -19,13 +19,17 @@ public class ProveedorService {
 	
 	@Transactional
 	public List<Proveedor> getAll() {
-		return proveedorRepo.findAll();
+		return proveedorRepo.findAllByOrderByIdProveedorDesc();
 	}
 	
     public List<Proveedor> listarProveedoresActivos() {
         return proveedorRepo.findByEstado_IdEstadoNot(2);
     }
 	
+    public long countProveedores() {
+		return proveedorRepo.count();
+	}
+    
     @Transactional
 	public Proveedor create(Proveedor proveedor) {
 		try {
