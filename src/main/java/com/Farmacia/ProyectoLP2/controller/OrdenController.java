@@ -75,12 +75,14 @@ public class OrdenController {
 	}
 	
 	@GetMapping("/nuevo")
-	public String nuevo(Model model) {
-		model.addAttribute("contenidoFarmaceutico", "farmaceutico/ordenesListado :: contenido");
-		model.addAttribute("medicamentos", medicamentoService.getActivos());
-		model.addAttribute("medicamentoSeleccionado", new  MedicamentoSeleccionado());
-		return "redirect:/orden/nuevo";
+	public String nuevo(RedirectAttributes flash) {
+	    flash.addFlashAttribute("contenidoFarmaceutico", "farmaceutico/ordenesListado :: contenido");
+	    flash.addFlashAttribute("medicamentos", medicamentoService.getActivos());
+	    flash.addFlashAttribute("medicamentoSeleccionado", new MedicamentoSeleccionado());
+
+	    return "redirect:/orden/nuevo";
 	}
+
 
 	@PostMapping("/agregar")
 	public String agregar(@Valid @ModelAttribute MedicamentoSeleccionado seleccionado, BindingResult bindingResult,
