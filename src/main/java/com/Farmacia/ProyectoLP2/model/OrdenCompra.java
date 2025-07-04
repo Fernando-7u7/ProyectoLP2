@@ -2,6 +2,8 @@ package com.Farmacia.ProyectoLP2.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 @Entity
 @Table(name = "TB_ORDENES_COMPRA")
 public class OrdenCompra {
@@ -28,7 +31,7 @@ public class OrdenCompra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idOrden;
 
-	@Column(name = "FECHA", nullable = false)
+	@Column(name = "FECHA", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
 	private LocalDate fecha;
 	
 	@ManyToOne

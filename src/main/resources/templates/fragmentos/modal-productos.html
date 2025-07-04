@@ -1,4 +1,4 @@
-<div th:fragment="modal-productos(productos, idModal)">
+<div th:fragment="modal-productos(medicamentos, idModal)">
 	<div class="modal fade" th:id="${idModal}" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
@@ -9,7 +9,7 @@
 
 				<div class="modal-body">
 					<div class="table-responsive">
-						<table id="tblSelectorProductos" class="table table-hover">
+						<table id="tblSelectorMeds" class="table table-hover">
 							<thead class="table-secondary">
 								<tr>
 									<th>Código</th>
@@ -19,14 +19,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="prod : ${medicamentos}">
-									<td th:text="${prod.codProducto}"></td>
-									<td th:text="${prod.descripcion}"></td>
-									<td th:text="${prod.precio}"></td>
+								<tr th:each="med : ${medicamentos}">
+									<td th:text="${med.idMedicamento}"></td>
+									<td th:text="${med.nombre}"></td>
+									<td th:text="${med.precio}"></td>
 									<td>
 										<button type="button" class="btn btn-primary btnSeleccionar"
-											th:data-codigo="${prod.codProducto}"
-											th:data-descripcion="${prod.descripcion}" th:data-precio="${prod.precio}">
+											th:data-codigo="${med.idMedicamento}"
+											th:data-descripcion="${med.descripcion}" th:data-precio="${med.precio}">
 											Seleccionar
 										</button>
 									</td>
@@ -41,11 +41,11 @@
 	<!-- Script de inicialización -->
 <	<script>
 		$(document).ready(function () {
-			const idTabla = '#tblSelectorProductos';
+			const idTabla = '#tblSelectorMeds';
 			if ($.fn.DataTable.isDataTable(idTabla)) {
 				$(idTabla).DataTable().destroy();
 			}
-			$('#tblSelectorProductos').DataTable({
+			$('#tblSelectorMeds').DataTable({
 				lengthMenu: [5, 10],
 				pageLength: 5,
 				language: {
@@ -54,5 +54,6 @@
 				}
 			});
 		});
+		
 	</script>
 </div>

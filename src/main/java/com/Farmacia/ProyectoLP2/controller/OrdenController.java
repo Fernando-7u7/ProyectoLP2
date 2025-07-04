@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.Farmacia.ProyectoLP2.dto.DetalleCompraPK;
 import com.Farmacia.ProyectoLP2.dto.MedicamentoSeleccionado;
 import com.Farmacia.ProyectoLP2.dto.OrdenFechaFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
@@ -84,6 +85,7 @@ public class OrdenController {
 		return "farmaceutico/nuevo";
 	}
 
+
 	@PostMapping("/agregar")
 	public String agregar(@Valid @ModelAttribute MedicamentoSeleccionado seleccionado, BindingResult bindingResult,
 			@ModelAttribute("seleccionados") List<MedicamentoSeleccionado> seleccionados, Model model) {
@@ -151,28 +153,34 @@ public class OrdenController {
 	        Medicamento medicamento = medicamentoService.getOne(item.getCodProducto());
 	        Integer cantidad = item.getCantidad();
 	        Double precio = item.getPrecio();
-	        
-	        // Crear el detalle sin la clave primaria y la orden
+
 	        DetalleCompra detalle = new DetalleCompra();
+	        DetalleCompraPK pk = new DetalleCompraPK();
+	               
+	        // Aquí asumimos que orden.getId() ya tiene valor
+	        pk.setIdMedicamento(medicamento.getIdMedicamento());
+	        detalle.setId(pk);
+
 	        detalle.setMedicamento(medicamento);
 	        detalle.setCantidad(cantidad);
 	        detalle.setPrecio(precio);
-	        
+	        detalle.setOrdenCompra(orden);
+
 	        return detalle;
 	    }).toList();
+
 	    
 	    orden.setDetalles(lstDetalleOrdenes);
 	    
-	    // Procesamos si es exitoso
 	    ResultadoResponse response = ordenService.create(orden);
 	    if (!response.success) {
 	        model.addAttribute("alert", Alert.sweetAlertError(response.mensaje));
-	        return "orden/nuevo";
+	        return "farmaceutico/nuevo";
 	    }
 	    String toast = Alert.sweetToast(response.mensaje, "success", 5000);
 	    flash.addFlashAttribute("toast", toast);
 	    status.setComplete();
-	    return "redirect:/farmaceutico/ordenesListado";
+	    return "redirect:/orden/listado";
 	}
 
 	private String obtenerMensajeValidacionAgregar(BindingResult bindingResult) {
@@ -181,6 +189,9 @@ public class OrdenController {
 
 		if (bindingResult.hasFieldErrors("precio"))
 			return bindingResult.getFieldError("precio").getDefaultMessage();
+		
+		if (bindingResult.hasFieldErrors("descripcion"))
+			return bindingResult.getFieldError("descripcion").getDefaultMessage();
 
 		if (bindingResult.hasFieldErrors("cantidad"))
 			return bindingResult.getFieldError("cantidad").getDefaultMessage();

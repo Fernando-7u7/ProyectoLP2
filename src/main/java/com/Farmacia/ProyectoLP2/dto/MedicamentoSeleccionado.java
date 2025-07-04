@@ -12,6 +12,8 @@ public class MedicamentoSeleccionado {
 	
 	@NotEmpty(message = "Seleccione un producto")
 	private String codProducto;
+	
+	@NotEmpty(message = "El producto es requerido")
 	private String descripcion;
 
 	@NotNull(message = "El precio es requerido")
