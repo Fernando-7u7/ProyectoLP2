@@ -5,7 +5,7 @@
 
 	<div class="container mt-4">
 
-		<form th:action="@{/orden/registrar}" method="post">
+		<form th:action="@{/orden/registrar}" method="post" th:object="${orden}">
 			<div class="row mb-3 mt-5 align-items-center">
 				<div class="col-md-10">
 					<h1 class="m-0">Emisión de Orden de Compra</h1>
@@ -19,7 +19,6 @@
 				</div>
 			</div>
 
-			<!-- Información de la Orden -->
 			<div class="card mb-4">
 				<div class="card-body">
 					<p class="m-0">
@@ -50,7 +49,8 @@
 						</div>
 						<div class="col-md-4">
 							<label>Nombre</label>
-							<input type="text" class="form-control" th:field="*{descripcion}" readonly>
+							<input type="text" class="form-control" th:field="*{descripcion}" readonly
+							th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid' : ''">
 						</div>
 						<div class="col-md-2">
 							<label>Precio</label>
@@ -112,28 +112,34 @@
 	</div>
 
 	<!-- Fragmento Modal de Selección de Productos -->
-	<div th:replace="fragmentos/modal-productos :: modal-productos(${productos}, 'modalProductos')"></div>
+	<div th:replace="~{fragmentos/modal-productos :: modal-productos(${medicamentos}, 'modalProductos')}"></div>
 
 	<th:block th:utext="${alert}"></th:block>
 
 	<!-- Script con jQuery -->
 	<script>
-		$(document).ready(function () {
+	  $(document).ready(function () {
 
-			// Seleccionar producto desde el modal ya asignar los controles respectivamente
-			$(document).on('click', '.btnSeleccionar', function () {
-				let codigo = $(this).data('codigo');
-				let nombre = $(this).data('descripcion');
-				let precio = $(this).data('precio');
+	    // Evento para seleccionar medicamento
+	    $(document).on('click', '.btnSeleccionar', function () {
+	      let codigo = $(this).data('codigo');
+	      let nombre = $(this).data('descripcion');
+	      let precio = $(this).data('precio');
 
-				$('#codProducto').val(codigo);
-				$('#descripcion').val(nombre);
-				$('#precio').val(precio);
-				$('#cantidad').val(1);
+	      $('#codProducto').val(codigo);
+	      $('#descripcion').val(nombre);
+	      $('#precio').val(precio);
+	      $('#cantidad').val(1);
 
-				$('#modalProductos').modal('hide');
-			});
-		});
+	      $('#modalProductos').modal('hide');
+	    });
+
+	    // Evento cuando se oculta el modal para limpiar backdrop
+	    $('#modalProductos').on('hidden.bs.modal', function () {
+	      $('.modal-backdrop').remove();     // Elimina fondo negro
+	      $('body').removeClass('modal-open'); // Restaura el scroll
+	    });
+	  });
 	</script>
 </section>
 	
