@@ -275,9 +275,14 @@ SELECT
     o.FECHA,
     u.ID_USUARIO,
     u.DIRECCION,
-    U.TELEFONO,
-    CONCAT(u.NOMBRE, ' ', u.APELLIDO) AS nombreCompletoUsuario,
-    CONCAT('B001 - ', LPAD(o.ID_ORDEN, 8, '0')) AS numOrden
+    u.TELEFONO,
+    CONCAT(COALESCE(u.NOMBRE, ''), ' ', COALESCE(u.APELLIDO, '')) AS nombreCompletoUsuario,
+    CONCAT('B001 - ', LPAD(o.ID_ORDEN, 8, '0')) AS numOrden,
+    CASE 
+        WHEN u.ROL = 3 THEN 'Farmacéutico:'
+        WHEN u.ROL = 2 THEN 'Cliente:'
+        ELSE 'Desconocido'
+    END AS tipoUsuario
 FROM TB_ORDENES_COMPRA o
 JOIN TB_USUARIOS u ON o.ID_USUARIO = u.ID_USUARIO;
 
@@ -291,3 +296,28 @@ SELECT
     (d.CANTIDAD * d.PRECIO) AS subtotal
 FROM TB_DETALLE_COMPRA d
 JOIN TB_MEDICAMENTOS m ON d.ID_MEDICAMENTO = m.ID_MEDICAMENTO;
+
+CREATE OR REPLACE VIEW v_stock_medicamentos AS
+SELECT 
+    m.NOMBRE AS nombre_medicamento,
+    m.STOCK_ACTUAL,
+    CASE
+		WHEN m.PREESCRIPCION = 'CRM' THEN 'Con receta médica'
+		WHEN m.PREESCRIPCION = 'SRM' THEN 'Sin receta médica'
+        ELSE 'RECETA DESCONOCIDA'
+	END AS clasificacion,
+    c.DESCRIPCION AS categoria,
+    CASE 
+        WHEN m.STOCK_ACTUAL = 0 THEN 'Sin Stock'
+        WHEN m.STOCK_ACTUAL <= 10 THEN 'Stock Bajo'
+        ELSE 'Stock Suficiente'
+    END AS nivel_stock,
+    CASE 
+        WHEN m.FECHA_VENCIMIENTO < CURRENT_DATE THEN 'Vencido'
+        WHEN m.FECHA_VENCIMIENTO <= CURRENT_DATE + INTERVAL 30 DAY THEN 'Por Vencer'
+        ELSE 'Vigente'
+    END AS estado_vencimiento
+FROM 
+    TB_MEDICAMENTOS m
+JOIN 
+    TB_CATEGORIA c ON m.ID_CATEGORIA = c.ID_CATEGORIA

@@ -13,6 +13,7 @@ import com.Farmacia.ProyectoLP2.dto.DetalleCompraPK;
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
 import com.Farmacia.ProyectoLP2.dto.OrdenFechaFilter;
 import com.Farmacia.ProyectoLP2.dto.ResultadoResponse;
+import com.Farmacia.ProyectoLP2.dto.RoleFilter;
 import com.Farmacia.ProyectoLP2.model.DetalleCompra;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
 import com.Farmacia.ProyectoLP2.model.OrdenCompra;
@@ -34,6 +35,10 @@ public class OrdenCompraService {
 	
 	@Autowired
 	private IRolRepository rolRepository;
+	
+	public List<OrdenCompra> searchAdmin(RoleFilter idRol){
+	    return ordenCompraRepo.findByRolAdmin(idRol.getIdRol());
+	}
 	
 	public List<OrdenCompra> search(Integer idRol){
 	    Rol rol = rolRepository.findById(idRol).orElse(null);
@@ -100,7 +105,4 @@ public class OrdenCompraService {
 	        return new ResultadoResponse(false, "Error al registrar: " + ex.getMessage());
 	    }
 	}
-
-
-	
 }

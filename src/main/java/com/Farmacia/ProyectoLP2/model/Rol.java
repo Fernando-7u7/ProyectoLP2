@@ -12,11 +12,23 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Rol {
-
 	@Id
 	@Column(name = "ID_ROL")
 	private int idRol;
 	
 	@Column(name = "DESCRIPCION")
 	private String descripcion;
+	
+	public String getRoles() {
+	    switch (descripcion) {
+	        case "C":
+	            return "Cliente";
+	        case "F":
+	            return "Farmacéutico";
+	        case "A":
+	            return "Administrador";
+	        default:
+	            return "Rol desconocido";
+	    }
+	}
 }

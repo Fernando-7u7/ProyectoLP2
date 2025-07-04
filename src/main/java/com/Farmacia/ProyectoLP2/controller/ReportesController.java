@@ -1,6 +1,7 @@
 package com.Farmacia.ProyectoLP2.controller;
 
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class ReportesController {
 	@GetMapping("/boleta")
 	public void boletaReporte(@RequestParam Integer numBol, HttpServletResponse response) throws Exception {
 		// Ruta del reporte (en resources/reportes)
-		String reportPath = "/reportes/BoletaCliente.jrxml";
+		String reportPath = "/reportes/Boleta.jrxml";
 
 		// Parámetros
 		Map<String, Object> params = new HashMap<>();
@@ -46,4 +47,27 @@ public class ReportesController {
 		outputStream.flush();
 		outputStream.close();
 	}
+	
+	@GetMapping("/medicamentoReport")
+	public void medicamentoStockReporte(HttpServletResponse response) throws Exception {
+	    // Ruta del archivo .jrxml en resources/reportes/
+	    String reportPath = "/reportes/StockMedicamento.jrxml";
+
+	    // Parámetros vacíos porque no hay filtros
+	    Map<String, Object> params = new HashMap<>();
+
+	    // Obtener el reporte compilado y lleno con datos
+	    JasperPrint jasperPrint = reporteService.getJasperPrint(params, reportPath);
+
+	    // Configurar la respuesta HTTP para PDF en línea
+	    response.setContentType("application/pdf");
+	    String fileName = "reporte-stock-" + LocalDate.now() + ".pdf";
+	    response.setHeader("Content-Disposition", "inline; filename=" + fileName);
+
+	    // Enviar el PDF al navegador
+	    try (OutputStream outputStream = response.getOutputStream()) {
+	        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+	    }
+	}
+
 }

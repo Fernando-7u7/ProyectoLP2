@@ -60,6 +60,9 @@
 					<li><a th:href="@{/admin/mantenimiento/proveedores/listado}"
 						class="text-white nav-link px-3 py-2"
 						th:classappend="${requestURI.startsWith('/admin/mantenimiento/proveedores')}  ? ' active' : ''">Proveedores</a></li>
+					<li><a th:href="@{/admin/ordenes}"
+						class="text-white nav-link px-3 py-2"
+						th:classappend="${requestURI.startsWith('/admin/ordenes')}  ? ' active' : ''">Ordenes de Compra</a></li>
 				</ul>
 				<ul class="list-unstyled">
 					<li class="mt-auto"><a id="cerrarSesionLink"

@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.Farmacia.ProyectoLP2.dto.IMonthlySale;
+import com.Farmacia.ProyectoLP2.dto.RoleFilter;
 import com.Farmacia.ProyectoLP2.model.Medicamento;
+import com.Farmacia.ProyectoLP2.model.OrdenCompra;
+import com.Farmacia.ProyectoLP2.model.Rol;
 import com.Farmacia.ProyectoLP2.services.CategoriaService;
 import com.Farmacia.ProyectoLP2.services.MedicamentoService;
 import com.Farmacia.ProyectoLP2.services.OrdenCompraService;
 import com.Farmacia.ProyectoLP2.services.ProveedorService;
+import com.Farmacia.ProyectoLP2.services.RolService;
 
 
 @Controller
@@ -31,6 +36,10 @@ public class AdminController {
 	
 	@Autowired
 	private ProveedorService proveedorService; 
+	
+	@Autowired
+	private RolService rolService;
+	
 	@GetMapping("/dashboard")
 	public String dashboardIndex(Model model) {
 		List<Medicamento> lstMedicamento = medicService.expiredMedicamento();
@@ -54,5 +63,16 @@ public class AdminController {
 		model.addAttribute("ventasUltimos6Meses", ventasUltimos6Meses);
 
 		return "admin/dashboard";
+	}
+	
+	@GetMapping("/ordenes")
+	public String ordenCompra(@ModelAttribute RoleFilter filter,Model model) {
+		List<OrdenCompra> pedidos = ordenCompraService.searchAdmin(filter);
+		List<Rol> roles = rolService.getAll();
+		model.addAttribute("lstPedidos",pedidos);
+		model.addAttribute("lstRoles",roles);
+	    model.addAttribute("filter", filter); 
+		model.addAttribute("pageTitle", "Orden Compras");
+		return "admin/ordenesCompras";
 	}
 }

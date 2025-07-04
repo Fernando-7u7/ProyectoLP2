@@ -13,6 +13,8 @@ import com.Farmacia.ProyectoLP2.model.OrdenCompra;
 import com.Farmacia.ProyectoLP2.model.Rol;
 
 public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integer> {
+	List<OrdenCompra> findAllByOrderByIdOrdenDesc();
+
 	@Modifying
 	@Query(value = """
 			    SELECT DATE_FORMAT(o.fecha, '%Y-%m') AS mes,
@@ -26,6 +28,13 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 	List<IMonthlySale> getSalesForMonthlys(@Param("fechaLimite") LocalDate fechaLimite);
 
 	@Query("""
+			    SELECT o FROM OrdenCompra o
+			    WHERE (:idRol IS NULL OR o.usuario.rol.idRol = :idRol)
+			    ORDER BY o.fecha DESC
+			""")
+	List<OrdenCompra> findByRolAdmin(@Param("idRol") Integer idRol);
+
+	@Query("""
 			SELECT o FROM OrdenCompra o
 			WHERE
 			(:rol IS NULL OR o.usuario.rol = :rol)
@@ -35,16 +44,17 @@ public interface IOrdenCompraRepository extends JpaRepository<OrdenCompra, Integ
 	List<OrdenCompra> findByRol(Rol rol);
 
 	@Query("""
-			 SELECT o FROM OrdenCompra o
-			 WHERE
-			 o.fecha BETWEEN :fechaIni AND :fechaFin
-			 AND
-			 (:rol IS NULL OR o.usuario.rol = :rol)
-			 ORDER BY
-			 o.usuario.rol.idRol DESC
-			 """)
-	List<OrdenCompra> findByFechaAndRol(@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin, Rol rol);
-	
+			SELECT o FROM OrdenCompra o
+			WHERE
+			o.fecha BETWEEN :fechaIni AND :fechaFin
+			AND
+			(:rol IS NULL OR o.usuario.rol = :rol)
+			ORDER BY
+			o.usuario.rol.idRol DESC
+			""")
+	List<OrdenCompra> findByFechaAndRol(@Param("fechaIni") LocalDate fechaIni, @Param("fechaFin") LocalDate fechaFin,
+			Rol rol);
+
 	@Query("SELECT o FROM OrdenCompra o WHERE o.usuario.id = :id ORDER BY o.fecha DESC")
 	List<OrdenCompra> findByUsuarioId(@Param("id") Integer id);
 
